@@ -1,0 +1,142 @@
+<div class="modal-header">
+    <h4 class="modal-title">Violence Against Women Record</h4>
+    <button type="button" class="btn ms-auto" (click)="activeModal.dismiss('Cross click')"><span
+            aria-hidden="true">&times;</span></button>
+</div>
+<div class="modal-body">
+    <div class="card lesson-border">
+        <div class="card-body">
+            <form [formGroup]="vawForm" (ngSubmit)="submitVaw()">
+                <div class="p-3 form-group">
+                    <h5>VAW Victims</h5>
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="mb-3">
+                                <div class="mb-3">
+                                    <label for="city" class="form-label">Month</label>
+                                    <select class="form-select" aria-label="Default select example" id="month" name="month" formControlName="month">
+                                        <option *ngFor="let month of months" [value]="month">{{ month }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-5">
+                            <div class="mb-3">
+                                <label for="number_vaw" class="form-label">Total No. Violence Against Women</label>
+                                <input type="number" formControlName="number_vaw" class="form-control" min="0" oninput="this.value = Math.abs(this.value)">
+                            </div>						
+                        </div>
+                    </div>
+                    <h5>Type of Violence</h5>
+                    <div class="row">
+                        <div class="col-3">
+                            <div class="mb-3">
+                                <label for="physical_abuse" class="form-label">Physical Abuse</label>
+                                <input type="number" formControlName="physical_abuse" class="form-control" min="0" oninput="this.value = Math.abs(this.value)" (change)="calculateTotalCases()">
+                            </div>						
+                        </div>
+                        <div class="col-3">
+                            <div class="mb-3">
+                                <label for="sexual_abuse" class="form-label">Sexual Abuse</label>
+                                <input type="number" formControlName="sexual_abuse" class="form-control" min="0" oninput="this.value = Math.abs(this.value)" (change)="calculateTotalCases()">
+                            </div>						
+                        </div>
+                        <div class="col-3">
+                            <div class="mb-3">
+                                <label for="psychological_abuse" class="form-label">Psychological Abuse</label>
+                                <input type="number" formControlName="psychological_abuse" class="form-control" min="0" oninput="this.value = Math.abs(this.value)" (change)="calculateTotalCases()">
+                            </div>						
+                        </div>
+                        <div class="col-3">
+                            <div class="mb-3">
+                                <label for="economic_abuse" class="form-label">Economic Abuse</label>
+                                <input type="number" formControlName="economic_abuse" class="form-control" min="0" oninput="this.value = Math.abs(this.value)" (change)="calculateTotalCases()">
+                            </div>						
+                        </div>
+                    </div>
+                    <h5>Actions Taken</h5>
+                    <div class="row">
+                        <div class="col-3">
+                            <div class="mb-3">
+                                <label for="issued_bpo" class="form-label">Issued BPO</label>
+                                <input type="number" formControlName="issued_bpo" class="form-control" min="0" oninput="this.value = Math.abs(this.value)">
+                            </div>						
+                        </div>
+                        <div class="col-3">
+                            <div class="mb-3">
+                                <label for="referred_lowdo" class="form-label">Referred to LoWDO</label>
+                                <input type="number" formControlName="referred_lowdo" class="form-control" min="0" oninput="this.value = Math.abs(this.value)">
+                            </div>						
+                        </div>
+                        <div class="col-3">
+                            <div class="mb-3">
+                                <label for="referred_pnp" class="form-label">Referred to PNP</label>
+                                <input type="number" formControlName="referred_pnp" class="form-control" min="0" oninput="this.value = Math.abs(this.value)">
+                            </div>						
+                        </div>
+                        <div class="col-3">
+                            <div class="mb-3">
+                                <label for="referred_nbi" class="form-label">Referred to NBI</label>
+                                <input type="number" formControlName="referred_nbi" class="form-control" min="0" oninput="this.value = Math.abs(this.value)">
+                            </div>						
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-3">
+                            <div class="mb-3">
+                                <label for="issued_bpo" class="form-label">Referred to Court</label>
+                                <input type="number" formControlName="referred_court" class="form-control" min="0" oninput="this.value = Math.abs(this.value)">
+                            </div>						
+                        </div>
+                        <div class="col-3">
+                            <div class="mb-3">
+                                <label for="referred_medical" class="form-label">Referred to Medical</label>
+                                <input type="number" formControlName="referred_medical" class="form-control" min="0" oninput="this.value = Math.abs(this.value)">
+                            </div>						
+                        </div>
+                    </div>
+                    <h5>Restorative Programs</h5>
+                    <div class="row">
+                        <div class="col-3">
+                            <div class="mb-3">
+                                <label for="trainings" class="form-label">Trainings/Seminars</label>
+                                <input type="number" formControlName="trainings" class="form-control" min="0" oninput="this.value = Math.abs(this.value)">
+                            </div>						
+                        </div>
+                        <div class="col-3">
+                            <div class="mb-3">
+                                <label for="counseling" class="form-label">Counseling</label>
+                                <input type="number" formControlName="counseling" class="form-control" min="0" oninput="this.value = Math.abs(this.value)">
+                            </div>						
+                        </div>
+                        <div class="col-3">
+                            <div class="mb-3">
+                                <label for="iec" class="form-label">IEC</label>
+                                <input type="number" formControlName="iec" class="form-control" min="0" oninput="this.value = Math.abs(this.value)">
+                            </div>						
+                        </div>
+                        <div class="col-3">
+                            <div class="mb-3">
+                                <label for="fund_allocation" class="form-label">Fund Allocation</label>
+                                <input type="number" formControlName="fund_allocation" class="form-control" min="0" oninput="this.value = Math.abs(this.value)">
+                            </div>						
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="mb-3">
+                                <label for="remarks" class="form-label">Remarks</label>
+                                <textarea type="text" formControlName="remarks" class="form-control"></textarea>
+                            </div>						
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="submit" class="btn btn-primary m-1" (click)="submitVaw()">Save</button>
+    <button type="button" class="btn btn-outline-dark" (click)="activeModal.dismiss('Close click')">Close</button>
+</div>
