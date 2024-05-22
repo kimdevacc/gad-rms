@@ -18,6 +18,14 @@ export class CasesVacFormComponent implements OnInit {
     months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     barangay = localStorage.getItem('barangay');
 
+    violenceTypes: { key: string, label: string, disabled: boolean }[] = [
+        { key: 'physical_abuse', label: 'Physical Abuse', disabled: false },
+        { key: 'sexual_abuse', label: 'Sexual Abuse', disabled: false },
+        { key: 'psychological_abuse', label: 'Psychological Abuse', disabled: false },
+        { key: 'neglect', label: 'Neglect', disabled: false },
+        { key: 'others', label: 'Others', disabled: false }
+    ];
+
 	constructor(
 		private formBuilder: FormBuilder,
         private apiService: ApiService,
@@ -114,13 +122,13 @@ export class CasesVacFormComponent implements OnInit {
 
 	submitVac() {
 		if(this.vacData) {
-            this.apiService.updateVacs(this.vacForm).subscribe((res) => {
+            this.apiService.updateVacs(this.vacForm).subscribe((res: ViolenceAgainstChildren | undefined) => {
 				this.activeModal.close();
                 this.openSnackBar('VACs Record updated successfully', 'Close');
                 this.recordCreatedVac.emit(res);
             });
         } else {
-            this.apiService.saveVacs(this.vacForm).subscribe((res) => {
+            this.apiService.saveVacs(this.vacForm).subscribe((res: ViolenceAgainstChildren | undefined) => {
 				this.activeModal.close();
 				this.openSnackBar('VACs Record Created successfully', 'Close');
 				this.recordCreatedVac.emit(res);

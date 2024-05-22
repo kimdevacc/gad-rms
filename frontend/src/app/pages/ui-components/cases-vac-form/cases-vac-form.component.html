@@ -76,7 +76,24 @@
                         </div>
                     </div>
                     <h5>Type of Violence</h5>
-                    <div class="row">
+                    <div class="row" formArrayName="violenceRows">
+                        <div *ngFor="let violenceRow of vacForm.get('violenceRows').controls; let i = index" class="col-5">
+                            <div class="mb-3">
+                                <label class="form-label">Type of Violence</label>
+                                <select class="form-select" aria-label="Select Type of Violence" [formControlName]="i">
+                                    <option *ngFor="let violenceType of violenceTypes" [value]="violenceType.key">{{ violenceType.label }}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div *ngFor="let violenceRow of vacForm.get('violenceRows').controls; let i = index" class="col-3">
+                            <div class="mb-3">
+                                <label class="form-label">&nbsp;</label>
+                                <input type="number" [formControlName]="violenceType.key" class="form-control" min="0" (change)="calculateTotalCases()">
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-primary" (click)="addViolenceRow()">Add Row</button>                                                   
+                    <!-- <div class="row">
                         <div class="col-3">
                             <div class="mb-3">
                                 <label for="physical_abuse" class="form-label">Physical Abuse</label>
@@ -107,7 +124,7 @@
                                 <input type="number" formControlName="others" class="form-control" min="0" oninput="this.value = Math.abs(this.value)" (change)="calculateTotalCases()">
                             </div>						
                         </div>
-                    </div>
+                    </div> -->
                     <h5>Perpetrators</h5>
                     <div class="row">
                         <div class="col-3">
