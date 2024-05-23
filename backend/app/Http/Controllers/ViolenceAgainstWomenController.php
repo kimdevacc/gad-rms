@@ -22,117 +22,20 @@ class ViolenceAgainstWomenController extends Controller
     }
 
     public function store(Request $request)  {
-        $request['number_vaw'] = $request->get('physical_abuse') + $request->get('psychological_abuse') + $request->get('economic_abuse') + $request->get('sexual_abuse');
-        return new ViolenceAgainstWomenResource(ViolenceAgainstWomen::create($request->all()));
-    }
+        $data = $this->build_data($request);
+        
+        $violenceAgainstWomen = ViolenceAgainstWomen::create($data);
 
+        return new ViolenceAgainstWomenResource($violenceAgainstWomen);
+    }
+    
     public function update(Request $request)
     {
         $vaws = ViolenceAgainstWomen::findOrFail($request->id);
 
-        $fields = [
-            'physical_abuse',
-            'sexual_abuse',
-            'psychological_abuse',
-            'economic_abuse',
-            'issued_bpo',
-            'referred_lowdo',
-            'referred_pnp',
-            'referred_court',
-            'referred_medical',
-            'referred_nbi',
-            'number_vaw',
-            'month',
-            'barangay',
-            'trainings',
-            'counseling',
-            'iec',
-            'fund_allocation',
-            'remarks'
-        ];
+        $data = $this->build_data($request);
 
-        foreach ($fields as $field) {
-            if ($request->has($field) && $vaws->$field != $request->$field) {
-                $vaws->$field = $request->$field;
-            }
-        }
-
-        $vaws->save();
-
-        return new ViolenceAgainstWomenResource($vaws);
-    }
-
-    public function _update(Request $request)
-    {
-        $vaws = ViolenceAgainstWomen::findOrFail($request->id);
-
-        $updates = [];
-
-        if ($request->has('physical_abuse')) {
-            $updates['physical_abuse'] = $request->physical_abuse;
-        }
-
-        if ($request->has('sexual_abuse')) {
-            $updates['sexual_abuse'] = $request->sexual_abuse;
-        }
-
-        if ($request->has('psychological_abuse')) {
-            $updates['psychological_abuse'] = $request->psychological_abuse;
-        }
-
-        if ($request->has('economic_abuse')) {
-            $updates['economic_abuse'] = $request->economic_abuse;
-        }
-
-        if ($request->has('issued_bpo')) {
-            $updates['issued_bpo'] = $request->issued_bpo;
-        }
-
-        if ($request->has('referred_lowdo')) {
-            $updates['referred_lowdo'] = $request->referred_lowdo;
-        }
-
-        if ($request->has('referred_court')) {
-            $updates['referred_court'] = $request->referred_court;
-        }
-
-        if ($request->has('referred_pnp')) {
-            $updates['referred_pnp'] = $request->referred_pnp;
-        }
-        if ($request->has('referred_court')) {
-            $updates['referred_court'] = $request->referred_court;
-        }
-
-        if ($request->has('referred_nbi')) {
-            $updates['referred_nbi'] = $request->referred_nbi;
-        }
-
-        if ($request->has('number_vaw')) {
-            $updates['number_vaw'] = $request->number_vaw;
-        }
-
-        if ($request->has('trainings')) {
-            $updates['trainings'] = $request->trainings;
-        }
-        if ($request->has('counseling')) {
-            $updates['counseling'] = $request->counseling;
-        }
-        if ($request->has('iec')) {
-            $updates['iec'] = $request->iec;
-        }
-        if ($request->has('fund_allocation')) {
-            $updates['fund_allocation'] = $request->fund_allocation;
-        }
-        if ($request->has('remarks')) {
-            $updates['remarks'] = $request->remarks;
-        }
-
-        $total = $request->get('physical_abuse') + $request->get('psychological_abuse') + $request->get('economic_abuse') + $request->get('sexual_abuse');
-        $updates['number_vaw'] = $total;
-
-        if (!empty($updates)) {
-            $vaws->update($updates);
-        }
+        $vaws->update($data);
 
         return new ViolenceAgainstWomenResource($vaws);
     }
@@ -141,5 +44,75 @@ class ViolenceAgainstWomenController extends Controller
     {
         $user = ViolenceAgainstWomen::findOrFail($request->id);
         return $user->delete();
+    }
+
+    private function build_data($request) {
+        $data = [
+            'number_vaw' => $request->number_vaw ?? 0,
+            'remarks' => $request->remarks ?? 'RECORD ONLY',
+            'month' => $request->month,
+            'barangay' => $request->barangay ?? 0,
+        ];
+        
+        // Handling abuseRows
+        foreach ($request->abuseRows as $row) {
+            switch ($row['abuseType']) {
+                case 'Physical Abuse':
+                    $data['physical_abuse'] = $row['abuseValue'];
+                    break;
+                case 'Sexual Abuse':
+                    $data['sexual_abuse'] = $row['abuseValue'];
+                    break;
+                case 'Psychological Abuse':
+                    $data['psychological_abuse'] = $row['abuseValue'];
+                    break;
+                case 'Economic Abuse':
+                    $data['economic_abuse'] = $row['abuseValue'];
+                    break;
+            }
+        }
+        
+        // Handling actionRows
+        foreach ($request->actionRows as $row) {
+            switch ($row['action']) {
+                case 'Issued BPO':
+                    $data['issued_bpo'] = $row['actionValue'];
+                    break;
+                case 'Referred to LoWDO':
+                    $data['referred_lowdo'] = $row['actionValue'];
+                    break;
+                case 'Referred to PNP':
+                    $data['referred_pnp'] = $row['actionValue'];
+                    break;
+                case 'Referred to NBI':
+                    $data['referred_nbi'] = $row['actionValue'];
+                    break;
+                case 'Referred to Court':
+                    $data['referred_court'] = $row['actionValue'];
+                    break;
+                case 'Referred for Medical':
+                    $data['referred_medical'] = $row['actionValue'];
+                    break;
+            }
+        }
+        
+        // Handling programsRows
+        foreach ($request->programsRows as $row) {
+            switch ($row['program']) {
+                case 'Trainings/Seminars':
+                    $data['trainings'] = $row['programValue'];
+                    break;
+                case 'Counseling':
+                    $data['counseling'] = $row['programValue'];
+                    break;
+                case 'IEC':
+                    $data['iec'] = $row['programValue'];
+                    break;
+                case 'Fund Allocation':
+                    $data['fund_allocation'] = $row['programValue'];
+                    break;
+            }
+        }
+        return $data;
     }
 }

@@ -68,7 +68,7 @@ export class CasesVacListComponent implements OnInit {
 				if (index !== -1) {
 					this.vacData.splice(index, 1);
 					this.dataSource.data = this.vacData;
-					this.openSnackBar('vac Record deleted successfully', 'Close');
+					this.openSnackBar('VAC Record deleted successfully', 'Close');
 				}
 			}
 		});

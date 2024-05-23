@@ -23,7 +23,7 @@ export class ApiService {
         if (this.authToken) {
             const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authToken}`);
             return this.http.get<any[]>(`${this.apiUrl}/cities`, { headers }).pipe(
-                catchError(error => {
+                catchError((error: any) => {
                     console.error('Error fetching cities:', error);
                     return of([]);
                 })
@@ -38,7 +38,7 @@ export class ApiService {
         if (this.authToken) {
             const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authToken}`);
             return this.http.get<any[]>(`${this.apiUrl}/barangays`, { headers }).pipe(
-                catchError(error => {
+                catchError((error: any) => {
                     console.error('Error fetching barangays:', error);
                     return of([]);
                 })
@@ -53,7 +53,7 @@ export class ApiService {
         if (this.authToken) {
             const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authToken}`);
             return this.http.get<any[]>(`${this.apiUrl}/barangays/${cityId}`, { headers }).pipe(
-                catchError(error => {
+                catchError((error: any) => {
                     console.error('Error fetching barangays:', error);
                     return of([]);
                 })
@@ -68,7 +68,7 @@ export class ApiService {
         if (this.authToken) {
             const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authToken}`);
             return this.http.get<any[]>(`${this.apiUrl}/barangay/${id}`, { headers }).pipe(
-                catchError(error => {
+                catchError((error: any) => {
                     console.error('Error fetching barangays:', error);
                     return of([]);
                 })
@@ -83,7 +83,7 @@ export class ApiService {
         if (this.authToken) {
             const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authToken}`);
             return this.http.get<any[]>(`${this.apiUrl}/users`, { headers }).pipe(
-                catchError(error => {
+                catchError((error: any) => {
                     console.error('Error fetching users:', error);
                     return of([]);
                 })
@@ -97,10 +97,10 @@ export class ApiService {
     saveUser(user: FormGroup): Observable<User> {
         const headers = new HttpHeaders().set('Authorization', 'Bearer ' + this.authToken);
         return this.http.post<any>(`${this.apiUrl}/users`, user.value, { headers }).pipe(
-            tap ((response) => {
+            tap ((response: any) => {
                 console.log(response);
             }),
-            catchError(error => {
+            catchError((error: any) => {
                 console.error('Error saving user:', error);
                 throw error; // Rethrow the error after logging
             })
@@ -110,10 +110,10 @@ export class ApiService {
     updateUser(user: FormGroup): Observable<User> {
         const headers = new HttpHeaders().set('Authorization', 'Bearer ' + this.authToken);
         return this.http.patch<any>(`${this.apiUrl}/users`, user.value, { headers }).pipe(
-            tap((response) => {
+            tap((response: any) => {
                 // console.log(response);
             }),
-            catchError(error => {
+            catchError((error: any) => {
                 console.error('Error saving user:', error);
                 throw error; // Rethrow the error after logging
             })
@@ -124,10 +124,10 @@ export class ApiService {
         const headers = new HttpHeaders().set('Authorization', 'Bearer ' + this.authToken);
 
         return this.http.delete<any>(`${this.apiUrl}/users/${id}`, { headers }).pipe(
-            tap((response) => {
+            tap((response: any) => {
                 // console.log(response);
             }),
-            catchError(error => {
+            catchError((error: any) => {
                 console.error('Error saving user:', error);
                 throw error; // Rethrow the error after logging
             })
@@ -138,7 +138,7 @@ export class ApiService {
         if (this.authToken) {
             const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authToken}`);
             return this.http.get<any[]>(`${this.apiUrl}/users/${id}`, { headers }).pipe(
-                catchError(error => {
+                catchError((error: any) => {
                     console.error('Error fetching users:', error);
                     return of([]);
                 })
@@ -155,7 +155,7 @@ export class ApiService {
         if (this.authToken) {
             const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authToken}`);
             return this.http.get<any[]>(`${this.apiUrl}/vaws`, { headers }).pipe(
-                catchError(error => {
+                catchError((error: any) => {
                     console.error('Error fetching vaws:', error);
                     return of([]);
                 })
@@ -166,25 +166,25 @@ export class ApiService {
         }
     }
 
-    saveVaws(vaws: FormGroup): Observable<ViolenceAgainstWomen> {
+    saveVaws(vaws: any): Observable<ViolenceAgainstWomen> {
         const headers = new HttpHeaders().set('Authorization', 'Bearer ' + this.authToken);
-        return this.http.post<any>(`${this.apiUrl}/vaws`, vaws.value, { headers }).pipe(
-            tap ((response) => {
+        return this.http.post<any>(`${this.apiUrl}/vaws`, vaws, { headers }).pipe(
+            tap ((response: any) => {
             }),
-            catchError(error => {
+            catchError((error: any) => {
                 console.error('Error saving vaws:', error);
                 throw error; // Rethrow the error after logging
             })
         );
     }
 
-    updateVaws(vaws: FormGroup): Observable<ViolenceAgainstWomen> {
+    updateVaws(vaws: any): Observable<ViolenceAgainstWomen> {
         const headers = new HttpHeaders().set('Authorization', 'Bearer ' + this.authToken);
-        return this.http.patch<any>(`${this.apiUrl}/vaws`, vaws.value, { headers }).pipe(
-            tap((response) => {
+        return this.http.patch<any>(`${this.apiUrl}/vaws`, vaws, { headers }).pipe(
+            tap((response: any) => {
                 // console.log(response);
             }),
-            catchError(error => {
+            catchError((error: any) => {
                 console.error('Error saving vaws:', error);
                 throw error; // Rethrow the error after logging
             })
@@ -195,10 +195,10 @@ export class ApiService {
         const headers = new HttpHeaders().set('Authorization', 'Bearer ' + this.authToken);
 
         return this.http.delete<any>(`${this.apiUrl}/vaws/${id}`, { headers }).pipe(
-            tap((response) => {
+            tap((response: any) => {
                 // console.log(response);
             }),
-            catchError(error => {
+            catchError((error: any) => {
                 console.error('Error saving vaws:', error);
                 throw error; // Rethrow the error after logging
             })
@@ -211,7 +211,7 @@ export class ApiService {
         if (this.authToken) {
             const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authToken}`);
             return this.http.get<any[]>(`${this.apiUrl}/vacs`, { headers }).pipe(
-                catchError(error => {
+                catchError((error: any) => {
                     console.error('Error fetching vaws:', error);
                     return of([]);
                 })
@@ -222,25 +222,25 @@ export class ApiService {
         }
     }
 
-    saveVacs(vacs: FormGroup): Observable<ViolenceAgainstChildren> {
+    saveVacs(vacs: any): Observable<ViolenceAgainstChildren> {
         const headers = new HttpHeaders().set('Authorization', 'Bearer ' + this.authToken);
-        return this.http.post<any>(`${this.apiUrl}/vacs`, vacs.value, { headers }).pipe(
-            tap ((response) => {
+        return this.http.post<any>(`${this.apiUrl}/vacs`, vacs, { headers }).pipe(
+            tap (() => {
             }),
-            catchError(error => {
+            catchError((error: any) => {
                 console.error('Error saving vacs:', error);
                 throw error; // Rethrow the error after logging
             })
         );
     }
 
-    updateVacs(vacs: FormGroup): Observable<ViolenceAgainstChildren> {
+    updateVacs(vacs: any): Observable<ViolenceAgainstChildren> {
         const headers = new HttpHeaders().set('Authorization', 'Bearer ' + this.authToken);
-        return this.http.patch<any>(`${this.apiUrl}/vacs`, vacs.value, { headers }).pipe(
-            tap((response) => {
+        return this.http.patch<any>(`${this.apiUrl}/vacs`, vacs, { headers }).pipe(
+            tap((response: any) => {
                 // console.log(response);
             }),
-            catchError(error => {
+            catchError((error: any) => {
                 console.error('Error saving vacs:', error);
                 throw error; // Rethrow the error after logging
             })
@@ -251,10 +251,10 @@ export class ApiService {
         const headers = new HttpHeaders().set('Authorization', 'Bearer ' + this.authToken);
 
         return this.http.delete<any>(`${this.apiUrl}/vacs/${id}`, { headers }).pipe(
-            tap((response) => {
+            tap((response: any) => {
                 // console.log(response);
             }),
-            catchError(error => {
+            catchError((error: any) => {
                 console.error('Error saving vacs:', error);
                 throw error; // Rethrow the error after logging
             })

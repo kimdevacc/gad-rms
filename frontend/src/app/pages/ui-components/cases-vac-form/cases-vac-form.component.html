@@ -1,253 +1,141 @@
 <div class="modal-header">
     <h4 class="modal-title">Violence Against Children Record</h4>
-    <button type="button" class="btn ms-auto" (click)="activeModal.dismiss('Cross click')"><span
-            aria-hidden="true">&times;</span></button>
+    <button type="button" class="btn ms-auto" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button>
 </div>
+
 <div class="modal-body">
     <div class="card lesson-border">
         <div class="card-body">
-            <form [formGroup]="vacForm" (ngSubmit)="submitVac()">
-                <div class="p-3 form-group">
-                    <h5>VAC Victims</h5>
-                    <div class="row">
-                        <div class="col-4">
-                            <div class="mb-3">
-                                <div class="mb-3">
-                                    <label for="city" class="form-label">Month</label>
-                                    <select class="form-select" aria-label="Default select example" id="month" name="month" formControlName="month">
-                                        <option *ngFor="let month of months" [value]="month">{{ month }}</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-5">
-                            <div class="mb-3">
-                                <label for="number_vac" class="form-label">Total No. Violence Against Children</label>
-                                <input type="number" formControlName="number_vac" class="form-control" min="0" oninput="this.value = Math.abs(this.value)">
-                            </div>						
+            <div class="p-3 form-group">
+                <h6>VAC Victims</h6>
+                <div class="row">
+                    <div class="col-4">
+                        <div class="mb-3">
+                            <label for="city" class="form-label">Month</label>
+                            <select class="form-select" [(ngModel)]="month">
+                                <option *ngFor="let month of months" [value]="month">{{ month }}</option>
+                            </select>
                         </div>
                     </div>
-                    <h5>Gender</h5>
-                    <div class="row">
-                        <div class="col-3">
-                            <div class="mb-3">
-                                <label for="male" class="form-label">Male</label>
-                                <input type="number" formControlName="male" class="form-control" min="0" oninput="this.value = Math.abs(this.value)">
-                            </div>						
-                        </div>
-                        <div class="col-3">
-                            <div class="mb-3">
-                                <label for="sexual_abuse" class="form-label">Female</label>
-                                <input type="number" formControlName="sexual_abuse" class="form-control" min="0" oninput="this.value = Math.abs(this.value)">
-                            </div>						
-                        </div>
-                    </div>
-                    <h5>Age</h5>
-                    <div class="row">
-                        <div class="col-2">
-                            <div class="mb-3">
-                                <label for="range_one" class="form-label">0-4yr</label>
-                                <input type="number" formControlName="range_one" class="form-control" min="0" oninput="this.value = Math.abs(this.value)">
-                            </div>						
-                        </div>
-                        <div class="col-2">
-                            <div class="mb-3">
-                                <label for="range_two" class="form-label">6-9yr</label>
-                                <input type="number" formControlName="range_two" class="form-control" min="0" oninput="this.value = Math.abs(this.value)">
-                            </div>						
-                        </div>
-                        <div class="col-2">
-                            <div class="mb-3">
-                                <label for="range_three" class="form-label">10-14yr</label>
-                                <input type="number" formControlName="range_three" class="form-control" min="0" oninput="this.value = Math.abs(this.value)">
-                            </div>						
-                        </div>
-                        <div class="col-2">
-                            <div class="mb-3">
-                                <label for="range_four" class="form-label">15-17yr</label>
-                                <input type="number" formControlName="range_four" class="form-control" min="0" oninput="this.value = Math.abs(this.value)">
-                            </div>						
-                        </div>
-                        <div class="col-2">
-                            <div class="mb-3">
-                                <label for="range_five" class="form-label">18 up PWD</label>
-                                <input type="number" formControlName="range_four" class="form-control" min="0" oninput="this.value = Math.abs(this.value)">
-                            </div>						
-                        </div>
-                    </div>
-                    <h5>Type of Violence</h5>
-                    <div class="row" formArrayName="violenceRows">
-                        <div *ngFor="let violenceRow of vacForm.get('violenceRows').controls; let i = index" class="col-5">
-                            <div class="mb-3">
-                                <label class="form-label">Type of Violence</label>
-                                <select class="form-select" aria-label="Select Type of Violence" [formControlName]="i">
-                                    <option *ngFor="let violenceType of violenceTypes" [value]="violenceType.key">{{ violenceType.label }}</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div *ngFor="let violenceRow of vacForm.get('violenceRows').controls; let i = index" class="col-3">
-                            <div class="mb-3">
-                                <label class="form-label">&nbsp;</label>
-                                <input type="number" [formControlName]="violenceType.key" class="form-control" min="0" (change)="calculateTotalCases()">
-                            </div>
-                        </div>
-                    </div>
-                    <button type="button" class="btn btn-primary" (click)="addViolenceRow()">Add Row</button>                                                   
-                    <!-- <div class="row">
-                        <div class="col-3">
-                            <div class="mb-3">
-                                <label for="physical_abuse" class="form-label">Physical Abuse</label>
-                                <input type="number" formControlName="physical_abuse" class="form-control" min="0" oninput="this.value = Math.abs(this.value)" (change)="calculateTotalCases()">
-                            </div>						
-                        </div>
-                        <div class="col-2">
-                            <div class="mb-3">
-                                <label for="sexual_abuse" class="form-label">Sexual Abuse</label>
-                                <input type="number" formControlName="sexual_abuse" class="form-control" min="0" oninput="this.value = Math.abs(this.value)" (change)="calculateTotalCases()">
-                            </div>						
-                        </div>
-                        <div class="col-3">
-                            <div class="mb-3">
-                                <label for="psychological_abuse" class="form-label">Psychological Abuse</label>
-                                <input type="number" formControlName="psychological_abuse" class="form-control" min="0" oninput="this.value = Math.abs(this.value)" (change)="calculateTotalCases()">
-                            </div>						
-                        </div>
-                        <div class="col-2">
-                            <div class="mb-3">
-                                <label for="neglect" class="form-label">Neglect</label>
-                                <input type="number" formControlName="neglect" class="form-control" min="0" oninput="this.value = Math.abs(this.value)" (change)="calculateTotalCases()">
-                            </div>						
-                        </div>
-                        <div class="col-2">
-                            <div class="mb-3">
-                                <label for="others" class="form-label">Others</label>
-                                <input type="number" formControlName="others" class="form-control" min="0" oninput="this.value = Math.abs(this.value)" (change)="calculateTotalCases()">
-                            </div>						
-                        </div>
-                    </div> -->
-                    <h5>Perpetrators</h5>
-                    <div class="row">
-                        <div class="col-3">
-                            <div class="mb-3">
-                                <label for="immediate_family" class="form-label">Immediate Family</label>
-                                <input type="number" formControlName="immediate_family" class="form-control" min="0" oninput="this.value = Math.abs(this.value)">
-                            </div>						
-                        </div>
-                        <div class="col-4">
-                            <div class="mb-3">
-                                <label for="other_close_relative" class="form-label">Other Close Relative(s)</label>
-                                <input type="number" formControlName="other_close_relative" class="form-control" min="0" oninput="this.value = Math.abs(this.value)">
-                            </div>						
-                        </div>
-                        <div class="col-3">
-                            <div class="mb-3">
-                                <label for="acquaintance" class="form-label">Acquaintance</label>
-                                <input type="number" formControlName="acquaintance" class="form-control" min="0" oninput="this.value = Math.abs(this.value)">
-                            </div>						
-                        </div>
-                        <div class="col-2">
-                            <div class="mb-3">
-                                <label for="stranger" class="form-label">Stranger</label>
-                                <input type="number" formControlName="stranger" class="form-control" min="0" oninput="this.value = Math.abs(this.value)">
-                            </div>						
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-3">
-                            <div class="mb-3">
-                                <label for="local_official" class="form-label">Local Official</label>
-                                <input type="number" formControlName="local_official" class="form-control" min="0" oninput="this.value = Math.abs(this.value)">
-                            </div>						
-                        </div>
-                        <div class="col-3">
-                            <div class="mb-3">
-                                <label for="law_enforcer" class="form-label">Law Enforcer</label>
-                                <input type="number" formControlName="law_enforcer" class="form-control" min="0" oninput="this.value = Math.abs(this.value)">
-                            </div>						
-                        </div>
-                        <div class="col-3">
-                            <div class="mb-3">
-                                <label for="other_guardians" class="form-label">Other (Guardians)</label>
-                                <input type="number" formControlName="other_guardians" class="form-control" min="0" oninput="this.value = Math.abs(this.value)">
-                            </div>						
-                        </div>
-                    </div>
-                    <h5>Actions Taken</h5>
-                    <div class="row">
-                        <div class="col-3">
-                            <div class="mb-3">
-                                <label for="referred_pnp" class="form-label">Referred to PNP</label>
-                                <input type="number" formControlName="referred_pnp" class="form-control" min="0" oninput="this.value = Math.abs(this.value)">
-                            </div>						
-                        </div>
-                        <div class="col-3">
-                            <div class="mb-3">
-                                <label for="referred_nbi" class="form-label">Referred to NBI</label>
-                                <input type="number" formControlName="referred_nbi" class="form-control" min="0" oninput="this.value = Math.abs(this.value)">
-                            </div>						
-                        </div>
-                        <div class="col-3">
-                            <div class="mb-3">
-                                <label for="referred_medical" class="form-label">Referred for Medical</label>
-                                <input type="number" formControlName="referred_medical" class="form-control" min="0" oninput="this.value = Math.abs(this.value)">
-                            </div>						
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-4">
-                            <div class="mb-3">
-                                <label for="referred_legal_assist" class="form-label">Referred for Legal Assist</label>
-                                <input type="number" formControlName="referred_legal_assist" class="form-control" min="0" oninput="this.value = Math.abs(this.value)">
-                            </div>						
-                        </div>
-                        <div class="col-4">
-                            <div class="mb-3">
-                                <label for="referred_others" class="form-label">Others: (NGO, GBOS)</label>
-                                <input type="number" formControlName="referred_others" class="form-control" min="0" oninput="this.value = Math.abs(this.value)">
-                            </div>						
-                        </div>
-                    </div>
-                    <h5>Restorative Programs</h5>
-                    <div class="row">
-                        <div class="col-3">
-                            <div class="mb-3">
-                                <label for="trainings" class="form-label">Trainings/Seminars</label>
-                                <input type="number" formControlName="trainings" class="form-control" min="0" oninput="this.value = Math.abs(this.value)">
-                            </div>						
-                        </div>
-                        <div class="col-3">
-                            <div class="mb-3">
-                                <label for="counseling" class="form-label">Counseling</label>
-                                <input type="number" formControlName="counseling" class="form-control" min="0" oninput="this.value = Math.abs(this.value)">
-                            </div>						
-                        </div>
-                        <div class="col-3">
-                            <div class="mb-3">
-                                <label for="iec" class="form-label">IEC</label>
-                                <input type="number" formControlName="iec" class="form-control" min="0" oninput="this.value = Math.abs(this.value)">
-                            </div>						
-                        </div>
-                        <div class="col-3">
-                            <div class="mb-3">
-                                <label for="fund_allocation" class="form-label">Fund Allocation</label>
-                                <input type="number" formControlName="fund_allocation" class="form-control" min="0" oninput="this.value = Math.abs(this.value)">
-                            </div>						
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <div class="mb-3">
-                                <label for="remarks" class="form-label">Remarks</label>
-                                <textarea type="text" formControlName="remarks" class="form-control"></textarea>
-                            </div>						
+                    <div class="col-5">
+                        <div class="mb-3">
+                            <label for="number_vac" class="form-label">Total No. Violence Against Children</label>
+                            <input type="number" class="form-control" min="0" oninput="this.value = Math.abs(this.value)" [(ngModel)]="totalProgramValue" disabled>
                         </div>
                     </div>
                 </div>
-            </form>
+                <h6>Gender</h6>
+                <div class="row" *ngFor="let row of genderRows; let i = index">
+                    <div class="col-4">
+                        <select class="form-select" [(ngModel)]="row.gender">
+                            <option *ngFor="let gender of availableGenders(i)" [value]="gender">{{ gender }}</option>
+                        </select>
+                    </div>
+                    <div class="col-4">
+                        <input type="number" class="form-control" [(ngModel)]="row.genderValue" min="0" (ngModelChange)="updateTotalProgramValue()">
+                    </div>
+                    <div class="col-4">
+                        <button class="btn btn-primary" (click)="addGenderRow(i)" [disabled]="!row.gender && i != 0"> + </button> &nbsp;
+                        <button class="btn btn-danger" (click)="removeGenderRow(i)" [disabled]="i == 0"> - </button>
+                    </div>
+                    &nbsp;
+                </div>
+                <h6>Age</h6>
+                <div class="row" *ngFor="let row of ageRows; let i = index">
+                    <div class="col-4">
+                        <select class="form-select" [(ngModel)]="row.age">
+                            <option *ngFor="let age of availableAges(i)" [value]="age">{{ age }}</option>
+                        </select>
+                    </div>
+                    <div class="col-4">
+                        <input type="number" class="form-control" [(ngModel)]="row.ageValue" min="0" (ngModelChange)="updateTotalProgramValue()">
+                    </div>
+                    <div class="col-4">
+                        <button class="btn btn-primary" (click)="addAgeRow(i)" [disabled]="!row.age && i != 0"> + </button> &nbsp;
+                        <button class="btn btn-danger" (click)="removeAgeRow(i)" [disabled]="i == 0"> - </button>
+                    </div>
+                    &nbsp;
+                </div>
+                <h6>Type of Violence</h6>
+                <div class="row" *ngFor="let row of abuseRows; let i = index">
+                    <div class="col-4">
+                        <select class="form-select" [(ngModel)]="row.abuseType">
+                            <option *ngFor="let abuse of availableAbuses(i)" [value]="abuse">{{ abuse }}</option>
+                        </select>
+                    </div>
+                    <div class="col-4">
+                        <input type="number" class="form-control" [(ngModel)]="row.abuseValue" min="0" (ngModelChange)="updateTotalProgramValue()">
+                    </div>
+                    <div class="col-4">
+                        <button class="btn btn-primary" (click)="addAbuseRow(i)" [disabled]="!row.abuseType && i != 0"> + </button> &nbsp;
+                        <button class="btn btn-danger" (click)="removeAbuseRow(i)" [disabled]="i == 0"> - </button>
+                    </div>
+                    &nbsp;
+                </div>
+                <h6>Perpetrators</h6>
+                <div class="row" *ngFor="let row of perpetratorsRows; let i = index">
+                    <div class="col-4">
+                        <select class="form-select" [(ngModel)]="row.perpetrator">
+                            <option *ngFor="let perp of availablePerpetrators(i)" [value]="perp">{{ perp }}</option>
+                        </select>
+                    </div>
+                    <div class="col-4">
+                        <input type="number" class="form-control" [(ngModel)]="row.perpetratorValue" min="0" (ngModelChange)="updateTotalProgramValue()">
+                    </div>
+                    <div class="col-4">
+                        <button class="btn btn-primary" (click)="addPerpetratorRow(i)" [disabled]="!row.perpetrator && i != 0"> + </button> &nbsp;
+                        <button class="btn btn-danger" (click)="removePerpetratorRow(i)" [disabled]="i == 0"> - </button>
+                    </div>
+                    &nbsp;
+                </div>
+                <h6>Actions Taken</h6>
+                <div class="row" *ngFor="let row of actionRows; let i = index">
+                    <div class="col-4">
+                        <select class="form-select" [(ngModel)]="row.action">
+                            <option *ngFor="let perp of availableActions(i)" [value]="perp">{{ perp }}</option>
+                        </select>
+                    </div>
+                    <div class="col-4">
+                        <input type="number" class="form-control" [(ngModel)]="row.actionValue" min="0" (ngModelChange)="updateTotalProgramValue()">
+                    </div>
+                    <div class="col-4">
+                        <button class="btn btn-primary" (click)="addActionRow(i)" [disabled]="!row.action && i != 0"> + </button> &nbsp;
+                        <button class="btn btn-danger" (click)="removeActionRow(i)" [disabled]="i == 0"> - </button>
+                    </div>
+                    &nbsp;
+                </div>
+                <h6>Restorative Programs</h6>
+                <div class="row" *ngFor="let row of programsRows; let i = index">
+                    <div class="col-4">
+                        <select class="form-select" [(ngModel)]="row.program">
+                            <option *ngFor="let perp of availablePrograms(i)" [value]="perp">{{ perp }}</option>
+                        </select>
+                    </div>
+                    <div class="col-4">
+                        <input type="number" class="form-control" [(ngModel)]="row.programValue" min="0" (ngModelChange)="updateTotalProgramValue()">
+                    </div>
+                    <div class="col-4">
+                        <button class="btn btn-primary" (click)="addProgramRow(i)" [disabled]="!row.program && i != 0"> + </button> &nbsp;
+                        <button class="btn btn-danger" (click)="removeProgramRow(i)" [disabled]="i == 0"> - </button>
+                    </div>
+                    &nbsp;
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="mb-3">
+                            <h6>Remarks</h6>
+                            <textarea type="text" class="form-control" [(ngModel)]="remarks"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+
 <div class="modal-footer">
-    <button type="submit" class="btn btn-primary m-1" (click)="submitVac()">Save</button>
+    <button type="button" class="btn btn-primary m-1" (click)="submitVac()">Save</button>
     <button type="button" class="btn btn-outline-dark" (click)="activeModal.dismiss('Close click')">Close</button>
 </div>

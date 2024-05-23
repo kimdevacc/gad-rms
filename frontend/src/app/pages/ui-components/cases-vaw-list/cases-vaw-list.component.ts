@@ -68,7 +68,7 @@ export class CasesVawListComponent implements OnInit {
 				if (index !== -1) {
 					this.vawData.splice(index, 1);
 					this.dataSource.data = this.vawData;
-					this.openSnackBar('Vaw Record deleted successfully', 'Close');
+					this.openSnackBar('VAW Record deleted successfully', 'Close');
 				}
 			}
 		});
