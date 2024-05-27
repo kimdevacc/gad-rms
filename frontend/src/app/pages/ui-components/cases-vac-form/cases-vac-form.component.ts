@@ -52,7 +52,10 @@ export class CasesVacFormComponent implements OnInit {
         private apiService: ApiService,
         private _snackBar: MatSnackBar,
         public activeModal: NgbActiveModal
-    ) { }
+    ) {
+        const currentMonth = new Date().getMonth();
+        this.month = this.months[currentMonth];
+    }
 
     ngOnInit() {
         if (this.vacData) {
@@ -170,6 +173,11 @@ export class CasesVacFormComponent implements OnInit {
             if(genderValue > 0) {
                 const newRow = { gender: gender, genderValue: genderValue };
                 this.genderRows.splice(index + 1, 0, newRow);
+            } else {
+                if(gender === '') {
+                    const newRow = { gender: '', genderValue: 0 };
+                    this.genderRows.splice(index + 1, 0, newRow);
+                }
             }
         } else {
             const newRow = { gender: '', genderValue: 0 };
@@ -194,6 +202,11 @@ export class CasesVacFormComponent implements OnInit {
             if(ageValue > 0) {
                 const newRow = { age: age, ageValue: ageValue };
                 this.ageRows.splice(index + 1, 0, newRow);
+            } else {
+                if(age === '') {
+                    const newRow = { age: '', ageValue: 0 };
+                    this.ageRows.splice(index + 1, 0, newRow);
+                }
             }
         } else {
             const newRow = { age: '', ageValue: 0 };
@@ -218,6 +231,11 @@ export class CasesVacFormComponent implements OnInit {
             if(abuseValue > 0) {
                 const newRow = { abuseType: abuseType, abuseValue: abuseValue };
                 this.abuseRows.splice(index + 1, 0, newRow);
+            } else {
+                if(abuseType === '') {
+                    const newRow = { abuseType: '', abuseValue: 0 };
+                    this.abuseRows.splice(index + 1, 0, newRow);
+                }
             }
         } else {
             const newRow = { abuseType: '', abuseValue: 0 };
@@ -242,6 +260,11 @@ export class CasesVacFormComponent implements OnInit {
             if(perpetratorValue > 0) {
                 const newRow = { perpetrator: perpetrator, perpetratorValue: perpetratorValue };
                 this.perpetratorsRows.splice(index + 1, 0, newRow);
+            } else {
+                if(perpetrator === '') {
+                    const newRow = { perpetrator: '', perpetratorValue: 0 };
+                    this.perpetratorsRows.splice(index + 1, 0, newRow);
+                }
             }
         } else {
             const newRow = { perpetrator: '', perpetratorValue: 0 };
@@ -266,6 +289,11 @@ export class CasesVacFormComponent implements OnInit {
             if(actionValue > 0) {
                 const newRow = { action: action, actionValue: actionValue };
                 this.actionRows.splice(index + 1, 0, newRow);
+            } else {
+                if(action === '') {
+                    const newRow = { action: '', actionValue: 0 };
+                    this.actionRows.splice(index + 1, 0, newRow);
+                }
             }
         } else {
             const newRow = { action: '', actionValue: 0 };
@@ -290,6 +318,11 @@ export class CasesVacFormComponent implements OnInit {
             if(programValue > 0) {
                 const newRow = { program: program, programValue: programValue };
                 this.programsRows.splice(index + 1, 0, newRow);
+            } else {
+                if(program === '') {
+                    const newRow = { program: '', programValue: 0 };
+                    this.programsRows.splice(index + 1, 0, newRow);
+                }
             }
         } else {
             const newRow = { program: '', programValue: 0 };

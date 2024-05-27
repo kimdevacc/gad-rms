@@ -39,7 +39,10 @@ export class CasesVawFormComponent implements OnInit {
         private apiService: ApiService,
         private _snackBar: MatSnackBar,
 		public activeModal: NgbActiveModal
-	) { }
+	) { 
+        const currentMonth = new Date().getMonth();
+        this.month = this.months[currentMonth];
+    }
 
 	ngOnInit() {
         if(this.vawData) {
@@ -115,6 +118,11 @@ export class CasesVawFormComponent implements OnInit {
             if(abuseValue > 0) {
                 const newRow = { abuseType: abuseType, abuseValue: abuseValue };
                 this.abuseRows.splice(index + 1, 0, newRow);
+            } else {
+                if(abuseType === '') {
+                    const newRow = { abuseType: '', abuseValue: 0 };
+                    this.abuseRows.splice(index + 1, 0, newRow);
+                }
             }
         } else {
             const newRow = { abuseType: '', abuseValue: 0 };
@@ -139,6 +147,11 @@ export class CasesVawFormComponent implements OnInit {
             if(actionValue > 0) {
                 const newRow = { action: action, actionValue: actionValue };
                 this.actionRows.splice(index + 1, 0, newRow);
+            } else {
+                if(action === '') {
+                    const newRow = { action: '', actionValue: 0 };
+                    this.actionRows.splice(index + 1, 0, newRow);
+                }
             }
         } else {
             const newRow = { action: '', actionValue: 0 };
@@ -163,6 +176,11 @@ export class CasesVawFormComponent implements OnInit {
             if(programValue > 0) {
                 const newRow = { program: program, programValue: programValue };
                 this.programsRows.splice(index + 1, 0, newRow);
+            } else {
+                if(program === '') {
+                    const newRow = { program: '', programValue: 0 };
+                    this.programsRows.splice(index + 1, 0, newRow);
+                }
             }
         } else {
             const newRow = { program: '', programValue: 0 };

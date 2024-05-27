@@ -26,9 +26,6 @@ export class FormComponent implements OnInit {
         this.profileForm = this.formBuilder.group({
             id: null,
             email: ['', [Validators.required, Validators.email]],
-            first_name: ['', [Validators.required]],
-            last_name: '',
-            contact_number: '',
             city: null,
             barangay: [{value: '', disabled: !this.isSuperAdmin}],
             address_line_1: '',

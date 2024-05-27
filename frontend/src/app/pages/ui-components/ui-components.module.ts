@@ -30,6 +30,7 @@ import { VawSummaryComponent } from './vaw-summary/vaw-summary.component';
 import { VawMonitoringComponent } from './vaw-monitoring/vaw-monitoring.component';
 import { VacSummaryComponent } from './vac-summary/vac.-summarycomponent';
 import { VacMonitoringComponent } from './vac-monitoring/vac-monitoring.component';
+import { ConfirmationDialogComponent } from './common/confirmation-dialog/confirmation-dialog.component';
 
 @NgModule({
 	imports: [
@@ -59,7 +60,8 @@ import { VacMonitoringComponent } from './vac-monitoring/vac-monitoring.componen
 		CasesVawFormComponent,
 		CasesVacListComponent,
 		CasesVacFormComponent,
-		FormComponent
+		FormComponent,
+		ConfirmationDialogComponent
 	],
 	providers: [
 		DatePipe

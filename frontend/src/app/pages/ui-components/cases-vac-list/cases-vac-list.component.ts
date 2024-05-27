@@ -6,6 +6,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ViolenceAgainstChildren } from '../../../model/vac.model';
 import { CasesVacFormComponent } from '../cases-vac-form/cases-vac-form.component';
+import { ConfirmationDialogComponent } from '../common/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
 	selector: 'app-cases-vac-list',
@@ -62,16 +63,21 @@ export class CasesVacListComponent implements OnInit {
 	}
 
 	deleteVac(id: number) {
-		this.apiService.deleteVacs(id).subscribe(vac => {
-			if(vac) {
-				const index = this.vacData.findIndex(vac => vac.id === id);
-				if (index !== -1) {
-					this.vacData.splice(index, 1);
-					this.dataSource.data = this.vacData;
-					this.openSnackBar('VAC Record deleted successfully', 'Close');
-				}
-			}
-		});
+		const modalRef = this.modalService.open(ConfirmationDialogComponent, { size: 'md', backdrop: 'static', centered: true });
+		modalRef.componentInstance.confirmed.subscribe((result: boolean) => {
+            if (result) {
+				this.apiService.deleteVacs(id).subscribe(vac => {
+					if(vac) {
+						const index = this.vacData.findIndex(vac => vac.id === id);
+						if (index !== -1) {
+							this.vacData.splice(index, 1);
+							this.dataSource.data = this.vacData;
+							this.openSnackBar('VAC Record deleted successfully', 'Close');
+						}
+					}
+				});
+            }
+        });
 	}
 	openSnackBar(message: string, action: string) {
         this._snackBar.open(message, action, {

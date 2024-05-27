@@ -9,7 +9,7 @@
 				</mat-select>
 			</mat-form-field>
 		</div>
-		<button type="button" class="btn btn-primary btn-rounded btn-sm fw-bold" (click)="exportToExcel()">
+		<button type="button" class="btn btn-primary btn-rounded btn-sm fw-bold" (click)="exportToExcel()" *ngIf="superAdmin">
 			Export to Excel
 		</button>
 	</div>

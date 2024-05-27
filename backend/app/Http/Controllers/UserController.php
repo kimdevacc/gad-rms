@@ -29,6 +29,7 @@ class UserController extends Controller
     }
 
     public function store(Request $request)  {
+        $request['password'] = Hash::make($request['password']);
         return new UserResource(User::create($request->all()));
     }
 

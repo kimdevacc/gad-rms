@@ -53,11 +53,14 @@ export class VawMonitoringComponent implements OnInit {
 	barangayNameArr: string[] = [];
 	barangayName: string = "";
 	vaws: ViolenceAgainstWomen[] = [];
+	superAdmin: boolean = false;
 
 	constructor(
 		private apiService: ApiService,
 		private datePipe: DatePipe
 	) {
+		const userRole = localStorage.getItem('userRole');
+		this.superAdmin = userRole && userRole === 'super admin' ? true : false;
 		this.currentMonth = new Date().toLocaleString('default', { month: 'long' });
 		this.months = this.generateMonthsForCurrentYear();
 	}

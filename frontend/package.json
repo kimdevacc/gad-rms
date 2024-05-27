@@ -30,7 +30,6 @@
 		"ng-apexcharts": "^1.10.0",
 		"ngx-pagination": "^6.0.3",
 		"ngx-toastr": "^18.0.0",
-		"node-sass": "^9.0.0",
 		"rxjs": "~7.8.0",
 		"sass": "^1.75.0",
 		"tslib": "^2.3.0",

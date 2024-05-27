@@ -72,11 +72,14 @@ export class VacMonitoringComponent implements OnInit {
 	barangayNameArr: string[] = [];
 	barangayName: string = "";
 	vacs: ViolenceAgainstChildren[] = [];
+	superAdmin: boolean = false;
 
 	constructor(
 		private apiService: ApiService,
 		private datePipe: DatePipe
 	) { 
+		const userRole = localStorage.getItem('userRole');
+		this.superAdmin = userRole && userRole === 'super admin' ? true : false;
 		this.currentMonth = new Date().toLocaleString('default', { month: 'long' });
 		this.months = this.generateMonthsForCurrentYear();
 	}

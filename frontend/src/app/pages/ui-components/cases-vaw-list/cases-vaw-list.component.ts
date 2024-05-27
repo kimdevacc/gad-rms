@@ -6,6 +6,7 @@ import { ViolenceAgainstWomen } from '../../../model/vaw.model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CasesVawFormComponent } from '../cases-vaw-form/cases-vaw-form.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ConfirmationDialogComponent } from '../common/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
 	selector: 'app-cases-vaw-list',
@@ -62,16 +63,21 @@ export class CasesVawListComponent implements OnInit {
 	}
 
 	deleteVaw(id: number) {
-		this.apiService.deleteVaws(id).subscribe(vaw => {
-			if(vaw) {
-				const index = this.vawData.findIndex(vaw => vaw.id === id);
-				if (index !== -1) {
-					this.vawData.splice(index, 1);
-					this.dataSource.data = this.vawData;
-					this.openSnackBar('VAW Record deleted successfully', 'Close');
-				}
-			}
-		});
+		const modalRef = this.modalService.open(ConfirmationDialogComponent, { size: 'md', backdrop: 'static', centered: true });
+		modalRef.componentInstance.confirmed.subscribe((result: boolean) => {
+            if (result) {
+                this.apiService.deleteVaws(id).subscribe(vaw => {
+					if(vaw) {
+						const index = this.vawData.findIndex(vaw => vaw.id === id);
+						if (index !== -1) {
+							this.vawData.splice(index, 1);
+							this.dataSource.data = this.vawData;
+							this.openSnackBar('VAW Record deleted successfully', 'Close');
+						}
+					}
+				});
+            }
+        });
 	}
 	openSnackBar(message: string, action: string) {
         this._snackBar.open(message, action, {
