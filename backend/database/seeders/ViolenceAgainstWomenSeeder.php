@@ -16,23 +16,24 @@ class ViolenceAgainstWomenSeeder extends Seeder
     public function run()
     {
         $vaws=[
-            array('month' => "January"),
-            array('month' => "February"),
-            array('month' => "March"),
-            array('month' => "April"),
-            array('month' => "May"),
-            array('month' => "June"),
-            array('month' => "July"),
-            array('month' => "August"),
-            array('month' => "September"),
-            array('month' => "October"),
-            array('month' => "November"),
-            array('month' => "December")
+            array('month' => "January", "number_vaw" => rand(1, 500)),
+            array('month' => "February", "number_vaw" => rand(1, 500)),
+            array('month' => "March", "number_vaw" => rand(1, 500)),
+            array('month' => "April", "number_vaw" => rand(1, 500)),
+            array('month' => "May", "number_vaw" => rand(1, 500)),
+            array('month' => "June", "number_vaw" => rand(1, 500)),
+            array('month' => "July", "number_vaw" => rand(1, 500)),
+            array('month' => "August", "number_vaw" => rand(1, 500)),
+            array('month' => "September", "number_vaw" => rand(1, 500)),
+            array('month' => "October", "number_vaw" => rand(1, 500)),
+            array('month' => "November", "number_vaw" => rand(1, 500)),
+            array('month' => "December", "number_vaw" => rand(1, 500))
         ];
 
         foreach($vaws as $vaw){
             ViolenceAgainstWomen::create([
-                'month' => $vaw['month']
+                'month' => $vaw['month'],
+                'number_vaw' => $vaw['number_vaw']
             ]);
         }
     }

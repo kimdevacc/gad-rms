@@ -28,6 +28,16 @@ html .mat-drawer-container {
   min-height: calc(100vh - 70px);
   margin: 0 auto;
   // max-width: $boxedWidth;
+  // background: linear-gradient(to right, rgba(132, 39, 146, 1), rgba(255, 255, 255, 1)), 
+  background: radial-gradient(
+      circle,
+      rgba(132, 39, 146, 0.5), /* Gradient color with transparency */
+      rgba(132, 39, 146, 0) /* Gradient end color with transparency */
+    ),url('/assets/images/logos/pasig_seal.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 100vh; /* Adjust height as needed */
 }
 
 .w-100 {

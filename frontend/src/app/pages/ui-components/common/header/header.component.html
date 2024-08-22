@@ -2,12 +2,12 @@
 	<button mat-icon-button (click)="toggleMobileNav.emit()" *ngIf="!showToggle">
 		<i-tabler name="menu-2" class="icon-20 d-flex"></i-tabler>
 	</button>
-	<span class="flex-1-auto" *ngIf="barangayName">Barangay {{ barangayName }}</span>
+	<span class="flex-1-auto" *ngIf="barangayName" style="color: white;">{{ superAdmin ? "Pasig City GAD" : "Barangay " + barangayName }}</span>
 	<button mat-icon-button aria-label="Notifications">
-		<i-tabler class="d-flex" name="bell" matBadge="1" matBadgeColor="primary"></i-tabler>
+		<i-tabler class="d-flex" name="bell" matBadge="1" matBadgeColor="primary" style="color: white;"></i-tabler>
 	</button>
 	<button mat-icon-button aria-label="Logout" (click)="logout()">
-		<i-tabler class="d-flex"  name="arrow-left-from-arc"></i-tabler>
+		<i-tabler class="d-flex"  name="arrow-left-from-arc" style="color: white;"></i-tabler>
 	</button>
 	<mat-menu #profilemenu="matMenu" class="topbar-dd cardWithShadow">
 	</mat-menu>

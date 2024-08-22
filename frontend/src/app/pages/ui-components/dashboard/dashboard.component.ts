@@ -167,7 +167,7 @@ export class DashboardComponent {
 			yaxis: {
 				show: true,
 				min: 0,
-				max: 100,
+				max: 500,
 				tickAmount: 4,
 				labels: {
 					style: {
@@ -249,7 +249,7 @@ export class DashboardComponent {
 			yaxis: {
 				show: true,
 				min: 0,
-				max: 100,
+				max: 500,
 				tickAmount: 4,
 				labels: {
 					style: {
@@ -352,7 +352,7 @@ export class DashboardComponent {
 			yaxis: {
 				show: true,
 				min: 0,
-				max: 100,
+				max: 500,
 				tickAmount: 4,
 				labels: {
 					style: {

@@ -26,13 +26,17 @@ export class HeaderComponent {
 	showFiller = false;
 	barangay = localStorage.getItem('barangay');
 	barangayName: string[] = [];
+	superAdmin: boolean = false;
 
 	constructor(
 		public dialog: MatDialog, 
 		private authService: AuthService,
 		private router: Router,
 		private apiService: ApiService
-	) { }
+	) { 
+		const userRole = localStorage.getItem('userRole');
+		this.superAdmin = userRole && userRole === 'super admin' ? true : false;
+	}
 
 	ngOnInit() {
 		this.apiService.getBarangayById(this.barangay).subscribe(res => {
