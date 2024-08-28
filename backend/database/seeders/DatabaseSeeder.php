@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             ViolenceAgainstWomenSeeder::class,
             ViolenceAgainstChildrenSeeder::class,
+            SettingsSeeder::class
         ]);
     }
 }

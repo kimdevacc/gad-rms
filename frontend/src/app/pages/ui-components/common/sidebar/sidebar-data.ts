@@ -30,6 +30,12 @@ export const navItems: NavItem[] = [
 		iconName: 'user-square',
 		route: 'app/gad-workers',
 		requiredRole: ['super admin']
+	},
+	{
+		displayName: 'Audit Log',
+		iconName: 'align-box-left-middle',
+		route: 'app/audit-logs',
+		requiredRole: ['super admin']
 	}
 ];
 export const profileItems: NavItem[] = [
@@ -43,6 +49,6 @@ export const profileItems: NavItem[] = [
 		displayName: 'Settings',
 		iconName: 'settings',
 		route: 'app/settings',
-		requiredRole: ['super admin', 'admin']
+		requiredRole: ['super admin']
 	}
 ];

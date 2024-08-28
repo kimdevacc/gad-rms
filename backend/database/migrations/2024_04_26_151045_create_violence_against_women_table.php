@@ -34,6 +34,7 @@ class CreateViolenceAgainstWomenTable extends Migration
             $table->integer('fund_allocation')->nullable();
             $table->string('remarks')->nullable();
             $table->timestamps();
+            $table->softdeletes();
         });
     }
 

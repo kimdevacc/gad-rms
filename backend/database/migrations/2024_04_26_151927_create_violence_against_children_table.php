@@ -53,6 +53,7 @@ class CreateViolenceAgainstChildrenTable extends Migration
             $table->string('remarks')->nullable();
             
             $table->timestamps();
+            $table->softdeletes();
         });
     }
 

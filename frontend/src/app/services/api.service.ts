@@ -6,6 +6,8 @@ import { catchError, tap  } from 'rxjs/operators';
 import { User } from '../model/user.model';
 import { ViolenceAgainstWomen } from '../model/vaw.model';
 import { ViolenceAgainstChildren } from '../model/vac.model';
+import { Settings } from '../model/settings.model';
+import { Audits } from '../model/audits.model';
 
 @Injectable({
     providedIn: 'root'
@@ -261,4 +263,49 @@ export class ApiService {
         );
     }
     /* END VACS */
+
+    /* START USER */
+    getSettings(): Observable<Settings[]> {
+        if (this.authToken) {
+            const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authToken}`);
+            return this.http.get<any[]>(`${this.apiUrl}/settings`, { headers }).pipe(
+                catchError((error: any) => {
+                    console.error('Error fetching users:', error);
+                    return of([]);
+                })
+            );
+        } else {
+            console.error('Authentication token is missing');
+            return of([]);
+        }
+    }
+
+    updateSettings(user: any): Observable<Settings> {
+        const headers = new HttpHeaders().set('Authorization', 'Bearer ' + this.authToken);
+        return this.http.patch<any>(`${this.apiUrl}/settings`, user, { headers }).pipe(
+            tap((response: any) => {
+                console.log(response);
+            }),
+            catchError((error: any) => {
+                console.error('Error saving user:', error);
+                throw error; // Rethrow the error after logging
+            })
+        );
+    }
+
+    getAudits(): Observable<Audits[]> {
+        if (this.authToken) {
+            const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authToken}`);
+            return this.http.get<any[]>(`${this.apiUrl}/audits`, { headers }).pipe(
+                catchError((error: any) => {
+                    console.error('Error fetching users:', error);
+                    return of([]);
+                })
+            );
+        } else {
+            console.error('Authentication token is missing');
+            return of([]);
+        }
+    }
+    /* END USER */
 }

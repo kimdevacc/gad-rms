@@ -31,6 +31,8 @@ import { VawMonitoringComponent } from './vaw-monitoring/vaw-monitoring.componen
 import { VacSummaryComponent } from './vac-summary/vac.-summarycomponent';
 import { VacMonitoringComponent } from './vac-monitoring/vac-monitoring.component';
 import { ConfirmationDialogComponent } from './common/confirmation-dialog/confirmation-dialog.component';
+import { SettingsComponent } from './settings/settings.component';
+import { AuditLogsComponent } from './audit-logs/audit-logs.component';
 
 @NgModule({
 	imports: [
@@ -55,6 +57,8 @@ import { ConfirmationDialogComponent } from './common/confirmation-dialog/confir
 		VawMonitoringComponent,
 		VawSummaryComponent,
 		ProfileComponent,
+		SettingsComponent,
+		AuditLogsComponent,
 		CasesComponent,
 		CasesVawListComponent,
 		CasesVawFormComponent,

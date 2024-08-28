@@ -8,6 +8,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\BarangayController;
 use App\Http\Controllers\ViolenceAgainstWomenController;
 use App\Http\Controllers\ViolenceAgainstChildrenController;
+use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\AuditsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,4 +48,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/vacs', [ViolenceAgainstChildrenController::class, 'store']);
     Route::patch('/vacs', [ViolenceAgainstChildrenController::class, 'update']);
     Route::delete('/vacs/{id}', [ViolenceAgainstChildrenController::class, 'destroy']);
+
+    Route::get('/settings', [SettingsController::class, 'settings']);
+    Route::post('/settings', [SettingsController::class, 'store']);
+    Route::patch('/settings', [SettingsController::class, 'update']);
+    Route::delete('/settings/{id}', [SettingsController::class, 'destroy']);
+
+    Route::get('/audits', [AuditsController::class, 'audits']);
 });

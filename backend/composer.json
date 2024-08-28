@@ -11,6 +11,7 @@
         "laravel/framework": "^8.75",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
+        "owen-it/laravel-auditing": "^13.6",
         "vinkla/hashids": "^9.1"
     },
     "require-dev": {

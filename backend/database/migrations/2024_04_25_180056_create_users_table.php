@@ -28,6 +28,7 @@ class CreateUsersTable extends Migration
             $table->string('contact_number')->nullable();
             $table->string("image")->nullable();
             $table->timestamps();
+            $table->softdeletes();
         });
     }
 

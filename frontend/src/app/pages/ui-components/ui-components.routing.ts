@@ -9,6 +9,8 @@ import { ProfileComponent } from './profile/profile.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { GadWorkersFormComponent } from './gad-workers-form/gad-workers-form.component';
 import { CasesVawFormComponent } from './cases-vaw-form/cases-vaw-form.component';
+import { SettingsComponent } from './settings/settings.component';
+import { AuditLogsComponent } from './audit-logs/audit-logs.component';
 
 export const UiComponentsRoutes: Routes = [
 	{
@@ -47,8 +49,16 @@ export const UiComponentsRoutes: Routes = [
 				component: GadWorkersFormComponent
 			},
 			{
+				path: 'audit-logs',
+				component: AuditLogsComponent
+			},
+			{
 				path: 'profile',
 				component: ProfileComponent,
+			},
+			{
+				path: 'settings',
+				component: SettingsComponent,
 			}
 		],
 	},
