@@ -29,9 +29,13 @@
                 <ng-container matColumnDef="Old Values">
                     <th mat-header-cell *matHeaderCellDef> Old Values </th>
                     <td mat-cell *matCellDef="let element">
-                        <button mat-icon-button aria-label="Email">
-                            <i-tabler class="d-flex"  name="mail"></i-tabler>
-                        </button>
+                        <div class="ms-3">
+                            <ng-container *ngFor="let key of getKeys(element.old_values)">
+                                <p class="mb-1">
+                                    {{ key }}: {{ element.old_values[key] ?? "None" }} <br/>
+                                </p>
+                            </ng-container>
+                        </div>
                     </td>
                 </ng-container>
                 <ng-container matColumnDef="New Values">
