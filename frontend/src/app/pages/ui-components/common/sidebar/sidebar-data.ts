@@ -35,7 +35,7 @@ export const navItems: NavItem[] = [
 		displayName: 'Audit Log',
 		iconName: 'align-box-left-middle',
 		route: 'app/audit-logs',
-		requiredRole: ['super admin']
+		requiredRole: ['super admin', 'admin']
 	}
 ];
 export const profileItems: NavItem[] = [

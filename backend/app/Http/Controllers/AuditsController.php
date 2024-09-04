@@ -10,8 +10,13 @@ class AuditsController extends Controller
 {
     public function audits(Request $request)
     {
-        $audits = Audits::all();
-        
+        $currentUser = $request->user();
+
+        if($currentUser->role === 'super admin') {
+            $audits = Audits::all();
+        } else {
+            $audits = Audits::where('user_id', '=', $currentUser->id)->get();
+        }
         return AuditsResource::collection($audits);
     }
 }
