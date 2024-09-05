@@ -11,6 +11,7 @@ import { GadWorkersFormComponent } from './gad-workers-form/gad-workers-form.com
 import { CasesVawFormComponent } from './cases-vaw-form/cases-vaw-form.component';
 import { SettingsComponent } from './settings/settings.component';
 import { AuditLogsComponent } from './audit-logs/audit-logs.component';
+import { ArchiveComponent } from './archive/archive.component';
 
 export const UiComponentsRoutes: Routes = [
 	{
@@ -51,6 +52,10 @@ export const UiComponentsRoutes: Routes = [
 			{
 				path: 'audit-logs',
 				component: AuditLogsComponent
+			},
+			{
+				path: 'archive',
+				component: ArchiveComponent
 			},
 			{
 				path: 'profile',

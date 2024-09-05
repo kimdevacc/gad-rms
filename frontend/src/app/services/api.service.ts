@@ -307,5 +307,32 @@ export class ApiService {
             return of([]);
         }
     }
+
+    getArchives(): Observable<any[]> {
+        if (this.authToken) {
+            const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authToken}`);
+            return this.http.get<any[]>(`${this.apiUrl}/archives`, { headers }).pipe(
+                catchError((error: any) => {
+                    console.error('Error fetching users:', error);
+                    return of([]);
+                })
+            );
+        } else {
+            console.error('Authentication token is missing');
+            return of([]);
+        }
+    }
+
+    restoreRecords(value: any): Observable<any> {
+        const headers = new HttpHeaders().set('Authorization', 'Bearer ' + this.authToken);
+        return this.http.post<any>(`${this.apiUrl}/restore`, value, { headers }).pipe(
+            tap (() => {
+            }),
+            catchError((error: any) => {
+                console.error('Error restoring records:', error);
+                throw error; // Rethrow the error after logging
+            })
+        );
+    }
     /* END USER */
 }

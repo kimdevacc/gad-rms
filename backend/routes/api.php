@@ -10,6 +10,7 @@ use App\Http\Controllers\ViolenceAgainstWomenController;
 use App\Http\Controllers\ViolenceAgainstChildrenController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\AuditsController;
+use App\Http\Controllers\ArchiveController;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,4 +56,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::delete('/settings/{id}', [SettingsController::class, 'destroy']);
 
     Route::get('/audits', [AuditsController::class, 'audits']);
+
+    Route::get('/archives', [ArchiveController::class, 'archives']);
+    Route::post('/restore', [ArchiveController::class, 'restore']);
 });

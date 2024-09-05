@@ -33,6 +33,7 @@ import { VacMonitoringComponent } from './vac-monitoring/vac-monitoring.componen
 import { ConfirmationDialogComponent } from './common/confirmation-dialog/confirmation-dialog.component';
 import { SettingsComponent } from './settings/settings.component';
 import { AuditLogsComponent } from './audit-logs/audit-logs.component';
+import { ArchiveComponent } from './archive/archive.component';
 
 @NgModule({
 	imports: [
@@ -59,6 +60,7 @@ import { AuditLogsComponent } from './audit-logs/audit-logs.component';
 		ProfileComponent,
 		SettingsComponent,
 		AuditLogsComponent,
+		ArchiveComponent,
 		CasesComponent,
 		CasesVawListComponent,
 		CasesVawFormComponent,

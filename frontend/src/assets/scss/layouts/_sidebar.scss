@@ -55,6 +55,8 @@
 				height: 20px;
 				fill: transparent !important;
 				color: $textPrimary;
+				align-self: flex-start !important;
+				margin-top: -5px !important;
 			}
 
 			.mdc-list-item__primary-text {
