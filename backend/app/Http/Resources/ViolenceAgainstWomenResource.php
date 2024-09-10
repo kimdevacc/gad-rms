@@ -34,6 +34,7 @@ class ViolenceAgainstWomenResource extends JsonResource
             'iec' => $this->iec ?? 0,
             'fund_allocation' => $this->fund_allocation ?? 0,
             'remarks' => $this->remarks ?? 'RECORD ONLY',
+            'status' => $this->status,
             'created_at' => $this->created_at->toDateString(),
             'updated_at' => $this->updated_at->toDateString()
         ];

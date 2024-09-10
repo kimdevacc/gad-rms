@@ -1,12 +1,10 @@
 <div class="card-body b-t-1 p-0">
     <form [formGroup]="profileForm" (ngSubmit)="submitProfile()">
         <div class="p-3 form-group">
-            <!-- <div class="row">
+            <div class="row">
                 <div class="col-6">
                     <div class="mb-3">
-                        <label [ngClass]="{'text-danger': profileForm.get('first_name')?.touched && profileForm.get('first_name')?.invalid}">
-                            First Name
-                        </label>
+                        <label [ngClass]="{'text-danger': profileForm.touched && profileForm.get('first_name')!.invalid, 'text-success': profileForm.touched && profileForm.get('first_name')!.valid}">First Name</label>
                         <input type="text" formControlName="first_name" class="form-control"
                             [ngClass]="{'is-invalid': profileForm.get('first_name')?.touched && profileForm.get('first_name')?.invalid}">
                         <div *ngIf="profileForm.get('first_name')!.hasError('required')" class="invalid-feedback">
@@ -20,7 +18,7 @@
                         <input type="text" formControlName="last_name" class="form-control">
                     </div>						
                 </div>
-            </div> -->
+            </div>
             <div class="mb-3">
                 <label [ngClass]="{'text-danger': profileForm.touched && profileForm.get('email')!.invalid, 'text-success': profileForm.touched && profileForm.get('email')!.valid}">Email</label>
                 <input type="email" formControlName="email" class="form-control" [ngClass]="{'is-invalid': profileForm.touched && profileForm.get('email')!.invalid, 'is-valid': profileForm.touched && profileForm.get('email')!.valid}">

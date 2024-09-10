@@ -25,7 +25,8 @@ class UserFactory extends Factory
             'city' => '1',
             'barangay' => $this->faker->numberBetween(1, 30),
             'contact_number' => $this->faker->phoneNumber(),
-            'email_verified_at' => now()
+            'email_verified_at' => now(),
+            'role' => 'admin'
         ];
     }
 

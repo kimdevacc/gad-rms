@@ -31,6 +31,8 @@ export interface ViolenceAgainstChildren {
     iec: number;
     fund_allocation: number;
     remarks: string;
+    barangay: string;
+    status: string;
 
     // Add index signature
     [key: string]: number | string;

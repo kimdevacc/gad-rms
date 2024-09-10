@@ -13,7 +13,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 export class CasesVawFormComponent implements OnInit {
 
 	@Input() vawData: ViolenceAgainstWomen | undefined;
-	@Output() recordCreated: EventEmitter<ViolenceAgainstWomen> = new EventEmitter<ViolenceAgainstWomen>();
+	@Output() recordCreatedVaw: EventEmitter<ViolenceAgainstWomen> = new EventEmitter<ViolenceAgainstWomen>();
 
     months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     barangay = localStorage.getItem('barangay');
@@ -34,12 +34,15 @@ export class CasesVawFormComponent implements OnInit {
     month: string = "";
     totalProgramValue: number = 0;
 
+    isSuperAdmin: boolean = false;
+
 	constructor(
 		private formBuilder: FormBuilder,
         private apiService: ApiService,
         private _snackBar: MatSnackBar,
 		public activeModal: NgbActiveModal
 	) { 
+        this.isSuperAdmin = localStorage.getItem('userRole') === 'super admin' ? true : false;
         const currentMonth = new Date().getMonth();
         this.month = this.months[currentMonth];
     }
@@ -227,18 +230,40 @@ export class CasesVawFormComponent implements OnInit {
             abuseRows: this.abuseRows,
             actionRows: this.actionRows,
             programsRows: this.programsRows,
+            status: 'Submitted'
         }
 		if(this.vawData) {
             this.apiService.updateVaws(values).subscribe((res) => {
 				this.activeModal.close();
                 this.openSnackBar('VAWs Record updated successfully', 'Close');
-                this.recordCreated.emit(res);
+                this.recordCreatedVaw.emit(res);
             });
         } else {
             this.apiService.saveVaws(values).subscribe((res) => {
 				this.activeModal.close();
 				this.openSnackBar('VAWs Record Created successfully', 'Close');
-				this.recordCreated.emit(res);
+				this.recordCreatedVaw.emit(res);
+            });
+        }
+	}
+
+    receivedVaw() {
+        const values = {
+            id: this.vawData?.id ?? 0,
+            remarks: this.remarks,
+            month: this.month,
+            barangay: this.barangay,
+            number_vaw: this.totalProgramValue,
+            abuseRows: this.abuseRows,
+            actionRows: this.actionRows,
+            programsRows: this.programsRows,
+            status: 'Received'
+        }
+		if(this.vawData) {
+            this.apiService.updateVaws(values).subscribe((res) => {
+				this.activeModal.close();
+                this.openSnackBar('VAWs Record updated successfully', 'Close');
+                this.recordCreatedVaw.emit(res);
             });
         }
 	}

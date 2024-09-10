@@ -18,5 +18,7 @@ export interface ViolenceAgainstWomen {
     iec: number;
     fund_allocation: number;
     remarks: string;
+    barangay: string;
+    status: string;
 }
   

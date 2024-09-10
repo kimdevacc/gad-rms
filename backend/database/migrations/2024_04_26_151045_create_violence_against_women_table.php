@@ -27,12 +27,13 @@ class CreateViolenceAgainstWomenTable extends Migration
             $table->integer('referred_nbi')->nullable();
             $table->integer('referred_court')->nullable();
             $table->integer('referred_medical')->nullable();
-            $table->integer('barangay')->nullable();
             $table->integer('trainings')->nullable();
             $table->integer('counseling')->nullable();
             $table->integer('iec')->nullable();
             $table->integer('fund_allocation')->nullable();
             $table->string('remarks')->nullable();
+            $table->string('barangay')->nullable();
+            $table->string('status')->nullable();
             $table->timestamps();
             $table->softdeletes();
         });

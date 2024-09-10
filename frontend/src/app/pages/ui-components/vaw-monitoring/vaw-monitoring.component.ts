@@ -55,6 +55,9 @@ export class VawMonitoringComponent implements OnInit {
 	vaws: ViolenceAgainstWomen[] = [];
 	superAdmin: boolean = false;
 
+
+	selectedMonthAndYear = { month: '', year: 0 };
+
 	constructor(
 		private apiService: ApiService,
 		private datePipe: DatePipe
@@ -68,7 +71,8 @@ export class VawMonitoringComponent implements OnInit {
 	ngOnInit() {
 		forkJoin([
 			this.apiService.getBarangayById(this.barangay),
-			this.apiService.getVaws()
+			// this.apiService.getVaws(),
+			this.apiService.getAllVaws(this.currentYear, this.currentMonth)
 		]).subscribe(([res1, res2]) => {
 			if (res1 && res2) {
 				this.barangayNameArr.push(res1?.name);
@@ -81,6 +85,7 @@ export class VawMonitoringComponent implements OnInit {
 	}
 
 	initializeMonthly(month: any) {
+		this.selectedMonthAndYear = month;
 		this.generateSampleDateRange(month, this.currentYear);
 		const filteredData = this.vaws.filter(r => r.month === month);
 		let totalIssuedBPO = 0;
@@ -98,9 +103,8 @@ export class VawMonitoringComponent implements OnInit {
 			totalReferredMedical += item.referred_medical || 0;
 			totalReferredCourt += item.referred_court || 0;
 		});
-
-		const dataSourceData = filteredData.map(item => ({ ...item, barangay_name: this.barangayName, total_actions: totalIssuedBPO + totalReferredLSWDO + totalReferredPNP + 
-			totalReferredNBI + totalReferredMedical + totalReferredCourt }));
+		console.log(filteredData);
+		const dataSourceData = filteredData.map(item => ({ ...item }));
 		this.dataSource.data = dataSourceData;
 	}
 

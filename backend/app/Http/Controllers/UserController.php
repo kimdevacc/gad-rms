@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Models\Barangay;
+use App\Models\ViolenceAgainstChildren;
+use App\Models\ViolenceAgainstWomen;
 
 class UserController extends Controller
 {
@@ -92,5 +94,43 @@ class UserController extends Controller
     {
         $user = User::findOrFail($request->id);
         return $user->delete();
+    }
+
+    public function notifications(Request $request) {
+        $currentUser = $request->user();
+        $notificationData = [];
+
+        if ($currentUser->role === 'super admin') {
+            $vaw = \DB::table('violence_against_women')
+                ->leftJoin('barangays', 'barangays.id', '=', 'violence_against_women.barangay')
+                ->select(
+                    'violence_against_women.id as id',
+                    'violence_against_women.month',
+                    'violence_against_women.status',
+                    'barangays.name as barangay',
+                    \DB::raw("'VAW' as type")
+                )
+                ->where('violence_against_women.status', '=', 'Submitted')
+                ->whereNull('violence_against_women.deleted_at');
+
+            $vac = \DB::table('violence_against_children')
+                ->leftJoin('barangays', 'barangays.id', '=', 'violence_against_children.barangay')
+                ->select(
+                    'violence_against_children.id as id',
+                    'violence_against_children.month',
+                    'violence_against_children.status',
+                    'barangays.name as barangay',
+                    \DB::raw("'VAC' as type")
+                )
+                ->where('violence_against_children.status', '=', 'Submitted')
+                ->whereNull('violence_against_children.deleted_at');
+
+            // Combine the results
+            $notificationData = $vaw->union($vac)->get();
+        } else {
+            // Handle other roles or default case if needed
+        }
+
+        return response()->json($notificationData);
     }
 }

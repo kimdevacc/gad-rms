@@ -34,7 +34,7 @@ export class AuditLogsComponent implements OnInit {
     }
 
 	setDataSource(data: any) {
-		let new_data = data.filter((r: Audits) =>r.old_values.length != 0 && r.new_values.length != 0);
+		let new_data = data.filter((r: Audits) => (!Array.isArray(r.old_values) || !Array.isArray(r.new_values)));
 		this.dataSource.data = new_data;
 	}
 

@@ -47,12 +47,15 @@ export class CasesVacFormComponent implements OnInit {
     month: string = "";
     totalProgramValue: number = 0;
 
+    isSuperAdmin: boolean = false;
+
     constructor(
         private formBuilder: FormBuilder,
         private apiService: ApiService,
         private _snackBar: MatSnackBar,
         public activeModal: NgbActiveModal
     ) {
+        this.isSuperAdmin = localStorage.getItem('userRole') === 'super admin' ? true : false;
         const currentMonth = new Date().getMonth();
         this.month = this.months[currentMonth];
     }
@@ -381,6 +384,7 @@ export class CasesVacFormComponent implements OnInit {
             perpetratorsRows: this.perpetratorsRows,
             actionRows: this.actionRows,
             programsRows: this.programsRows,
+            status: 'Submitted'
         }
         if (this.vacData) {
             this.apiService.updateVacs(values).subscribe((res: ViolenceAgainstChildren | undefined) => {
@@ -392,6 +396,30 @@ export class CasesVacFormComponent implements OnInit {
             this.apiService.saveVacs(values).subscribe((res: ViolenceAgainstChildren | undefined) => {
                 this.activeModal.close();
                 this.openSnackBar('VACs Record Created successfully', 'Close');
+                this.recordCreatedVac.emit(res);
+            });
+        }
+    }
+
+    receivedVac() {
+        const values = {
+            id: this.vacData?.id ?? 0,
+            remarks: this.remarks,
+            month: this.month,
+            barangay: this.barangay,
+            number_vac: this.totalProgramValue,
+            genderRows: this.genderRows,
+            ageRows: this.ageRows,
+            abuseRows: this.abuseRows,
+            perpetratorsRows: this.perpetratorsRows,
+            actionRows: this.actionRows,
+            programsRows: this.programsRows,
+            status: 'Received'
+        }
+        if (this.vacData) {
+            this.apiService.updateVacs(values).subscribe((res: ViolenceAgainstChildren | undefined) => {
+                this.activeModal.close();
+                this.openSnackBar('VACs Record updated successfully', 'Close');
                 this.recordCreatedVac.emit(res);
             });
         }

@@ -34,6 +34,7 @@ import { ConfirmationDialogComponent } from './common/confirmation-dialog/confir
 import { SettingsComponent } from './settings/settings.component';
 import { AuditLogsComponent } from './audit-logs/audit-logs.component';
 import { ArchiveComponent } from './archive/archive.component';
+import { ModalContentComponent } from './dashboard/modal-content/model-content.component';
 
 @NgModule({
 	imports: [
@@ -67,7 +68,8 @@ import { ArchiveComponent } from './archive/archive.component';
 		CasesVacListComponent,
 		CasesVacFormComponent,
 		FormComponent,
-		ConfirmationDialogComponent
+		ConfirmationDialogComponent,
+		ModalContentComponent
 	],
 	providers: [
 		DatePipe

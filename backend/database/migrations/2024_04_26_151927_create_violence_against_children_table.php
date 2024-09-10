@@ -45,12 +45,14 @@ class CreateViolenceAgainstChildrenTable extends Migration
             $table->integer('referred_legal_assist')->nullable();
             $table->integer('referred_others')->nullable();
 
-            $table->integer('barangay')->nullable();
             $table->integer('trainings')->nullable();
             $table->integer('counseling')->nullable();
             $table->integer('iec')->nullable();
             $table->integer('fund_allocation')->nullable();
             $table->string('remarks')->nullable();
+            $table->string('barangay')->nullable();
+
+            $table->string('status')->nullable();
             
             $table->timestamps();
             $table->softdeletes();

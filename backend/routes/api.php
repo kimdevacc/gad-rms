@@ -39,13 +39,18 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::patch('/users', [UserController::class, 'update']);
     Route::delete('/users/{id}', [UserController::class, 'destroy']);
     Route::get('/users/{id}', [UserController::class, 'get_user']);
+    Route::get('/user/notifications', [UserController::class, 'notifications']);
 
     Route::get('/vaws', [ViolenceAgainstWomenController::class, 'vaws']);
+    Route::get('/vaw/{id}', [ViolenceAgainstWomenController::class, 'vaw']);
+    Route::get('/vaws/all/{year}/{month}', [ViolenceAgainstWomenController::class, 'get_all_vaws']);
     Route::post('/vaws', [ViolenceAgainstWomenController::class, 'store']);
     Route::patch('/vaws', [ViolenceAgainstWomenController::class, 'update']);
     Route::delete('/vaws/{id}', [ViolenceAgainstWomenController::class, 'destroy']);
 
     Route::get('/vacs', [ViolenceAgainstChildrenController::class, 'vacs']);
+    Route::get('/vac/{id}', [ViolenceAgainstWomenController::class, 'vac']);
+    Route::get('/vacs/all/{year}/{month}', [ViolenceAgainstChildrenController::class, 'get_all_vacs']);
     Route::post('/vacs', [ViolenceAgainstChildrenController::class, 'store']);
     Route::patch('/vacs', [ViolenceAgainstChildrenController::class, 'update']);
     Route::delete('/vacs/{id}', [ViolenceAgainstChildrenController::class, 'destroy']);

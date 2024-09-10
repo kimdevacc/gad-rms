@@ -17,8 +17,8 @@ class DatabaseSeeder extends Seeder
             CitySeeder::class,
             BarangaySeeder::class,
             UserSeeder::class,
-            ViolenceAgainstWomenSeeder::class,
-            ViolenceAgainstChildrenSeeder::class,
+            // ViolenceAgainstWomenSeeder::class,
+            // ViolenceAgainstChildrenSeeder::class,
             SettingsSeeder::class
         ]);
     }

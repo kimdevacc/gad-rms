@@ -25,6 +25,9 @@ export class FormComponent implements OnInit {
         this.isSuperAdmin = localStorage.getItem('userRole') === 'super admin' ? true : false;
         this.profileForm = this.formBuilder.group({
             id: null,
+            first_name: '',
+            middle_name: '',
+            last_name: '',
             email: ['', [Validators.required, Validators.email]],
             city: null,
             barangay: [{value: '', disabled: !this.isSuperAdmin}],

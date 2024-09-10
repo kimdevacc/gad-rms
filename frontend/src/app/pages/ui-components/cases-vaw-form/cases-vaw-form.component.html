@@ -28,14 +28,14 @@
                     <h6>Type of Violence</h6>
                     <div class="row" *ngFor="let row of abuseRows; let i = index">
                         <div class="col-4">
-                            <select class="form-select" [(ngModel)]="row.abuseType">
+                            <select class="form-select" [(ngModel)]="row.abuseType" [disabled]="isSuperAdmin">
                                 <option *ngFor="let abuse of availableAbuses(i)" [value]="abuse">{{ abuse }}</option>
                             </select>
                         </div>
                         <div class="col-4">
-                            <input type="number" class="form-control" [(ngModel)]="row.abuseValue" min="0" (ngModelChange)="updateTotalProgramValue()">
+                            <input type="number" class="form-control" [(ngModel)]="row.abuseValue" min="0" (ngModelChange)="updateTotalProgramValue()" [disabled]="isSuperAdmin">
                         </div>
-                        <div class="col-4">
+                        <div class="col-4" *ngIf="!isSuperAdmin">
                             <button class="btn btn-primary" (click)="addAbuseRow(i)" [disabled]="!row.abuseType && i != 0"> + </button> &nbsp;
                             <button class="btn btn-danger" (click)="removeAbuseRow(i)" [disabled]="i == 0"> - </button>
                         </div>
@@ -44,14 +44,14 @@
                     <h6>Actions Taken</h6>
                     <div class="row" *ngFor="let row of actionRows; let i = index">
                         <div class="col-4">
-                            <select class="form-select" [(ngModel)]="row.action">
+                            <select class="form-select" [(ngModel)]="row.action" [disabled]="isSuperAdmin">
                                 <option *ngFor="let perp of availableActions(i)" [value]="perp">{{ perp }}</option>
                             </select>
                         </div>
                         <div class="col-4">
-                            <input type="number" class="form-control" [(ngModel)]="row.actionValue" min="0" (ngModelChange)="updateTotalProgramValue()">
+                            <input type="number" class="form-control" [(ngModel)]="row.actionValue" min="0" (ngModelChange)="updateTotalProgramValue()" [disabled]="isSuperAdmin">
                         </div>
-                        <div class="col-4">
+                        <div class="col-4" *ngIf="!isSuperAdmin">
                             <button class="btn btn-primary" (click)="addActionRow(i)" [disabled]="!row.action && i != 0"> + </button> &nbsp;
                             <button class="btn btn-danger" (click)="removeActionRow(i)" [disabled]="i == 0"> - </button>
                         </div>
@@ -60,14 +60,14 @@
                     <h6>Restorative Programs</h6>
                     <div class="row" *ngFor="let row of programsRows; let i = index">
                         <div class="col-4">
-                            <select class="form-select" [(ngModel)]="row.program">
+                            <select class="form-select" [(ngModel)]="row.program" [disabled]="isSuperAdmin">
                                 <option *ngFor="let perp of availablePrograms(i)" [value]="perp">{{ perp }}</option>
                             </select>
                         </div>
                         <div class="col-4">
-                            <input type="number" class="form-control" [(ngModel)]="row.programValue" min="0" (ngModelChange)="updateTotalProgramValue()">
+                            <input type="number" class="form-control" [(ngModel)]="row.programValue" min="0" (ngModelChange)="updateTotalProgramValue()" [disabled]="isSuperAdmin">
                         </div>
-                        <div class="col-4">
+                        <div class="col-4" *ngIf="!isSuperAdmin">
                             <button class="btn btn-primary" (click)="addProgramRow(i)" [disabled]="!row.program && i != 0"> + </button> &nbsp;
                             <button class="btn btn-danger" (click)="removeProgramRow(i)" [disabled]="i == 0"> - </button>
                         </div>
@@ -87,6 +87,7 @@
     </div>
 </div>
 <div class="modal-footer">
-    <button type="submit" class="btn btn-primary m-1" (click)="submitVaw()">Save</button>
+    <button type="submit" class="btn btn-primary m-1" (click)="submitVaw()" *ngIf="!isSuperAdmin">Save</button>
+    <button type="submit" class="btn btn-primary m-1" (click)="receivedVaw()" *ngIf="isSuperAdmin">Received</button>
     <button type="button" class="btn btn-outline-dark" (click)="activeModal.dismiss('Close click')">Close</button>
 </div>

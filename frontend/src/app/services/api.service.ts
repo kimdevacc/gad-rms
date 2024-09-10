@@ -81,6 +81,20 @@ export class ApiService {
         }
     }
     /* START USER */
+    getUserNotification(): Observable<any[]> {
+        if (this.authToken) {
+            const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authToken}`);
+            return this.http.get<any[]>(`${this.apiUrl}/user/notifications`, { headers }).pipe(
+                catchError((error: any) => {
+                    console.error('Error fetching users:', error);
+                    return of([]);
+                })
+            );
+        } else {
+            console.error('Authentication token is missing');
+            return of([]);
+        }
+    }
     getUsers(): Observable<User[]> {
         if (this.authToken) {
             const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authToken}`);
@@ -153,6 +167,35 @@ export class ApiService {
     /* END USER */
 
     /* START VAWS */
+    getAllVaws(year: number, month: any): Observable<any[]> {
+        if (this.authToken) {
+            const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authToken}`);
+            return this.http.get<any[]>(`${this.apiUrl}/vaws/all/${year}/${month}`, { headers }).pipe(
+                catchError((error: any) => {
+                    console.error('Error fetching vaws:', error);
+                    return of([]);
+                })
+            );
+        } else {
+            console.error('Authentication token is missing');
+            return of([]);
+        }
+    }
+
+    getVaw(id: number): Observable<ViolenceAgainstWomen> {
+        const headers = new HttpHeaders().set('Authorization', 'Bearer ' + this.authToken);
+
+        return this.http.get<any>(`${this.apiUrl}/vaw/${id}`, { headers }).pipe(
+            tap((response: any) => {
+                // console.log(response);
+            }),
+            catchError((error: any) => {
+                console.error('Error saving vaws:', error);
+                throw error; // Rethrow the error after logging
+            })
+        );
+    }
+
     getVaws(): Observable<ViolenceAgainstWomen[]> {
         if (this.authToken) {
             const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authToken}`);
@@ -209,6 +252,35 @@ export class ApiService {
     /* END VAWS */
 
     /* START VACS */
+    getAllVacs(year: number, month: any): Observable<any[]> {
+        if (this.authToken) {
+            const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authToken}`);
+            return this.http.get<any[]>(`${this.apiUrl}/vacs/all/${year}/${month}`, { headers }).pipe(
+                catchError((error: any) => {
+                    console.error('Error fetching vaws:', error);
+                    return of([]);
+                })
+            );
+        } else {
+            console.error('Authentication token is missing');
+            return of([]);
+        }
+    }
+
+    getVac(id: number): Observable<ViolenceAgainstWomen> {
+        const headers = new HttpHeaders().set('Authorization', 'Bearer ' + this.authToken);
+
+        return this.http.get<any>(`${this.apiUrl}/vac/${id}`, { headers }).pipe(
+            tap((response: any) => {
+                // console.log(response);
+            }),
+            catchError((error: any) => {
+                console.error('Error saving vaws:', error);
+                throw error; // Rethrow the error after logging
+            })
+        );
+    }
+
     getVacs(): Observable<ViolenceAgainstChildren[]> {
         if (this.authToken) {
             const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authToken}`);

@@ -74,6 +74,8 @@ export class VacMonitoringComponent implements OnInit {
 	vacs: ViolenceAgainstChildren[] = [];
 	superAdmin: boolean = false;
 
+	selectedMonthAndYear = { month: '', year: 0 };
+
 	constructor(
 		private apiService: ApiService,
 		private datePipe: DatePipe
@@ -87,7 +89,7 @@ export class VacMonitoringComponent implements OnInit {
 	ngOnInit() {
 		forkJoin([
 			this.apiService.getBarangayById(this.barangay),
-			this.apiService.getVacs()
+			this.apiService.getAllVacs(this.currentYear, this.currentMonth)
 		]).subscribe(([res1, res2]) => {
 			if (res1 && res2) {
 				this.barangayNameArr.push(res1?.name);
@@ -99,6 +101,7 @@ export class VacMonitoringComponent implements OnInit {
 	}
 
 	initializeMonthly(month: any) {
+		this.selectedMonthAndYear = month;
 		this.generateSampleDateRange(month, this.currentYear);
 		const filteredData = this.vacs.filter(r => r.month === month);
 
@@ -116,8 +119,7 @@ export class VacMonitoringComponent implements OnInit {
 			totalReferredOthers += item.referred_others || 0;
 		});
 
-		const dataSourceData = filteredData.map(item => ({ ...item, barangay_name: this.barangayName, total_actions: totalReferredPNP + totalReferredNBI + totalReferredMedical + 
-			totalReferredLegal + totalReferredOthers }));
+		const dataSourceData = filteredData.map(item => ({ ...item }));
 		this.dataSource.data = dataSourceData;
 	}
 

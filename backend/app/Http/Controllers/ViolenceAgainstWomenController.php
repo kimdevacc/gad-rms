@@ -2,12 +2,133 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Http\Resources\ViolenceAgainstWomenResource;
 use App\Models\ViolenceAgainstWomen;
+use App\Models\Barangay;
 
 class ViolenceAgainstWomenController extends Controller
 {
+
+    public function get_all_vaws(Request $request) {
+
+        $currentUser = $request->user();
+        if($currentUser->role === 'super admin') {
+            $year = $request->year;
+            $month = $request->month;
+
+            $barangays = Barangay::all()->pluck('name');
+
+            $barangayData = [];
+            foreach ($barangays as $barangay) {
+                $brgy = Barangay::where('name', $barangay)->first();
+                $vaw = ViolenceAgainstWomen::where('month', $month)
+                ->where('barangay', $brgy['id'])
+                ->whereBetween('violence_against_women.created_at', [
+                    Carbon::create($year, 1, 1)->startOfYear(),
+                    Carbon::create($year, 12, 31)->endOfYear()
+                ])
+                ->first();
+
+                if(isset($vaw)) {
+                    $barangayData[] = [
+                        'month' => $month,
+                        'barangay' => $barangay,
+                        'number_vaw' => $vaw->number_vaw ?? 0,
+                        'physical_abuse' => $vaw->physical_abuse ?? 0,
+                        'sexual_abuse' => $vaw->sexual_abuse ?? 0,
+                        'psychological_abuse' => $vaw->psychological_abuse ?? 0,
+                        'economic_abuse' => $vaw->economic_abuse ?? 0,
+                        'issued_bpo' => $vaw->issued_bpo ?? 0,
+                        'referred_lowdo' => $vaw->referred_lowdo ?? 0,
+                        'referred_pnp' => $vaw->referred_pnp ?? 0,
+                        'referred_nbi' => $vaw->referred_nbi ?? 0,
+                        'referred_court' => $vaw->referred_court ?? 0,
+                        'referred_medical' => $vaw->referred_medical ?? 0,
+                        'trainings' => $vaw->trainings ?? 0,
+                        'counseling' => $vaw->counseling ?? 0,
+                        'iec' => $vaw->iec ?? 0,
+                        'fund_allocation' => $vaw->fund_allocation ?? 0,
+                        'total_actions' => $vaw->issued_bpo + $vaw->referred_lowdo + $vaw->referred_pnp + $vaw->referred_nbi + $vaw->referred_medical + $vaw->referred_court,
+                        'status' => $vaw->status
+                    ];
+                } else {
+                    $barangayData[] = [
+                        'month' => $month,
+                        'barangay' => $barangay,
+                        'number_vaw' => 0,
+                        'physical_abuse' => 0,
+                        'sexual_abuse' => 0,
+                        'psychological_abuse' => 0,
+                        'economic_abuse' => 0,
+                        'issued_bpo' => 0,
+                        'referred_lowdo' => 0,
+                        'referred_pnp' => 0,
+                        'referred_nbi' => 0,
+                        'referred_court' => 0,
+                        'referred_medical' => 0,
+                        'trainings' => 0,
+                        'counseling' => 0,
+                        'iec' => 0,
+                        'fund_allocation' => 0,
+                        'total_actions' => 0,
+                        'status' => 'Not Submitted'
+                    ];
+                }
+            }
+
+            return response()->json($barangayData);
+        } else {
+            $year = $request->year;
+            $month = $request->month;
+
+            $barangayData = [];
+            $vaw = ViolenceAgainstWomen::where('month', $month)
+            ->where('barangay', $currentUser->barangay)
+            ->whereBetween('violence_against_women.created_at', [
+                Carbon::create($year, 1, 1)->startOfYear(),
+                Carbon::create($year, 12, 31)->endOfYear()
+            ])
+            ->first();
+
+            $brgy = Barangay::where('id', $currentUser->barangay)->first();
+
+            if(isset($vaw)) {
+                $barangayData[] = [
+                    'month' => $month,
+                    'barangay' => $brgy->name,
+                    'number_vaw' => $vaw->number_vaw ?? 0,
+                    'physical_abuse' => $vaw->physical_abuse ?? 0,
+                    'sexual_abuse' => $vaw->sexual_abuse ?? 0,
+                    'psychological_abuse' => $vaw->psychological_abuse ?? 0,
+                    'economic_abuse' => $vaw->economic_abuse ?? 0,
+                    'issued_bpo' => $vaw->issued_bpo ?? 0,
+                    'referred_lowdo' => $vaw->referred_lowdo ?? 0,
+                    'referred_pnp' => $vaw->referred_pnp ?? 0,
+                    'referred_nbi' => $vaw->referred_nbi ?? 0,
+                    'referred_court' => $vaw->referred_court ?? 0,
+                    'referred_medical' => $vaw->referred_medical ?? 0,
+                    'trainings' => $vaw->trainings ?? 0,
+                    'counseling' => $vaw->counseling ?? 0,
+                    'iec' => $vaw->iec ?? 0,
+                    'fund_allocation' => $vaw->fund_allocation ?? 0,
+                    'total_actions' => 0,
+                    'status' => $vaw->status
+                ];
+            }
+
+            return response()->json($barangayData);
+        }
+    }
+
+    public function vaw(Request $request) {
+        $vaw = ViolenceAgainstWomen::findOrFail($request->id);
+
+        return new ViolenceAgainstWomenResource($vaw);
+    }
+
     public function vaws(Request $request)
     {
         $currentUser = $request->user();
@@ -52,6 +173,7 @@ class ViolenceAgainstWomenController extends Controller
             'remarks' => $request->remarks ?? 'RECORD ONLY',
             'month' => $request->month,
             'barangay' => $request->barangay ?? 0,
+            'status' => $request->status
         ];
         
         // Handling abuseRows

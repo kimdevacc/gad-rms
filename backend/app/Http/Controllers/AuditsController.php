@@ -12,11 +12,14 @@ class AuditsController extends Controller
     {
         $currentUser = $request->user();
 
-        if($currentUser->role === 'super admin') {
-            $audits = Audits::all();
+        if ($currentUser->role === 'super admin') {
+            $audits = Audits::orderBy('created_at', 'desc')->get();
         } else {
-            $audits = Audits::where('user_id', '=', $currentUser->id)->get();
+            $audits = Audits::where('user_id', $currentUser->id)
+                ->orderBy('created_at', 'desc')
+                ->get();
         }
+
         return AuditsResource::collection($audits);
     }
 }
