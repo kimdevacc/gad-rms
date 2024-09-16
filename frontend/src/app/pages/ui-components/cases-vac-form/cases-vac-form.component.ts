@@ -48,6 +48,7 @@ export class CasesVacFormComponent implements OnInit {
     totalProgramValue: number = 0;
 
     isSuperAdmin: boolean = false;
+    vawStatus: string = "";
 
     constructor(
         private formBuilder: FormBuilder,
@@ -371,7 +372,7 @@ export class CasesVacFormComponent implements OnInit {
         return total;
     }
 
-    submitVac() {
+    saveAsDraft() {
         const values = {
             id: this.vacData?.id ?? 0,
             remarks: this.remarks,
@@ -384,7 +385,7 @@ export class CasesVacFormComponent implements OnInit {
             perpetratorsRows: this.perpetratorsRows,
             actionRows: this.actionRows,
             programsRows: this.programsRows,
-            status: 'Submitted'
+            status: 'Draft'
         }
         if (this.vacData) {
             this.apiService.updateVacs(values).subscribe((res: ViolenceAgainstChildren | undefined) => {
@@ -415,6 +416,30 @@ export class CasesVacFormComponent implements OnInit {
             actionRows: this.actionRows,
             programsRows: this.programsRows,
             status: 'Received'
+        }
+        if (this.vacData) {
+            this.apiService.updateVacs(values).subscribe((res: ViolenceAgainstChildren | undefined) => {
+                this.activeModal.close();
+                this.openSnackBar('VACs Record updated successfully', 'Close');
+                this.recordCreatedVac.emit(res);
+            });
+        }
+    }
+
+    submitReport() {
+        const values = {
+            id: this.vacData?.id ?? 0,
+            remarks: this.remarks,
+            month: this.month,
+            barangay: this.barangay,
+            number_vac: this.totalProgramValue,
+            genderRows: this.genderRows,
+            ageRows: this.ageRows,
+            abuseRows: this.abuseRows,
+            perpetratorsRows: this.perpetratorsRows,
+            actionRows: this.actionRows,
+            programsRows: this.programsRows,
+            status: 'Submitted'
         }
         if (this.vacData) {
             this.apiService.updateVacs(values).subscribe((res: ViolenceAgainstChildren | undefined) => {

@@ -41,7 +41,7 @@ export const navItems: NavItem[] = [
 		displayName: 'Archive',
 		iconName: 'book',
 		route: 'app/archive',
-		requiredRole: ['super admin', 'admin']
+		requiredRole: ['admin']
 	}
 ];
 export const profileItems: NavItem[] = [

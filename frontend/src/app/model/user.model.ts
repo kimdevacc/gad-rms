@@ -4,6 +4,7 @@ export interface User {
     first_name: string;
     middle_name: string;
     last_name: string;
+    position: string;
     email: string;
     password: string;
     address_line_1: string;

@@ -14,12 +14,14 @@
 	<mat-menu #matMenu="matMenu" class="topbar-dd cardWithShadow">
 		<ng-container *ngIf="notificationList.length; else noNotifications">
 			<button mat-menu-item *ngFor="let notification of notificationList; let i = index;" (click)="openNotification(notification)">
-				{{ i + 1 }}. 
-				{{ notification.status === 'Submitted' ? 
-				  (notification.type + ' Case ' + notification.status + ' by barangay ' + notification.barangay) : 
-				  (notification.type + ' Case ' + notification.status + ' by GAD') 
+				{{ i + 1 }}.
+				{{ notification.status === 'Submitted' 
+				  ? (notification.type + ' Case ' + notification.status + ' by barangay ' + notification.barangay) 
+				  : notification.status === 'Received' 
+					? (notification.type + ' Case ' + notification.status + ' by GAD') 
+					: null 
 				}}
-			  </button>			  
+			  </button>						
 		</ng-container>
 		<ng-template #noNotifications>
 			<span>No notifications</span>

@@ -25,13 +25,13 @@ export class LoginComponent {
     }
 
     login() {
-        this.authService.login(this.credentialsForm).subscribe(
-            () => {
-                this.router.navigate(['app/dashboard']);
-            },
-            error => {
-                this.loginError = true;
+        this.authService.login(this.credentialsForm).subscribe(response => {
+            if(response) {
+                // this.router.navigate(['app/dashboard']);
+                this.router.navigate(['app/dashboard']).then(() => {
+                    window.location.reload();
+                });
             }
-        );
+        });
     }
 }

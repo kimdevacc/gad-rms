@@ -53,6 +53,10 @@ class UserController extends Controller
             $updates['last_name'] = $request->last_name;
         }
 
+        if ($request->has('position') && $request->position !== $user->position) {
+            $updates['position'] = $request->position;
+        }
+
         if ($request->has('contact_number') && $request->contact_number !== $user->contact_number) {
             $updates['contact_number'] = $request->contact_number;
         }
@@ -128,7 +132,32 @@ class UserController extends Controller
             // Combine the results
             $notificationData = $vaw->union($vac)->get();
         } else {
-            // Handle other roles or default case if needed
+            $vaw = \DB::table('violence_against_women')
+                ->leftJoin('barangays', 'barangays.id', '=', 'violence_against_women.barangay')
+                ->select(
+                    'violence_against_women.id as id',
+                    'violence_against_women.month',
+                    'violence_against_women.status',
+                    'barangays.name as barangay',
+                    \DB::raw("'VAW' as type")
+                )
+                ->where('violence_against_women.status', '=', 'Received')
+                ->whereNull('violence_against_women.deleted_at');
+
+            $vac = \DB::table('violence_against_children')
+                ->leftJoin('barangays', 'barangays.id', '=', 'violence_against_children.barangay')
+                ->select(
+                    'violence_against_children.id as id',
+                    'violence_against_children.month',
+                    'violence_against_children.status',
+                    'barangays.name as barangay',
+                    \DB::raw("'VAC' as type")
+                )
+                ->where('violence_against_children.status', '=', 'Received')
+                ->whereNull('violence_against_children.deleted_at');
+
+            // Combine the results
+            $notificationData = $vaw->union($vac)->get();
         }
 
         return response()->json($notificationData);

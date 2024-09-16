@@ -136,7 +136,10 @@
 </div>
 
 <div class="modal-footer">
-    <button type="submit" class="btn btn-primary m-1" (click)="submitVac()" *ngIf="!isSuperAdmin">Save</button>
-    <button type="submit" class="btn btn-primary m-1" (click)="receivedVac()" *ngIf="isSuperAdmin">Received</button>
+    <div *ngIf="vawStatus !== 'Received'">
+        <button type="submit" class="btn btn-primary m-1" (click)="submitReport()" *ngIf="vawStatus === 'Draft'">Submit</button>
+        <button type="submit" class="btn btn-primary m-1" (click)="saveAsDraft()" *ngIf="!isSuperAdmin">Save as Draft</button>
+        <button type="submit" class="btn btn-primary m-1" (click)="receivedVac()" *ngIf="isSuperAdmin">Received</button>
+    </div>
     <button type="button" class="btn btn-outline-dark" (click)="activeModal.dismiss('Close click')">Close</button>
 </div>

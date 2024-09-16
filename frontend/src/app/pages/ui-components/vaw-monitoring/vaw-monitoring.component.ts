@@ -57,6 +57,7 @@ export class VawMonitoringComponent implements OnInit {
 
 
 	selectedMonthAndYear = { month: '', year: 0 };
+	isLoading = true;
 
 	constructor(
 		private apiService: ApiService,
@@ -71,41 +72,42 @@ export class VawMonitoringComponent implements OnInit {
 	ngOnInit() {
 		forkJoin([
 			this.apiService.getBarangayById(this.barangay),
-			// this.apiService.getVaws(),
-			this.apiService.getAllVaws(this.currentYear, this.currentMonth)
-		]).subscribe(([res1, res2]) => {
-			if (res1 && res2) {
+		]).subscribe(([res1]) => {
+			if (res1) {
 				this.barangayNameArr.push(res1?.name);
 				this.barangayName = res1?.name;
-				this.vaws = res2;
-				// this.dataSource.data = res2;
 				this.initializeMonthly(this.currentMonth);
 			}
 		});
 	}
 
 	initializeMonthly(month: any) {
+		this.isLoading = true;
 		this.selectedMonthAndYear = month;
 		this.generateSampleDateRange(month, this.currentYear);
-		const filteredData = this.vaws.filter(r => r.month === month);
-		let totalIssuedBPO = 0;
-		let totalReferredLSWDO = 0;
-		let totalReferredPNP = 0;
-		let totalReferredNBI = 0;
-		let totalReferredMedical = 0;
-		let totalReferredCourt = 0;
+		this.apiService.getAllVaws(this.currentYear, month).subscribe(res => {
+			if(res) {
+				let totalIssuedBPO = 0;
+				let totalReferredLSWDO = 0;
+				let totalReferredPNP = 0;
+				let totalReferredNBI = 0;
+				let totalReferredMedical = 0;
+				let totalReferredCourt = 0;
 
-		filteredData.forEach(item => {
-			totalIssuedBPO += item.issued_bpo || 0;
-			totalReferredLSWDO += item.referred_lowdo || 0;
-			totalReferredPNP += item.referred_pnp || 0;
-			totalReferredNBI += item.referred_nbi || 0;
-			totalReferredMedical += item.referred_medical || 0;
-			totalReferredCourt += item.referred_court || 0;
+				res.forEach(item => {
+					totalIssuedBPO += item.issued_bpo || 0;
+					totalReferredLSWDO += item.referred_lowdo || 0;
+					totalReferredPNP += item.referred_pnp || 0;
+					totalReferredNBI += item.referred_nbi || 0;
+					totalReferredMedical += item.referred_medical || 0;
+					totalReferredCourt += item.referred_court || 0;
+				});
+
+				const dataSourceData = res.map(item => ({ ...item }));
+				this.dataSource.data = dataSourceData;
+				this.isLoading = false;
+			}
 		});
-		console.log(filteredData);
-		const dataSourceData = filteredData.map(item => ({ ...item }));
-		this.dataSource.data = dataSourceData;
 	}
 
 	generateSampleDateRange(month: string, year: number) {

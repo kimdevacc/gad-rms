@@ -13,7 +13,6 @@ class ViolenceAgainstWomenController extends Controller
 {
 
     public function get_all_vaws(Request $request) {
-
         $currentUser = $request->user();
         if($currentUser->role === 'super admin') {
             $year = $request->year;
@@ -237,4 +236,50 @@ class ViolenceAgainstWomenController extends Controller
         }
         return $data;
     }
+
+    public function get_all_vaws_by_param(Request $request) {
+        $currentUser = $request->user();
+        
+        // Define months for iteration
+        $monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        
+        // Get all barangays
+        $barangays = Barangay::all()->pluck('name');
+        $vawsData = [];
+        
+        foreach ($barangays as $barangay) {
+            $barangayData = [
+                'name' => $barangay,
+                'data' => []
+            ];
+            
+            // Get barangay ID
+            $brgy = Barangay::where('name', $barangay)->first();
+            
+            if (!$brgy) {
+                continue; // Skip if barangay not found
+            }
+            
+            foreach ($monthNames as $index => $month) {
+                $vaw = ViolenceAgainstWomen::where('barangay', $brgy['id'])
+                ->where('month', $month)
+                ->whereBetween('violence_against_women.created_at', [
+                    Carbon::create(date('Y'), 1, 1)->startOfYear(),
+                    Carbon::create(date('Y'), 12, 31)->endOfYear()
+                ])
+                ->first();
+                
+                // Append the data for the month
+                $barangayData['data'][] = [
+                    'month' => $month,
+                    'total' => $vaw->number_vaw ?? 0
+                ];
+            }
+            
+            $vawsData[] = $barangayData;
+        }
+
+        return response()->json($vawsData);
+    }
+    
 }

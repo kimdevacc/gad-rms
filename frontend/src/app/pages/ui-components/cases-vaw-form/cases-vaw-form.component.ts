@@ -35,6 +35,7 @@ export class CasesVawFormComponent implements OnInit {
     totalProgramValue: number = 0;
 
     isSuperAdmin: boolean = false;
+    vawStatus: string = "";
 
 	constructor(
 		private formBuilder: FormBuilder,
@@ -65,10 +66,10 @@ export class CasesVawFormComponent implements OnInit {
 
     private initializeForm() {
         const vawData = this.vawData!;
-
         this.remarks = vawData.remarks;
         this.totalProgramValue = vawData.number_vaw;
         this.month = vawData.month;
+        this.vawStatus = vawData.status;
 
         const abuseRanges: string[] = [
             'physical_abuse',
@@ -220,7 +221,7 @@ export class CasesVawFormComponent implements OnInit {
         return total;
     }
 
-	submitVaw() {
+	saveAsDraft() {
         const values = {
             id: this.vawData?.id ?? 0,
             remarks: this.remarks,
@@ -230,7 +231,7 @@ export class CasesVawFormComponent implements OnInit {
             abuseRows: this.abuseRows,
             actionRows: this.actionRows,
             programsRows: this.programsRows,
-            status: 'Submitted'
+            status: 'Draft'
         }
 		if(this.vawData) {
             this.apiService.updateVaws(values).subscribe((res) => {
@@ -267,6 +268,27 @@ export class CasesVawFormComponent implements OnInit {
             });
         }
 	}
+
+    submitReport() {
+        const values = {
+            id: this.vawData?.id ?? 0,
+            remarks: this.remarks,
+            month: this.month,
+            barangay: this.barangay,
+            number_vaw: this.totalProgramValue,
+            abuseRows: this.abuseRows,
+            actionRows: this.actionRows,
+            programsRows: this.programsRows,
+            status: 'Submitted'
+        }
+		if(this.vawData) {
+            this.apiService.updateVaws(values).subscribe((res) => {
+				this.activeModal.close();
+                this.openSnackBar('VAWs Record updated successfully', 'Close');
+                this.recordCreatedVaw.emit(res);
+            });
+        }
+    }
 
 	openSnackBar(message: string, action: string) {
         this._snackBar.open(message, action, {

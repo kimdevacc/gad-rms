@@ -76,6 +76,8 @@ export class VacMonitoringComponent implements OnInit {
 
 	selectedMonthAndYear = { month: '', year: 0 };
 
+	isLoading = true;
+
 	constructor(
 		private apiService: ApiService,
 		private datePipe: DatePipe
@@ -88,39 +90,41 @@ export class VacMonitoringComponent implements OnInit {
 
 	ngOnInit() {
 		forkJoin([
-			this.apiService.getBarangayById(this.barangay),
-			this.apiService.getAllVacs(this.currentYear, this.currentMonth)
-		]).subscribe(([res1, res2]) => {
-			if (res1 && res2) {
+			this.apiService.getBarangayById(this.barangay)
+		]).subscribe(([res1]) => {
+			if (res1) {
 				this.barangayNameArr.push(res1?.name);
 				this.barangayName = res1?.name;
-				this.vacs = res2;
 				this.initializeMonthly(this.currentMonth);
 			}
 		});
 	}
 
 	initializeMonthly(month: any) {
+		this.isLoading = true;
 		this.selectedMonthAndYear = month;
 		this.generateSampleDateRange(month, this.currentYear);
-		const filteredData = this.vacs.filter(r => r.month === month);
+		this.apiService.getAllVacs(this.currentYear, month).subscribe(res => {
+			if(res) {
+				let totalReferredPNP = 0;
+				let totalReferredNBI = 0;
+				let totalReferredMedical = 0;
+				let totalReferredLegal = 0;
+				let totalReferredOthers = 0;
 
-		let totalReferredPNP = 0;
-		let totalReferredNBI = 0;
-		let totalReferredMedical = 0;
-		let totalReferredLegal = 0;
-		let totalReferredOthers = 0;
+				res.forEach(item => {
+					totalReferredPNP += item.referred_pnp || 0;
+					totalReferredNBI += item.referred_nbi || 0;
+					totalReferredMedical += item.referred_medical || 0;
+					totalReferredLegal += item.referred_legal_assist || 0;
+					totalReferredOthers += item.referred_others || 0;
+				});
 
-		filteredData.forEach(item => {
-			totalReferredPNP += item.referred_pnp || 0;
-			totalReferredNBI += item.referred_nbi || 0;
-			totalReferredMedical += item.referred_medical || 0;
-			totalReferredLegal += item.referred_legal_assist || 0;
-			totalReferredOthers += item.referred_others || 0;
+				const dataSourceData = res.map(item => ({ ...item }));
+				this.dataSource.data = dataSourceData;
+				this.isLoading = false;
+			}
 		});
-
-		const dataSourceData = filteredData.map(item => ({ ...item }));
-		this.dataSource.data = dataSourceData;
 	}
 
 	generateSampleDateRange(month: string, year: number) {

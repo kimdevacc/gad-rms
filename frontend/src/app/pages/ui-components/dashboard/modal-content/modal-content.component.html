@@ -2,7 +2,7 @@
     <h4 class="modal-title mt-0">List of Barangays that has not submitted cases</h4>
 </div>
 <div class="modal-body">
-    <div class="card-body">
+    <div class="card-body" style="overflow-x: auto !important; max-height: 300px;">
         <div class="row">
             <p *ngFor="let data of dataList">{{ data.barangay }}</p>
         </div>

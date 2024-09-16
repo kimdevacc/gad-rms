@@ -113,7 +113,7 @@ class ViolenceAgainstChildrenController extends Controller
             $barangayData = [];
             $vac = ViolenceAgainstChildren::where('month', $month)
             ->where('barangay', $currentUser->barangay)
-            ->whereBetween('violence_against_women.created_at', [
+            ->whereBetween('violence_against_children.created_at', [
                 Carbon::create($year, 1, 1)->startOfYear(),
                 Carbon::create($year, 12, 31)->endOfYear()
             ])

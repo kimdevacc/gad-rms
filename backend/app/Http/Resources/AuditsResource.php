@@ -31,7 +31,7 @@ class AuditsResource extends JsonResource
             'barangay' => $brgy ? $brgy->name : "",
             'new_values' => $this->new_values,
             'old_values' => $this->old_values,
-            'created_at' => $this->created_at ? $this->created_at->format('m/d/Y h:i:s A') : null,
+            'created_at' => $this->created_at ? $this->created_at->setTimezone('Asia/Manila')->format('m/d/Y h:i:s A') : null,
         ];
     }
 }

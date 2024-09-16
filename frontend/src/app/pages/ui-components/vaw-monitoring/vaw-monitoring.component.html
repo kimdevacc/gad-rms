@@ -13,7 +13,7 @@
 			Export to Excel
 		</button>
 	</div>
-	<div class="card-body b-t-1 p-0" *ngIf="dateRange">
+	<div class="card-body b-t-1 p-0" *ngIf="dateRange && !isLoading">
 		<div class="mat-elevation-z8">
 			<table id="dataTable" mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 				<ng-container matColumnDef="firstLevelHeader">
@@ -102,6 +102,15 @@
 				<tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
 				<tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 			</table>
+		</div>
+	</div>
+	<div class="card-body b-t-1 p-0 full-screen-container" *ngIf="isLoading">
+		<div class="mat-elevation-z8">
+			<div class="row">
+				<div class="col">
+					<mat-spinner></mat-spinner>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>

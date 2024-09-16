@@ -182,6 +182,21 @@ export class ApiService {
         }
     }
 
+    getAllVawsByParameter(): Observable<any[]> {
+        if (this.authToken) {
+            const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authToken}`);
+            return this.http.get<any[]>(`${this.apiUrl}/vaws/all/by-param`, { headers }).pipe(
+                catchError((error: any) => {
+                    console.error('Error fetching vaws:', error);
+                    return of([]);
+                })
+            );
+        } else {
+            console.error('Authentication token is missing');
+            return of([]);
+        }
+    }
+
     getVaw(id: number): Observable<ViolenceAgainstWomen> {
         const headers = new HttpHeaders().set('Authorization', 'Bearer ' + this.authToken);
 

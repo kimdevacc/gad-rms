@@ -35,6 +35,7 @@ import { SettingsComponent } from './settings/settings.component';
 import { AuditLogsComponent } from './audit-logs/audit-logs.component';
 import { ArchiveComponent } from './archive/archive.component';
 import { ModalContentComponent } from './dashboard/modal-content/model-content.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
 	imports: [
@@ -45,6 +46,7 @@ import { ModalContentComponent } from './dashboard/modal-content/model-content.c
 		ReactiveFormsModule,
 		TablerIconsModule.pick(TablerIcons),
 		MatNativeDateModule,
+		MatProgressSpinnerModule,
 		NgApexchartsModule,
 		NgxPaginationModule
 	],

@@ -20,6 +20,10 @@
                 </div>
             </div>
             <div class="mb-3">
+                <label for="position" class="form-label">Position</label>
+                <input type="text" formControlName="position" class="form-control">
+            </div>		
+            <div class="mb-3">
                 <label [ngClass]="{'text-danger': profileForm.touched && profileForm.get('email')!.invalid, 'text-success': profileForm.touched && profileForm.get('email')!.valid}">Email</label>
                 <input type="email" formControlName="email" class="form-control" [ngClass]="{'is-invalid': profileForm.touched && profileForm.get('email')!.invalid, 'is-valid': profileForm.touched && profileForm.get('email')!.valid}">
                 <div *ngIf="profileForm.get('email')!.errors" class="invalid-feedback">Please enter a valid email address</div>

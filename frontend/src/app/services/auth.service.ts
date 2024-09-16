@@ -12,21 +12,20 @@ export class AuthService {
     apiUrl = 'http://localhost:8000/api';
     private authTokenKey = 'authToken';
     private userRoleKey = 'userRole';
-    private currentUser = 'currentUser';
-    private barangayUser = 'barangay';
+    private currentUserKey = 'currentUser';
+    private barangayUserKey = 'barangayUser';
 
     constructor(private http: HttpClient) { }
 
     login(credentials: FormGroup): Observable<any> {
         return this.http.post<any>(`${this.apiUrl}/login`, credentials.value).pipe(
             tap((response) => {
+                console.log(response)
                 if (response.token) {
                     localStorage.setItem(this.authTokenKey, response.token);
-                    if (response.role) {
-                        localStorage.setItem(this.userRoleKey, response.role);
-                        localStorage.setItem(this.currentUser, response.currentUser);
-                        localStorage.setItem(this.barangayUser, response.barangay);
-                    }
+                    localStorage.setItem(this.userRoleKey, response.role);
+                    localStorage.setItem(this.currentUserKey, response.currentUser);
+                    localStorage.setItem(this.barangayUserKey, response.barangay);
                 }
             })
         );
@@ -43,7 +42,8 @@ export class AuthService {
             tap(() => {
                 localStorage.removeItem(this.authTokenKey);
                 localStorage.removeItem(this.userRoleKey); 
-                localStorage.removeItem(this.barangayUser);
+                localStorage.removeItem(this.currentUserKey); 
+                localStorage.removeItem(this.barangayUserKey);
             }),
             catchError((error) => {
                 // Handle logout error
