@@ -9,6 +9,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './login/login.component';
 import { AuthenticationRoutes } from './authentication.routing';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 @NgModule({
 	imports: [
@@ -23,7 +25,9 @@ import { AuthenticationRoutes } from './authentication.routing';
 		ReactiveFormsModule,
 	],
 	declarations: [
-		LoginComponent
+		LoginComponent,
+		ForgotPasswordComponent,
+		ResetPasswordComponent
 	]
 })
 export class AuthenticationModule { }

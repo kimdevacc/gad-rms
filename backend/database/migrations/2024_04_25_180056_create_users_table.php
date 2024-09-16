@@ -28,6 +28,7 @@ class CreateUsersTable extends Migration
             $table->string('barangay')->nullable();
             $table->string('contact_number')->nullable();
             $table->string("image")->nullable();
+            $table->rememberToken();
             $table->timestamps();
             $table->softdeletes();
         });

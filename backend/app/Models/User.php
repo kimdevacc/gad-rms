@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Contracts\Auditable;
+use App\Notifications\ResetPasswordNotification;
 
 class User extends Authenticatable implements Auditable
 {
@@ -58,4 +59,10 @@ class User extends Authenticatable implements Auditable
     ];
 
     protected $auditExclude = ['password'];
+
+    public function sendPasswordResetNotification($token)
+    {
+        $url = env('APP_URL') . '/reset-password?token=' . $token;
+        $this->notify(new ResetPasswordNotification($url));
+    }
 }

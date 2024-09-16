@@ -61,4 +61,22 @@ export class AuthService {
     getUserRole(): Observable<string | null> {
         return of(localStorage.getItem(this.userRoleKey));
     }
+
+    forgotPassword(credentials: FormGroup): Observable<any> {
+        return this.http.post<any>(`${this.apiUrl}/forgot-password`, credentials.value).pipe(
+            tap((response) => {
+                console.log(response)
+                
+            })
+        );
+    }
+
+    resetPassword(credentials: any): Observable<any> {
+        return this.http.post<any>(`${this.apiUrl}/reset-password`, credentials).pipe(
+            tap((response) => {
+                console.log(response)
+                
+            })
+        );
+    }
 }

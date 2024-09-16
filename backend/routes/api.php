@@ -11,6 +11,7 @@ use App\Http\Controllers\ViolenceAgainstChildrenController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\AuditsController;
 use App\Http\Controllers\ArchiveController;
+use App\Http\Controllers\ForgotPasswordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +25,8 @@ use App\Http\Controllers\ArchiveController;
 */
 
 Route::post('login', [AuthController::class, 'login']);
+Route::post('forgot-password', [ForgotPasswordController::class, 'forgot_password']);
+Route::post('reset-password', [ForgotPasswordController::class, 'reset']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);

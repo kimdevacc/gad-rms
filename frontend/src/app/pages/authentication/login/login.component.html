@@ -4,14 +4,22 @@
             <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
                 <form [formGroup]="credentialsForm" (ngSubmit)="login()">
                     <div data-mdb-input-init class="form-outline mb-4">
-                        <label [ngClass]="{'text-danger': credentialsForm.touched && credentialsForm.get('email')!.invalid, 'text-success': credentialsForm.touched && credentialsForm.get('email')!.valid}" >Email</label>
-                        <input type="email" formControlName="email" class="form-control" [ngClass]="{'is-invalid': credentialsForm.touched && credentialsForm.get('email')!.invalid, 'is-valid': credentialsForm.touched && credentialsForm.get('email')!.valid}" placeholder="Enter Email Address">
-                        <div *ngIf="credentialsForm.get('email')!.errors" class="invalid-feedback">Please enter a valid email address</div>
+                        <label
+                            [ngClass]="{'text-danger': credentialsForm.touched && credentialsForm.get('email')!.invalid, 'text-success': credentialsForm.touched && credentialsForm.get('email')!.valid}">Email</label>
+                        <input type="email" formControlName="email" class="form-control"
+                            [ngClass]="{'is-invalid': credentialsForm.touched && credentialsForm.get('email')!.invalid, 'is-valid': credentialsForm.touched && credentialsForm.get('email')!.valid}"
+                            placeholder="Enter Email Address">
+                        <div *ngIf="credentialsForm.get('email')!.errors" class="invalid-feedback">Please enter a valid
+                            email address</div>
                     </div>
                     <div class="mb-3">
-                        <label [ngClass]="{'text-danger': credentialsForm.get('password')?.touched && credentialsForm.get('password')?.invalid}">Password</label>
-                        <input type="password" formControlName="password" class="form-control" [ngClass]="{'is-invalid': credentialsForm.get('password')?.touched && credentialsForm.get('password')?.invalid, 'is-valid': credentialsForm.get('password')?.touched && credentialsForm.get('password')?.valid}" placeholder="Enter Password">
-                        <div *ngIf="credentialsForm.get('password')!.hasError('required')" class="invalid-feedback">This field is required</div>
+                        <label
+                            [ngClass]="{'text-danger': credentialsForm.get('password')?.touched && credentialsForm.get('password')?.invalid}">Password</label>
+                        <input type="password" formControlName="password" class="form-control"
+                            [ngClass]="{'is-invalid': credentialsForm.get('password')?.touched && credentialsForm.get('password')?.invalid, 'is-valid': credentialsForm.get('password')?.touched && credentialsForm.get('password')?.valid}"
+                            placeholder="Enter Password">
+                        <div *ngIf="credentialsForm.get('password')!.hasError('required')" class="invalid-feedback">This
+                            field is required</div>
                     </div>
 
                     <!-- Error message for unauthorized login -->
@@ -20,8 +28,13 @@
                     </div>
 
                     <div class="d-grid gap-2">
-                        <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-success btn-lg" style="padding-left: 2.5rem; padding-right: 2.5rem;" [disabled]="!credentialsForm.valid">Login</button>
+                        <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-success btn-lg"
+                            style="padding-left: 2.5rem; padding-right: 2.5rem;"
+                            [disabled]="!credentialsForm.valid">Login</button>
                     </div>
+                    <!-- <div class="text-center mt-3">
+                        <a href="/forgot-password" class="text-primary">Forgot Password?</a>
+                    </div> -->
                 </form>
             </div>
             <div class="col-md-9 col-lg-6 col-xl-5">
