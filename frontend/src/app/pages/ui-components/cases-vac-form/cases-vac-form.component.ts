@@ -48,7 +48,7 @@ export class CasesVacFormComponent implements OnInit {
     totalProgramValue: number = 0;
 
     isSuperAdmin: boolean = false;
-    vawStatus: string = "";
+    vacStatus: string = "";
 
     constructor(
         private formBuilder: FormBuilder,
@@ -86,6 +86,7 @@ export class CasesVacFormComponent implements OnInit {
         this.remarks = vacData.remarks;
         this.totalProgramValue = vacData.number_vac;
         this.month = vacData.month;
+        this.vacStatus = vacData.status;
 
         this.genderList.forEach((g, index) => {
             let getVal = vacData[g.toLocaleLowerCase() as keyof ViolenceAgainstChildren];

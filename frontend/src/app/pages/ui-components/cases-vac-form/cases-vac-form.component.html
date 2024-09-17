@@ -136,8 +136,8 @@
 </div>
 
 <div class="modal-footer">
-    <div *ngIf="vawStatus !== 'Received'">
-        <button type="submit" class="btn btn-primary m-1" (click)="submitReport()" *ngIf="vawStatus === 'Draft'">Submit</button>
+    <div *ngIf="vacStatus !== 'Received'">
+        <button type="submit" class="btn btn-primary m-1" (click)="submitReport()" *ngIf="vacStatus === 'Draft'">Submit</button>
         <button type="submit" class="btn btn-primary m-1" (click)="saveAsDraft()" *ngIf="!isSuperAdmin">Save as Draft</button>
         <button type="submit" class="btn btn-primary m-1" (click)="receivedVac()" *ngIf="isSuperAdmin">Received</button>
     </div>
