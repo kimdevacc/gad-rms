@@ -36,7 +36,7 @@ export class VawSummaryComponent implements OnInit {
 
 	currentYear = new Date().getFullYear();
 
-	barangay = localStorage.getItem('barangay');
+	barangay = localStorage.getItem('barangayUser');
 	barangayNameArr: string[] = [];
 	barangayName: string = "";
 	vaws: ViolenceAgainstWomen[] = [];
