@@ -16,7 +16,7 @@ export class CasesVawFormComponent implements OnInit {
 	@Output() recordCreatedVaw: EventEmitter<ViolenceAgainstWomen> = new EventEmitter<ViolenceAgainstWomen>();
 
     months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-    barangay = localStorage.getItem('barangay');
+    barangay = localStorage.getItem('barangayUser');
 
     abuseList: string[] = ['Physical Abuse', 'Sexual Abuse', 'Psychological Abuse', 'Economic Abuse'];
     abuseRows: { abuseType: string, abuseValue: number }[] = [];

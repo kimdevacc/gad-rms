@@ -15,7 +15,7 @@ export class CasesVacFormComponent implements OnInit {
     @Input() vacData: ViolenceAgainstChildren | undefined;
     @Output() recordCreatedVac: EventEmitter<ViolenceAgainstChildren> = new EventEmitter<ViolenceAgainstChildren>();
     months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-    barangay = localStorage.getItem('barangay');
+    barangay = localStorage.getItem('barangayUser');
 
     violenceAgainstChildren: ViolenceAgainstChildren | any;
 

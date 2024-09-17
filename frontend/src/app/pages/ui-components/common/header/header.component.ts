@@ -28,7 +28,7 @@ export class HeaderComponent {
 	@Output() toggleCollapsed = new EventEmitter<void>();
 
 	showFiller = false;
-	barangay = localStorage.getItem('barangay');
+	barangay = localStorage.getItem('barangayUser');
 	barangayName: string[] = [];
 	superAdmin: boolean = false;
 

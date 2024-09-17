@@ -49,7 +49,7 @@ export class VawMonitoringComponent implements OnInit {
 	currentMonth: string = "";
 	dateRange: string = "";
 	months: month[] = [];
-	barangay = localStorage.getItem('barangay');
+	barangay = localStorage.getItem('barangayUser');
 	barangayNameArr: string[] = [];
 	barangayName: string = "";
 	vaws: ViolenceAgainstWomen[] = [];
