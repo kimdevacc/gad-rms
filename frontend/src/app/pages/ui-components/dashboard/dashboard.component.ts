@@ -105,6 +105,7 @@ export class DashboardComponent {
 	allYearData: any[] = [];
 
 	percentageVaws: any;
+	percentageVacs: any;
 
 	constructor(
 		private apiService: ApiService,
@@ -142,7 +143,8 @@ export class DashboardComponent {
 				this.isLoading = false;
 				this.allYearData = res7;
 				this.updateCharts()
-				this.initializeCasePercentage(this.currentMonth);
+				this.initializeVawCasePercentage(this.currentMonth);
+				this.initializeVacCasePercentage(this.currentMonth);
 			}
 		});
 	}
@@ -446,10 +448,18 @@ export class DashboardComponent {
 		}
 	}
 
-	initializeCasePercentage(value: string) {
+	initializeVawCasePercentage(value: string) {
 		this.apiService.getAllVawsPercentage(value).subscribe(res => {
 			if(res) {
 				this.percentageVaws = res;
+			}
+		})
+	}
+
+	initializeVacCasePercentage(value: string) {
+		this.apiService.getAllVacsPercentage(value).subscribe(res => {
+			if(res) {
+				this.percentageVacs = res;
 			}
 		})
 	}

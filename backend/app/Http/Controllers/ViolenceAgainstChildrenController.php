@@ -335,4 +335,241 @@ class ViolenceAgainstChildrenController extends Controller
         }
         return $data;
     }
+
+    public function get_all_vacs_by_param(Request $request) {
+        $currentUser = $request->user();
+        
+        // Define months for iteration
+        $monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        
+        // Get all barangays
+        $barangays = Barangay::all()->pluck('name');
+        $vawsData = [];
+        
+        foreach ($barangays as $barangay) {
+            $barangayData = [
+                'name' => $barangay,
+                'data' => []
+            ];
+            
+            // Get barangay ID
+            $brgy = Barangay::where('name', $barangay)->first();
+            
+            if (!$brgy) {
+                continue; // Skip if barangay not found
+            }
+            
+            foreach ($monthNames as $index => $month) {
+                $vaw = ViolenceAgainstWomen::where('barangay', $brgy['id'])
+                ->where('month', $month)
+                ->whereBetween('violence_against_women.created_at', [
+                    Carbon::create(date('Y'), 1, 1)->startOfYear(),
+                    Carbon::create(date('Y'), 12, 31)->endOfYear()
+                ])
+                ->first();
+                
+                // Append the data for the month
+                $barangayData['data'][] = [
+                    'month' => $month,
+                    'total' => $vaw->number_vaw ?? 0
+                ];
+            }
+            
+            $vawsData[] = $barangayData;
+        }
+
+        return response()->json($vawsData);
+    }
+
+    public function get_vacs_percentage(Request $request) {
+        $currentMonth = $request->month;
+        $data = ViolenceAgainstChildren::with('barangay')->get();
+
+        $currentMonthData = array_filter($data->toArray(), function($entry) use ($currentMonth) {
+            return $entry['month'] === $currentMonth;
+        });
+    
+        $totalPhysicalCases = array_reduce($currentMonthData, function($carry, $entry) {
+            return $carry + $entry['physical_abuse'];
+        }, 0);
+    
+        $totalSexualCases = array_reduce($currentMonthData, function($carry, $entry) {
+            return $carry + $entry['sexual_abuse'];
+        }, 0);
+
+        $totalPsychologicalCases = array_reduce($currentMonthData, function($carry, $entry) {
+            return $carry + $entry['psychological_abuse'];
+        }, 0);
+
+        $totalNeglectCases = array_reduce($currentMonthData, function($carry, $entry) {
+            return $carry + $entry['neglect'];
+        }, 0);
+
+        $totalOthersCases = array_reduce($currentMonthData, function($carry, $entry) {
+            return $carry + $entry['others'];
+        }, 0);
+
+        $totalMaleCases = array_reduce($currentMonthData, function($carry, $entry) {
+            return $carry + $entry['male'];
+        }, 0);
+
+        $totalFemaleCases = array_reduce($currentMonthData, function($carry, $entry) {
+            return $carry + $entry['female'];
+        }, 0);
+
+        $totalRangeOneCases = array_reduce($currentMonthData, function($carry, $entry) {
+            return $carry + $entry['range_one'];
+        }, 0);
+
+        $totalRangeTwoCases = array_reduce($currentMonthData, function($carry, $entry) {
+            return $carry + $entry['range_two'];
+        }, 0);
+
+        $totalRangeThreeCases = array_reduce($currentMonthData, function($carry, $entry) {
+            return $carry + $entry['range_three'];
+        }, 0);
+
+        $totalRangeFourCases = array_reduce($currentMonthData, function($carry, $entry) {
+            return $carry + $entry['range_four'];
+        }, 0);
+
+        $totalRangeFiveCases = array_reduce($currentMonthData, function($carry, $entry) {
+            return $carry + $entry['range_five'];
+        }, 0);
+    
+        $groupedData = [];
+        foreach ($currentMonthData as $entry) {
+            $barangayName = $entry['barangay']['name'];
+            if (!isset($groupedData[$barangayName])) {
+                $groupedData[$barangayName] = [
+                    'male' => 0,
+                    'female' => 0,
+                    'range_one' => 0,
+                    'range_two' => 0,
+                    'range_three' => 0,
+                    'range_four' => 0,
+                    'range_five' => 0,
+                    'physical_abuse' => 0,
+                    'sexual_abuse' => 0,
+                    'psychological_abuse' => 0,
+                    'neglect' => 0,
+                    'others' => 0
+                ];
+            }
+            $groupedData[$barangayName]['male'] += $entry['male'];
+            $groupedData[$barangayName]['female'] += $entry['female'];
+            $groupedData[$barangayName]['range_one'] += $entry['range_one'];
+            $groupedData[$barangayName]['range_two'] += $entry['range_two'];
+            $groupedData[$barangayName]['range_three'] += $entry['range_three'];
+            $groupedData[$barangayName]['range_four'] += $entry['range_four'];
+            $groupedData[$barangayName]['range_five'] += $entry['range_five'];
+            $groupedData[$barangayName]['physical_abuse'] += $entry['physical_abuse'];
+            $groupedData[$barangayName]['sexual_abuse'] += $entry['sexual_abuse'];
+            $groupedData[$barangayName]['psychological_abuse'] += $entry['psychological_abuse'];
+            $groupedData[$barangayName]['neglect'] += $entry['neglect'];
+            $groupedData[$barangayName]['others'] += $entry['others'];
+        }
+    
+        $highestMale = [ 'barangay' => '', 'percentage' => 0 ];
+        $highestFemale = [ 'barangay' => '', 'percentage' => 0 ];
+        $highestRangeOne = [ 'barangay' => '', 'percentage' => 0 ];
+        $highestRangeTwo = [ 'barangay' => '', 'percentage' => 0 ];
+        $highestRangeThree = [ 'barangay' => '', 'percentage' => 0 ];
+        $highestRangeFour = [ 'barangay' => '', 'percentage' => 0 ];
+        $highestRangeFive = [ 'barangay' => '', 'percentage' => 0 ];
+        $highestPhysical = [ 'barangay' => '', 'percentage' => 0 ];
+        $highestSexual = [ 'barangay' => '', 'percentage' => 0 ];
+        $highestPsychological = [ 'barangay' => '', 'percentage' => 0 ];
+        $highestNeglect = [ 'barangay' => '', 'percentage' => 0 ];
+        $highestOthers = [ 'barangay' => '', 'percentage' => 0 ];
+        
+        foreach ($groupedData as $barangay => $cases) {
+            $malePercentage = ($totalMaleCases > 0) ? round(($cases['male'] / $totalMaleCases) * 100, 2) : 0;
+            if ($malePercentage > $highestMale['percentage']) {
+                $highestMale['barangay'] = $barangay;
+                $highestMale['percentage'] = $malePercentage;
+            }
+
+            $femalePercentage = ($totalFemaleCases > 0) ? round(($cases['female'] / $totalFemaleCases) * 100, 2) : 0;
+            if ($femalePercentage > $highestFemale['percentage']) {
+                $highestFemale['barangay'] = $barangay;
+                $highestFemale['percentage'] = $femalePercentage;
+            }
+
+            $rangeOnePercentage = ($totalRangeOneCases > 0) ? round(($cases['range_one'] / $totalRangeOneCases) * 100, 2) : 0;
+            if ($rangeOnePercentage > $highestRangeOne['percentage']) {
+                $highestRangeOne['barangay'] = $barangay;
+                $highestRangeOne['percentage'] = $rangeOnePercentage;
+            }
+
+            $rangeTwoPercentage = ($totalRangeTwoCases > 0) ? round(($cases['range_two'] / $totalRangeTwoCases) * 100, 2) : 0;
+            if ($rangeTwoPercentage > $highestRangeTwo['percentage']) {
+                $highestRangeTwo['barangay'] = $barangay;
+                $highestRangeTwo['percentage'] = $rangeTwoPercentage;
+            }
+
+            $rangeThreePercentage = ($totalRangeThreeCases > 0) ? round(($cases['range_three'] / $totalRangeThreeCases) * 100, 2) : 0;
+            if ($rangeThreePercentage > $highestRangeThree['percentage']) {
+                $highestRangeThree['barangay'] = $barangay;
+                $highestRangeThree['percentage'] = $rangeThreePercentage;
+            }
+
+            $rangeFourPercentage = ($totalRangeFourCases > 0) ? round(($cases['range_four'] / $totalRangeFourCases) * 100, 2) : 0;
+            if ($rangeFourPercentage > $highestRangeFour['percentage']) {
+                $highestRangeFour['barangay'] = $barangay;
+                $highestRangeFour['percentage'] = $rangeFourPercentage;
+            }
+
+            $rangeFivePercentage = ($totalRangeFiveCases > 0) ? round(($cases['range_five'] / $totalRangeFiveCases) * 100, 2) : 0;
+            if ($rangeFivePercentage > $highestRangeFive['percentage']) {
+                $highestRangeFive['barangay'] = $barangay;
+                $highestRangeFive['percentage'] = $rangeFivePercentage;
+            }
+
+            $physicalPercentage = ($totalPhysicalCases > 0) ? round(($cases['physical_abuse'] / $totalPhysicalCases) * 100, 2) : 0;
+            if ($physicalPercentage > $highestPhysical['percentage']) {
+                $highestPhysical['barangay'] = $barangay;
+                $highestPhysical['percentage'] = $physicalPercentage;
+            }
+
+            $sexualPercentage = ($totalSexualCases > 0) ? round(($cases['sexual_abuse'] / $totalSexualCases) * 100, 2) : 0;
+            if ($sexualPercentage > $highestSexual['percentage']) {
+                $highestSexual['barangay'] = $barangay;
+                $highestSexual['percentage'] = $sexualPercentage;
+            }
+
+            $psychologicalPercentage = ($totalPsychologicalCases > 0) ? round(($cases['psychological_abuse'] / $totalPsychologicalCases) * 100, 2) : 0;
+            if ($psychologicalPercentage > $highestPsychological['percentage']) {
+                $highestPsychological['barangay'] = $barangay;
+                $highestPsychological['percentage'] = $psychologicalPercentage;
+            }
+
+            $neglectPercentage = ($totalNeglectCases > 0) ? round(($cases['neglect'] / $totalNeglectCases) * 100, 2) : 0;
+            if ($neglectPercentage > $highestNeglect['percentage']) {
+                $highestNeglect['barangay'] = $barangay;
+                $highestNeglect['percentage'] = $neglectPercentage;
+            }
+
+            $othersPercentage = ($totalOthersCases > 0) ? round(($cases['others'] / $totalOthersCases) * 100, 2) : 0;
+            if ($othersPercentage > $highestOthers['percentage']) {
+                $highestOthers['barangay'] = $barangay;
+                $highestOthers['percentage'] = $othersPercentage;
+            }
+        }
+    
+        return response()->json([
+            'male' => $highestMale,
+            'female' => $highestFemale,
+            'range_one' => $highestRangeOne,
+            'range_two' => $highestRangeTwo,
+            'range_three' => $highestRangeThree,
+            'range_four' => $highestRangeFour,
+            'range_five' => $highestRangeFive,
+            'physical_abuse' => $highestPhysical,
+            'sexual_abuse' => $highestSexual,
+            'psychological_abuse' => $highestPsychological,
+            'neglect' => $highestNeglect,
+            'others' => $highestOthers
+        ]);
+    }
 }

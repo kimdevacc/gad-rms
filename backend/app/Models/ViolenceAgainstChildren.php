@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Contracts\Auditable;
+use App\Models\Barangay;
 
 class ViolenceAgainstChildren extends Model implements Auditable
 {
@@ -48,4 +49,8 @@ class ViolenceAgainstChildren extends Model implements Auditable
     //     'fund_allocation',
     //     'remarks'
     // ];
+    public function barangay()
+    {
+        return $this->belongsTo(Barangay::class, 'barangay');
+    }
 }

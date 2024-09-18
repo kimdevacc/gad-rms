@@ -302,7 +302,7 @@ class ViolenceAgainstWomenController extends Controller
     
     public function get_vaws_percentage(Request $request) {
         $currentMonth = $request->month;
-        $data = ViolenceAgainstWomen::with('barangay')->get(); // Eager load the barangay relationship
+        $data = ViolenceAgainstWomen::with('barangay')->get();
         $currentMonthData = array_filter($data->toArray(), function($entry) use ($currentMonth) {
             return $entry['month'] === $currentMonth;
         });
@@ -325,7 +325,7 @@ class ViolenceAgainstWomenController extends Controller
     
         $groupedData = [];
         foreach ($currentMonthData as $entry) {
-            $barangayName = $entry['barangay']['name']; // Assuming 'name' is the field for barangay name
+            $barangayName = $entry['barangay']['name'];
             if (!isset($groupedData[$barangayName])) {
                 $groupedData[$barangayName] = [
                     'physical' => 0,
@@ -396,5 +396,5 @@ class ViolenceAgainstWomenController extends Controller
             'psychological' => $highestPsychological,
             'economic' => $highestEconomic
         ]);
-    }    
+    }
 }

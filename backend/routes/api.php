@@ -67,6 +67,8 @@ Route::middleware(['auth:sanctum', '2fa'])->group(function () {
     Route::patch('/vacs', [ViolenceAgainstChildrenController::class, 'update']);
     Route::patch('/vac/admin_update', [ViolenceAgainstChildrenController::class, 'admin_update']);
     Route::delete('/vacs/{id}', [ViolenceAgainstChildrenController::class, 'destroy']);
+    Route::get('/vacs/all/by-param', [ViolenceAgainstChildrenController::class, 'get_all_vacs_by_param']);
+    Route::post('/vacs/all/by-percentage', [ViolenceAgainstChildrenController::class, 'get_vacs_percentage']);
 
     Route::get('/settings', [SettingsController::class, 'settings']);
     Route::post('/settings', [SettingsController::class, 'store']);

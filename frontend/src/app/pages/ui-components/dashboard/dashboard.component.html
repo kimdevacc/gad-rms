@@ -87,7 +87,7 @@
 					<mat-card-title class="mb-3">Violence Against Women</mat-card-title>
 					<div class="m-l-auto">
 						<mat-form-field class="theme-select" appearance="outline">
-							<mat-select value="{{ currentMonth }}" (selectionChange)="initializeCasePercentage($event.value)">
+							<mat-select value="{{ currentMonth }}" (selectionChange)="initializeVawCasePercentage($event.value)">
 								<mat-option *ngFor="let month of months" [value]="month.value">
 									{{ month.viewValue }}
 								</mat-option>
@@ -99,7 +99,7 @@
 					<div class="col-lg-3 col-sm-3" *ngIf="percentageVaws?.sexual?.barangay !== ''">
 						<div class="card bg-pink mb-3">
 							<div class="card-header">
-								<h5 class="card-title">{{ percentageVaws?.sexual?.percentage }} % Cases of Sexual Abuse</h5>
+								<h6 class="card-title">{{ percentageVaws?.sexual?.percentage }} % Cases of Sexual Abuse</h6>
 							</div>
 							<div class="card-body">
 								<p class="card-text">Barangay {{ percentageVaws?.sexual?.barangay ?? "" }} has the highest cases of Sexual Abuse</p>
@@ -114,7 +114,7 @@
 										[innerStrokeColor]="'#FFFFFF'"
 										[titleColor]="'#483500'"
 										[unitsColor]="'#483500'"
-										[subtitleColor]="'#483500'"
+										[showSubtitle]="false"
 									></circle-progress>
 								</div>
 							</div>
@@ -123,7 +123,7 @@
 					<div class="col-lg-3 col-sm-3" *ngIf="percentageVaws?.physical?.barangay !== ''">
 						<div class="card bg-yellow mb-3">
 							<div class="card-header">
-								<h5 class="card-title">{{ percentageVaws?.physical?.percentage }} % Cases of Physical Abuse</h5>
+								<h6 class="card-title">{{ percentageVaws?.physical?.percentage }} % Cases of Physical Abuse</h6>
 							</div>
 							<div class="card-body">
 								<p class="card-text">Barangay {{ percentageVaws?.physical?.barangay ?? "" }} has the highest cases of Physical Abuse</p>
@@ -138,7 +138,7 @@
 										[innerStrokeColor]="'#FFFFFF'"
 										[titleColor]="'#483500'"
 										[unitsColor]="'#483500'"
-										[subtitleColor]="'#483500'"
+										[showSubtitle]="false"
 									></circle-progress>
 								</div>
 							</div>
@@ -147,7 +147,7 @@
 					<div class="col-lg-3 col-sm-3" *ngIf="percentageVaws?.psychological?.barangay !== ''">
 						<div class="card bg-green mb-3">
 							<div class="card-header">
-								<h5 class="card-title">{{ percentageVaws?.psychological?.percentage }} % Cases of Psychological Abuse</h5>
+								<h6 class="card-title">{{ percentageVaws?.psychological?.percentage }} % Cases of Psychological Abuse</h6>
 							</div>
 							<div class="card-body">
 								<p class="card-text">Barangay {{ percentageVaws?.psychological?.barangay ?? "" }} has the highest cases of Psychological Abuse</p>
@@ -162,7 +162,7 @@
 										[innerStrokeColor]="'#FFFFFF'"
 										[titleColor]="'#483500'"
 										[unitsColor]="'#483500'"
-										[subtitleColor]="'#483500'"
+										[showSubtitle]="false"
 									></circle-progress>
 								</div>
 							</div>
@@ -171,7 +171,7 @@
 					<div class="col-lg-3 col-sm-3" *ngIf="percentageVaws?.economic?.barangay !== ''">
 						<div class="card bg-purple mb-3">
 							<div class="card-header">
-								<h5 class="card-title">{{ percentageVaws?.economic?.percentage }} % Cases of Economic Abuse</h5>
+								<h6 class="card-title">{{ percentageVaws?.economic?.percentage }} % Cases of Economic Abuse</h6>
 							</div>
 							<div class="card-body">
 								<p class="card-text">Barangay {{ percentageVaws?.economic?.barangay ?? "" }} has the highest cases of Economic Abuse</p>
@@ -186,7 +186,319 @@
 										[innerStrokeColor]="'#FFFFFF'"
 										[titleColor]="'#483500'"
 										[unitsColor]="'#483500'"
-										[subtitleColor]="'#483500'"
+										[showSubtitle]="false"
+									></circle-progress>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</mat-card-content>
+		</mat-card>
+	</div>
+	<div class="col-lg-12">
+		<mat-card class="cardWithShadow">
+			<mat-card-content class="p-24">
+				<div class="d-flex w-100 mb-3">
+					<mat-card-title class="mb-3">Violence Against Children</mat-card-title>
+					<div class="m-l-auto">
+						<mat-form-field class="theme-select" appearance="outline">
+							<mat-select value="{{ currentMonth }}" (selectionChange)="initializeVacCasePercentage($event.value)">
+								<mat-option *ngFor="let month of months" [value]="month.value">
+									{{ month.viewValue }}
+								</mat-option>
+							</mat-select>
+						</mat-form-field>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-3 col-sm-3" *ngIf="percentageVacs?.male?.barangay !== ''">
+						<div class="card bg-pink mb-3">
+							<div class="card-header">
+								<h6 class="card-title">{{ percentageVacs?.male?.percentage }} % Cases of Male Child Abuse</h6>
+							</div>
+							<div class="card-body">
+								<p class="card-text">Barangay {{ percentageVacs?.male?.barangay ?? "" }} has the highest cases of Male Child Abuse</p>
+								<div class="d-flex justify-content-center">
+									<circle-progress
+										[percent]="percentageVacs?.male?.percentage ?? 0"
+										[radius]="80"
+										[animationDuration]="300"
+										[backgroundColor]="'#C3B1E1'"
+										[outerStrokeGradient]="false"
+										[outerStrokeColor]="'#FFFFFF'"
+										[innerStrokeColor]="'#FFFFFF'"
+										[titleColor]="'#483500'"
+										[unitsColor]="'#483500'"
+										[showSubtitle]="false"
+									></circle-progress>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3 col-sm-3" *ngIf="percentageVacs?.female?.barangay !== ''">
+						<div class="card bg-yellow mb-3">
+							<div class="card-header">
+								<h6 class="card-title">{{ percentageVacs?.female?.percentage }} % Cases of Female Child Abuse</h6>
+							</div>
+							<div class="card-body">
+								<p class="card-text">Barangay {{ percentageVacs?.female?.barangay ?? "" }} has the highest cases of Female Child Abuse</p>
+								<div class="d-flex justify-content-center">
+									<circle-progress
+										[percent]="percentageVacs?.female?.percentage ?? 0"
+										[radius]="80"
+										[animationDuration]="300"
+										[backgroundColor]="'#A7C7E7'"
+										[outerStrokeGradient]="false"
+										[outerStrokeColor]="'#FFFFFF'"
+										[innerStrokeColor]="'#FFFFFF'"
+										[titleColor]="'#483500'"
+										[unitsColor]="'#483500'"
+										[showSubtitle]="false"
+									></circle-progress>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3 col-sm-3" *ngIf="percentageVacs?.range_one?.barangay !== ''">
+						<div class="card bg-green mb-3">
+							<div class="card-header">
+								<h6 class="card-title">{{ percentageVacs?.range_one?.percentage }} % Cases of Child Abuse Ages 0-4yrs old</h6>
+							</div>
+							<div class="card-body">
+								<p class="card-text">Barangay {{ percentageVacs?.range_one?.barangay ?? "" }} has the highest cases of Child abuse from ages 0-4yrs old</p>
+								<div class="d-flex justify-content-center">
+									<circle-progress
+										[percent]="percentageVacs?.range_one?.percentage ?? 0"
+										[radius]="80"
+										[animationDuration]="300"
+										[backgroundColor]="'#FAC898'"
+										[outerStrokeGradient]="false"
+										[outerStrokeColor]="'#FFFFFF'"
+										[innerStrokeColor]="'#FFFFFF'"
+										[titleColor]="'#483500'"
+										[unitsColor]="'#483500'"
+										[showSubtitle]="false"
+									></circle-progress>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3 col-sm-3" *ngIf="percentageVacs?.range_two?.barangay !== ''">
+						<div class="card bg-purple mb-3">
+							<div class="card-header">
+								<h6 class="card-title">{{ percentageVacs?.range_two?.percentage }} % Cases of Child Abuse Ages 6-9yrs old</h6>
+							</div>
+							<div class="card-body">
+								<p class="card-text">Barangay {{ percentageVacs?.range_two?.barangay ?? "" }} has the highest cases of Child abuse from ages 6-9yrs old</p>
+								<div class="d-flex justify-content-center">
+									<circle-progress
+										[percent]="percentageVacs?.range_two?.percentage ?? 0"
+										[radius]="80"
+										[animationDuration]="300"
+										[backgroundColor]="'#FAA0A0'"
+										[outerStrokeGradient]="false"
+										[outerStrokeColor]="'#FFFFFF'"
+										[innerStrokeColor]="'#FFFFFF'"
+										[titleColor]="'#483500'"
+										[unitsColor]="'#483500'"
+										[showSubtitle]="false"
+									></circle-progress>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-3 col-sm-3" *ngIf="percentageVacs?.range_three?.barangay !== ''">
+						<div class="card bg-pink mb-3">
+							<div class="card-header">
+								<h6 class="card-title">{{ percentageVacs?.range_three?.percentage }} % Cases of Child Abuse Ages 10-14yrs old</h6>
+							</div>
+							<div class="card-body">
+								<p class="card-text">Barangay {{ percentageVacs?.range_three?.barangay ?? "" }} has the highest cases of Child abuse from ages 10-14yrs old</p>
+								<div class="d-flex justify-content-center">
+									<circle-progress
+										[percent]="percentageVacs?.range_three?.percentage ?? 0"
+										[radius]="80"
+										[animationDuration]="300"
+										[backgroundColor]="'#C3B1E1'"
+										[outerStrokeGradient]="false"
+										[outerStrokeColor]="'#FFFFFF'"
+										[innerStrokeColor]="'#FFFFFF'"
+										[titleColor]="'#483500'"
+										[unitsColor]="'#483500'"
+										[showSubtitle]="false"
+									></circle-progress>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3 col-sm-3" *ngIf="percentageVacs?.range_four?.barangay !== ''">
+						<div class="card bg-yellow mb-3">
+							<div class="card-header">
+								<h6 class="card-title">{{ percentageVacs?.range_four?.percentage }} % Cases of Child Abuse Ages 15-17yrs old</h6>
+							</div>
+							<div class="card-body">
+								<p class="card-text">Barangay {{ percentageVacs?.range_four?.barangay ?? "" }} has the highest cases of Child abuse from ages 15-17yrs old</p>
+								<div class="d-flex justify-content-center">
+									<circle-progress
+										[percent]="percentageVacs?.range_four?.percentage ?? 0"
+										[radius]="80"
+										[animationDuration]="300"
+										[backgroundColor]="'#A7C7E7'"
+										[outerStrokeGradient]="false"
+										[outerStrokeColor]="'#FFFFFF'"
+										[innerStrokeColor]="'#FFFFFF'"
+										[titleColor]="'#483500'"
+										[unitsColor]="'#483500'"
+										[showSubtitle]="false"
+									></circle-progress>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3 col-sm-3" *ngIf="percentageVacs?.range_five?.barangay !== ''">
+						<div class="card bg-green mb-3">
+							<div class="card-header">
+								<h6 class="card-title">{{ percentageVacs?.range_five?.percentage }} % Cases of Child Abuse Ages 18 up PWD</h6>
+							</div>
+							<div class="card-body">
+								<p class="card-text">Barangay {{ percentageVacs?.range_five?.barangay ?? "" }} has the highest cases of Child abuse from ages 18 up PWD</p>
+								<div class="d-flex justify-content-center">
+									<circle-progress
+										[percent]="percentageVacs?.range_one?.percentage ?? 0"
+										[radius]="80"
+										[animationDuration]="300"
+										[backgroundColor]="'#FAC898'"
+										[outerStrokeGradient]="false"
+										[outerStrokeColor]="'#FFFFFF'"
+										[innerStrokeColor]="'#FFFFFF'"
+										[titleColor]="'#483500'"
+										[unitsColor]="'#483500'"
+										[showSubtitle]="false"
+									></circle-progress>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3 col-sm-3" *ngIf="percentageVacs?.neglect?.barangay !== ''">
+						<div class="card bg-purple mb-3">
+							<div class="card-header">
+								<h6 class="card-title">{{ percentageVacs?.neglect?.percentage }} % Cases of Neglect</h6>
+							</div>
+							<div class="card-body">
+								<p class="card-text">Barangay {{ percentageVacs?.neglect?.barangay ?? "" }} has the highest cases of Neglect</p>
+								<div class="d-flex justify-content-center">
+									<circle-progress
+										[percent]="percentageVacs?.neglect?.percentage ?? 0"
+										[radius]="80"
+										[animationDuration]="300"
+										[backgroundColor]="'#FAA0A0'"
+										[outerStrokeGradient]="false"
+										[outerStrokeColor]="'#FFFFFF'"
+										[innerStrokeColor]="'#FFFFFF'"
+										[titleColor]="'#483500'"
+										[unitsColor]="'#483500'"
+										[showSubtitle]="false"
+									></circle-progress>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-3 col-sm-3" *ngIf="percentageVacs?.physical_abuse?.barangay !== ''">
+						<div class="card bg-pink mb-3">
+							<div class="card-header">
+								<h6 class="card-title">{{ percentageVacs?.physical_abuse?.percentage }} % Cases of Physical Abuse</h6>
+							</div>
+							<div class="card-body">
+								<p class="card-text">Barangay {{ percentageVacs?.physical_abuse?.barangay ?? "" }} has the highest cases of Physical Abuse</p>
+								<div class="d-flex justify-content-center">
+									<circle-progress
+										[percent]="percentageVacs?.physical_abuse?.percentage ?? 0"
+										[radius]="80"
+										[animationDuration]="300"
+										[backgroundColor]="'#C3B1E1'"
+										[outerStrokeGradient]="false"
+										[outerStrokeColor]="'#FFFFFF'"
+										[innerStrokeColor]="'#FFFFFF'"
+										[titleColor]="'#483500'"
+										[unitsColor]="'#483500'"
+										[showSubtitle]="false"
+									></circle-progress>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3 col-sm-3" *ngIf="percentageVacs?.sexual_abuse?.barangay !== ''">
+						<div class="card bg-yellow mb-3">
+							<div class="card-header">
+								<h6 class="card-title">{{ percentageVacs?.sexual_abuse?.percentage }} % Cases of Sexual Abuse</h6>
+							</div>
+							<div class="card-body">
+								<p class="card-text">Barangay {{ percentageVacs?.sexual_abuse?.barangay ?? "" }} has the highest cases of Sexual Abuse</p>
+								<div class="d-flex justify-content-center">
+									<circle-progress
+										[percent]="percentageVacs?.sexual_abuse?.percentage ?? 0"
+										[radius]="80"
+										[animationDuration]="300"
+										[backgroundColor]="'#A7C7E7'"
+										[outerStrokeGradient]="false"
+										[outerStrokeColor]="'#FFFFFF'"
+										[innerStrokeColor]="'#FFFFFF'"
+										[titleColor]="'#483500'"
+										[unitsColor]="'#483500'"
+										[showSubtitle]="false"
+									></circle-progress>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3 col-sm-3" *ngIf="percentageVacs?.psychological_abuse?.barangay !== ''">
+						<div class="card bg-green mb-3">
+							<div class="card-header">
+								<h6 class="card-title">{{ percentageVacs?.psychological_abuse?.percentage }} % Cases of Psychological Abuse</h6>
+							</div>
+							<div class="card-body">
+								<p class="card-text">Barangay {{ percentageVacs?.psychological_abuse?.barangay ?? "" }} has the highest cases of Psychological Abuse</p>
+								<div class="d-flex justify-content-center">
+									<circle-progress
+										[percent]="percentageVacs?.psychological_abuse?.percentage ?? 0"
+										[radius]="80"
+										[animationDuration]="300"
+										[backgroundColor]="'#FAC898'"
+										[outerStrokeGradient]="false"
+										[outerStrokeColor]="'#FFFFFF'"
+										[innerStrokeColor]="'#FFFFFF'"
+										[titleColor]="'#483500'"
+										[unitsColor]="'#483500'"
+										[showSubtitle]="false"
+									></circle-progress>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3 col-sm-3" *ngIf="percentageVacs?.others?.barangay !== ''">
+						<div class="card bg-purple mb-3">
+							<div class="card-header">
+								<h6 class="card-title">{{ percentageVacs?.neglect?.percentage }} % Cases of Others</h6>
+							</div>
+							<div class="card-body">
+								<p class="card-text">Barangay {{ percentageVacs?.others?.barangay ?? "" }} has the highest cases of Others</p>
+								<div class="d-flex justify-content-center">
+									<circle-progress
+										[percent]="percentageVacs?.others?.percentage ?? 0"
+										[radius]="80"
+										[animationDuration]="300"
+										[backgroundColor]="'#FAA0A0'"
+										[outerStrokeGradient]="false"
+										[outerStrokeColor]="'#FFFFFF'"
+										[innerStrokeColor]="'#FFFFFF'"
+										[titleColor]="'#483500'"
+										[unitsColor]="'#483500'"
+										[showSubtitle]="false"
 									></circle-progress>
 								</div>
 							</div>
