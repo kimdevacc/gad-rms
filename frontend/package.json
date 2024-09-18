@@ -28,6 +28,7 @@
 		"cors": "^2.8.5",
 		"force": "^0.0.3",
 		"ng-apexcharts": "^1.10.0",
+		"ng-circle-progress": "^1.7.1",
 		"ngx-pagination": "^6.0.3",
 		"ngx-toastr": "^18.0.0",
 		"rxjs": "~7.8.0",

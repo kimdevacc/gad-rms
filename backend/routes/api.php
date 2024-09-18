@@ -58,6 +58,7 @@ Route::middleware(['auth:sanctum', '2fa'])->group(function () {
     Route::patch('/vaw/admin_update', [ViolenceAgainstWomenController::class, 'admin_update']);
     Route::delete('/vaws/{id}', [ViolenceAgainstWomenController::class, 'destroy']);
     Route::get('/vaws/all/by-param', [ViolenceAgainstWomenController::class, 'get_all_vaws_by_param']);
+    Route::post('/vaws/all/by-percentage', [ViolenceAgainstWomenController::class, 'get_vaws_percentage']);
 
     Route::get('/vacs', [ViolenceAgainstChildrenController::class, 'vacs']);
     Route::get('/vac/{id}', [ViolenceAgainstChildrenController::class, 'vac']);

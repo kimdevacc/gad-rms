@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Contracts\Auditable;
+use App\Models\ViolenceAgainstWomen;
 
 class Barangay extends Model implements Auditable
 {
@@ -14,4 +15,9 @@ class Barangay extends Model implements Auditable
     use \OwenIt\Auditing\Auditable;
 
     protected $guarded = [];
+
+    public function violences()
+    {
+        return $this->hasMany(ViolenceAgainstWomen::class, 'barangay');
+    }
 }

@@ -104,6 +104,8 @@ export class DashboardComponent {
 
 	allYearData: any[] = [];
 
+	percentageVaws: any;
+
 	constructor(
 		private apiService: ApiService,
 		private modalService: NgbModal
@@ -140,6 +142,7 @@ export class DashboardComponent {
 				this.isLoading = false;
 				this.allYearData = res7;
 				this.updateCharts()
+				this.initializeCasePercentage(this.currentMonth);
 			}
 		});
 	}
@@ -443,4 +446,11 @@ export class DashboardComponent {
 		}
 	}
 
+	initializeCasePercentage(value: string) {
+		this.apiService.getAllVawsPercentage(value).subscribe(res => {
+			if(res) {
+				this.percentageVaws = res;
+			}
+		})
+	}
 }

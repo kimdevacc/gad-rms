@@ -1,4 +1,4 @@
-<div class="row"  *ngIf="!isLoading">
+<div class="row" *ngIf="!isLoading">
 	<div class="col-lg-12">
 		<div class="row">
 			<div class="col-lg-3 col-sm-3">
@@ -39,7 +39,8 @@
 							<div class="col-7">
 								<h4 class="mat-headline-5">{{ totalVawCaseSubmitted }}/30 </h4>
 								<div class="d-flex align-items-center m-t-16">
-									<div class="mat-body-1 m-l-4" style="cursor: pointer;" (click)="view('vaw')">View</div>
+									<div class="mat-body-1 m-l-4" style="cursor: pointer;" (click)="view('vaw')">View
+									</div>
 								</div>
 							</div>
 						</div>
@@ -54,7 +55,8 @@
 							<div class="col-7">
 								<h4 class="mat-headline-5">{{ totalVacCaseSubmitted }}/30 </h4>
 								<div class="d-flex align-items-center m-t-16">
-									<div class="mat-body-1 m-l-4" style="cursor: pointer;" (click)="view('vac')">View</div>
+									<div class="mat-body-1 m-l-4" style="cursor: pointer;" (click)="view('vac')">View
+									</div>
 								</div>
 							</div>
 						</div>
@@ -78,7 +80,123 @@
 			</div> -->
 		</div>
 	</div>
-	<div class="col-lg">
+	<div class="col-lg-12">
+		<mat-card class="cardWithShadow">
+			<mat-card-content class="p-24">
+				<div class="d-flex w-100 mb-3">
+					<mat-card-title class="mb-3">Violence Against Women</mat-card-title>
+					<div class="m-l-auto">
+						<mat-form-field class="theme-select" appearance="outline">
+							<mat-select value="{{ currentMonth }}" (selectionChange)="initializeCasePercentage($event.value)">
+								<mat-option *ngFor="let month of months" [value]="month.value">
+									{{ month.viewValue }}
+								</mat-option>
+							</mat-select>
+						</mat-form-field>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-3 col-sm-3" *ngIf="percentageVaws?.sexual?.barangay !== ''">
+						<div class="card bg-pink mb-3">
+							<div class="card-header">
+								<h5 class="card-title">{{ percentageVaws?.sexual?.percentage }} % Cases of Sexual Abuse</h5>
+							</div>
+							<div class="card-body">
+								<p class="card-text">Barangay {{ percentageVaws?.sexual?.barangay ?? "" }} has the highest cases of Sexual Abuse</p>
+								<div class="d-flex justify-content-center">
+									<circle-progress
+										[percent]="percentageVaws?.sexual?.percentage ?? 0"
+										[radius]="80"
+										[animationDuration]="300"
+										[backgroundColor]="'#C3B1E1'"
+										[outerStrokeGradient]="false"
+										[outerStrokeColor]="'#FFFFFF'"
+										[innerStrokeColor]="'#FFFFFF'"
+										[titleColor]="'#483500'"
+										[unitsColor]="'#483500'"
+										[subtitleColor]="'#483500'"
+									></circle-progress>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3 col-sm-3" *ngIf="percentageVaws?.physical?.barangay !== ''">
+						<div class="card bg-yellow mb-3">
+							<div class="card-header">
+								<h5 class="card-title">{{ percentageVaws?.physical?.percentage }} % Cases of Physical Abuse</h5>
+							</div>
+							<div class="card-body">
+								<p class="card-text">Barangay {{ percentageVaws?.physical?.barangay ?? "" }} has the highest cases of Physical Abuse</p>
+								<div class="d-flex justify-content-center">
+									<circle-progress
+										[percent]="percentageVaws?.physical?.percentage ?? 0"
+										[radius]="80"
+										[animationDuration]="300"
+										[backgroundColor]="'#A7C7E7'"
+										[outerStrokeGradient]="false"
+										[outerStrokeColor]="'#FFFFFF'"
+										[innerStrokeColor]="'#FFFFFF'"
+										[titleColor]="'#483500'"
+										[unitsColor]="'#483500'"
+										[subtitleColor]="'#483500'"
+									></circle-progress>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3 col-sm-3" *ngIf="percentageVaws?.psychological?.barangay !== ''">
+						<div class="card bg-green mb-3">
+							<div class="card-header">
+								<h5 class="card-title">{{ percentageVaws?.psychological?.percentage }} % Cases of Psychological Abuse</h5>
+							</div>
+							<div class="card-body">
+								<p class="card-text">Barangay {{ percentageVaws?.psychological?.barangay ?? "" }} has the highest cases of Psychological Abuse</p>
+								<div class="d-flex justify-content-center">
+									<circle-progress
+										[percent]="percentageVaws?.psychological?.percentage ?? 0"
+										[radius]="80"
+										[animationDuration]="300"
+										[backgroundColor]="'#FAC898'"
+										[outerStrokeGradient]="false"
+										[outerStrokeColor]="'#FFFFFF'"
+										[innerStrokeColor]="'#FFFFFF'"
+										[titleColor]="'#483500'"
+										[unitsColor]="'#483500'"
+										[subtitleColor]="'#483500'"
+									></circle-progress>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3 col-sm-3" *ngIf="percentageVaws?.economic?.barangay !== ''">
+						<div class="card bg-purple mb-3">
+							<div class="card-header">
+								<h5 class="card-title">{{ percentageVaws?.economic?.percentage }} % Cases of Economic Abuse</h5>
+							</div>
+							<div class="card-body">
+								<p class="card-text">Barangay {{ percentageVaws?.economic?.barangay ?? "" }} has the highest cases of Economic Abuse</p>
+								<div class="d-flex justify-content-center">
+									<circle-progress
+										[percent]="percentageVaws?.economic?.percentage ?? 0"
+										[radius]="80"
+										[animationDuration]="300"
+										[backgroundColor]="'#FAA0A0'"
+										[outerStrokeGradient]="false"
+										[outerStrokeColor]="'#FFFFFF'"
+										[innerStrokeColor]="'#FFFFFF'"
+										[titleColor]="'#483500'"
+										[unitsColor]="'#483500'"
+										[subtitleColor]="'#483500'"
+									></circle-progress>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</mat-card-content>
+		</mat-card>
+	</div>
+	<div class="col-lg-12">
 		<mat-card class="cardWithShadow">
 			<mat-card-content class="p-24">
 				<div class="d-flex w-100">
@@ -111,10 +229,11 @@
 					<mat-card-title>This Year's Cases</mat-card-title>
 				</div>
 				<div class="d-flex w-100" *ngIf="selectedReportType === 'Monthly'">
-					<mat-card-title >Monthly Cases</mat-card-title>
+					<mat-card-title>Monthly Cases</mat-card-title>
 					<div class="m-l-auto">
 						<mat-form-field class="theme-select" appearance="outline">
-							<mat-select value="{{ currentMonth }}" (selectionChange)="initializeMonthlyChart($event.value)">
+							<mat-select value="{{ currentMonth }}"
+								(selectionChange)="initializeMonthlyChart($event.value)">
 								<mat-option *ngFor="let month of months" [value]="month.value">
 									{{ month.viewValue }}
 								</mat-option>
@@ -123,7 +242,7 @@
 					</div>
 				</div>
 				<div class="d-flex w-100" *ngIf="selectedReportType === 'Quarterly'">
-					<mat-card-title >Quarterly Cases</mat-card-title>
+					<mat-card-title>Quarterly Cases</mat-card-title>
 					<div class="m-l-auto">
 						<mat-form-field class="theme-select" appearance="outline">
 							<mat-select value="Q1" (selectionChange)="initializeQuarterlyChart($event.value)">
@@ -134,45 +253,26 @@
 						</mat-form-field>
 					</div>
 				</div>
-				<apx-chart 
-					*ngIf="salesOverviewChart && selectedReportType === 'Year'"
-					[series]="salesOverviewChart.series" 
-					[dataLabels]="salesOverviewChart.dataLabels"
-					[chart]="salesOverviewChart.chart" 
-					[legend]="salesOverviewChart.legend"
-					[xaxis]="salesOverviewChart.xaxis" 
-					[yaxis]="salesOverviewChart.yaxis"
-					[grid]="salesOverviewChart.grid" 
-					[stroke]="salesOverviewChart.stroke"
-					[tooltip]="salesOverviewChart.tooltip" 
-					[plotOptions]="salesOverviewChart.plotOptions"
-				></apx-chart>
-				<apx-chart
-					*ngIf="salesOverviewChartMonthly && selectedReportType === 'Monthly'"
-					[series]="salesOverviewChartMonthly.series" 
-					[dataLabels]="salesOverviewChartMonthly.dataLabels"
-					[chart]="salesOverviewChartMonthly.chart" 
-					[legend]="salesOverviewChartMonthly.legend"
-					[xaxis]="salesOverviewChartMonthly.xaxis" 
-					[yaxis]="salesOverviewChartMonthly.yaxis"
-					[grid]="salesOverviewChartMonthly.grid" 
-					[stroke]="salesOverviewChartMonthly.stroke"
-					[tooltip]="salesOverviewChartMonthly.tooltip" 
-					[plotOptions]="salesOverviewChartMonthly.plotOptions"
-				></apx-chart>
-				<apx-chart
-					*ngIf="salesOverviewChartQuarterly && selectedReportType === 'Quarterly'"
-					[series]="salesOverviewChartQuarterly.series" 
-					[dataLabels]="salesOverviewChartQuarterly.dataLabels"
-					[chart]="salesOverviewChartQuarterly.chart" 
-					[legend]="salesOverviewChartQuarterly.legend"
-					[xaxis]="salesOverviewChartQuarterly.xaxis" 
-					[yaxis]="salesOverviewChartQuarterly.yaxis"
-					[grid]="salesOverviewChartQuarterly.grid" 
-					[stroke]="salesOverviewChartQuarterly.stroke"
-					[tooltip]="salesOverviewChartQuarterly.tooltip" 
-					[plotOptions]="salesOverviewChartQuarterly.plotOptions"
-				></apx-chart>
+				<apx-chart *ngIf="salesOverviewChart && selectedReportType === 'Year'"
+					[series]="salesOverviewChart.series" [dataLabels]="salesOverviewChart.dataLabels"
+					[chart]="salesOverviewChart.chart" [legend]="salesOverviewChart.legend"
+					[xaxis]="salesOverviewChart.xaxis" [yaxis]="salesOverviewChart.yaxis"
+					[grid]="salesOverviewChart.grid" [stroke]="salesOverviewChart.stroke"
+					[tooltip]="salesOverviewChart.tooltip" [plotOptions]="salesOverviewChart.plotOptions"></apx-chart>
+				<apx-chart *ngIf="salesOverviewChartMonthly && selectedReportType === 'Monthly'"
+					[series]="salesOverviewChartMonthly.series" [dataLabels]="salesOverviewChartMonthly.dataLabels"
+					[chart]="salesOverviewChartMonthly.chart" [legend]="salesOverviewChartMonthly.legend"
+					[xaxis]="salesOverviewChartMonthly.xaxis" [yaxis]="salesOverviewChartMonthly.yaxis"
+					[grid]="salesOverviewChartMonthly.grid" [stroke]="salesOverviewChartMonthly.stroke"
+					[tooltip]="salesOverviewChartMonthly.tooltip"
+					[plotOptions]="salesOverviewChartMonthly.plotOptions"></apx-chart>
+				<apx-chart *ngIf="salesOverviewChartQuarterly && selectedReportType === 'Quarterly'"
+					[series]="salesOverviewChartQuarterly.series" [dataLabels]="salesOverviewChartQuarterly.dataLabels"
+					[chart]="salesOverviewChartQuarterly.chart" [legend]="salesOverviewChartQuarterly.legend"
+					[xaxis]="salesOverviewChartQuarterly.xaxis" [yaxis]="salesOverviewChartQuarterly.yaxis"
+					[grid]="salesOverviewChartQuarterly.grid" [stroke]="salesOverviewChartQuarterly.stroke"
+					[tooltip]="salesOverviewChartQuarterly.tooltip"
+					[plotOptions]="salesOverviewChartQuarterly.plotOptions"></apx-chart>
 			</mat-card-content>
 		</mat-card>
 	</div>

@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -36,6 +36,7 @@ import { AuditLogsComponent } from './audit-logs/audit-logs.component';
 import { ArchiveComponent } from './archive/archive.component';
 import { ModalContentComponent } from './dashboard/modal-content/model-content.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { NgCircleProgressModule } from 'ng-circle-progress';
 
 @NgModule({
 	imports: [
@@ -48,7 +49,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 		MatNativeDateModule,
 		MatProgressSpinnerModule,
 		NgApexchartsModule,
-		NgxPaginationModule
+		NgxPaginationModule,
+		NgCircleProgressModule.forRoot({})
 	],
 	declarations: [
 		DashboardComponent,
@@ -75,6 +77,10 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 	],
 	providers: [
 		DatePipe
+	],
+	schemas: [
+		CUSTOM_ELEMENTS_SCHEMA,
+		NO_ERRORS_SCHEMA
 	]
 })
 export class UicomponentsModule { }

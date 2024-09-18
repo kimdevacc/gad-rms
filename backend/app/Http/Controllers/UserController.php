@@ -179,8 +179,6 @@ class UserController extends Controller
             'otp_expires_at' => $otp_expires_at,
         ]);
 
-        return $user;
-
         Mail::to($user->email)->send(new OTP($otp));
 
         return response()->json([

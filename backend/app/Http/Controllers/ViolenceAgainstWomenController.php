@@ -300,4 +300,101 @@ class ViolenceAgainstWomenController extends Controller
         return response()->json($vawsData);
     }
     
+    public function get_vaws_percentage(Request $request) {
+        $currentMonth = $request->month;
+        $data = ViolenceAgainstWomen::with('barangay')->get(); // Eager load the barangay relationship
+        $currentMonthData = array_filter($data->toArray(), function($entry) use ($currentMonth) {
+            return $entry['month'] === $currentMonth;
+        });
+    
+        $totalPhysicalCases = array_reduce($currentMonthData, function($carry, $entry) {
+            return $carry + $entry['physical_abuse'];
+        }, 0);
+    
+        $totalSexualCases = array_reduce($currentMonthData, function($carry, $entry) {
+            return $carry + $entry['sexual_abuse'];
+        }, 0);
+
+        $totalPsychologicalCases = array_reduce($currentMonthData, function($carry, $entry) {
+            return $carry + $entry['psychological_abuse'];
+        }, 0);
+
+        $totalEconomicCases = array_reduce($currentMonthData, function($carry, $entry) {
+            return $carry + $entry['economic_abuse'];
+        }, 0);
+    
+        $groupedData = [];
+        foreach ($currentMonthData as $entry) {
+            $barangayName = $entry['barangay']['name']; // Assuming 'name' is the field for barangay name
+            if (!isset($groupedData[$barangayName])) {
+                $groupedData[$barangayName] = [
+                    'physical' => 0,
+                    'sexual' => 0,
+                    'economic' => 0,
+                    'psychological' => 0
+                ];
+            }
+            $groupedData[$barangayName]['physical'] += $entry['physical_abuse'];
+            $groupedData[$barangayName]['sexual'] += $entry['sexual_abuse'];
+            $groupedData[$barangayName]['economic'] += $entry['economic_abuse'];
+            $groupedData[$barangayName]['psychological'] += $entry['psychological_abuse'];
+        }
+    
+        $highestPhysical = [
+            'barangay' => '',
+            'percentage' => 0
+        ];
+    
+        $highestSexual = [
+            'barangay' => '',
+            'percentage' => 0
+        ];
+
+        $highestPsychological = [
+            'barangay' => '',
+            'percentage' => 0
+        ];
+
+        $highestEconomic = [
+            'barangay' => '',
+            'percentage' => 0
+        ];
+    
+        foreach ($groupedData as $barangay => $cases) {
+            // Calculate physical abuse percentage
+            $physicalPercentage = ($totalPhysicalCases > 0) ? round(($cases['physical'] / $totalPhysicalCases) * 100, 2) : 0;
+            if ($physicalPercentage > $highestPhysical['percentage']) {
+                $highestPhysical['barangay'] = $barangay;
+                $highestPhysical['percentage'] = $physicalPercentage;
+            }
+    
+            // Calculate sexual abuse percentage
+            $sexualPercentage = ($totalSexualCases > 0) ? round(($cases['sexual'] / $totalSexualCases) * 100, 2) : 0;
+            if ($sexualPercentage > $highestSexual['percentage']) {
+                $highestSexual['barangay'] = $barangay;
+                $highestSexual['percentage'] = $sexualPercentage;
+            }
+
+            // Calculate psycho abuse percentage
+            $psychologicalPercentage = ($totalPsychologicalCases > 0) ? round(($cases['psychological'] / $totalPsychologicalCases) * 100, 2) : 0;
+            if ($physicalPercentage > $highestPsychological['percentage']) {
+                $highestPsychological['barangay'] = $barangay;
+                $highestPsychological['percentage'] = $psychologicalPercentage;
+            }
+
+            // Calculate echo abuse percentage
+            $economicPercentage = ($totalEconomicCases > 0) ? round(($cases['economic'] / $totalEconomicCases) * 100, 2) : 0;
+            if ($economicPercentage > $highestEconomic['percentage']) {
+                $highestEconomic['barangay'] = $barangay;
+                $highestEconomic['percentage'] = $economicPercentage;
+            }
+        }
+    
+        return response()->json([
+            'physical' => $highestPhysical,
+            'sexual' => $highestSexual,
+            'psychological' => $highestPsychological,
+            'economic' => $highestEconomic
+        ]);
+    }    
 }
