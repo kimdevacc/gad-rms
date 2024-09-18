@@ -152,6 +152,8 @@ class ViolenceAgainstChildrenController extends Controller
     public function vac(Request $request) {
         $vac = ViolenceAgainstChildren::findOrFail($request->id);
 
+        return $vac;
+
         return new ViolenceAgainstChildren($vac);
     }
 
@@ -183,6 +185,18 @@ class ViolenceAgainstChildrenController extends Controller
         $data = $this->build_data($request);
 
         $vacs->update($data);
+
+        return new ViolenceAgainstChildrenResource($vacs);
+    }
+
+    public function admin_update(Request $request)
+    {
+        $vacs = ViolenceAgainstChildren::findOrFail($request->id);
+
+        $vacs->update([
+            'remarks' => $request->remarks ?? 'RECORD ONLY',
+            'status' => $request->status
+        ]);
 
         return new ViolenceAgainstChildrenResource($vacs);
     }

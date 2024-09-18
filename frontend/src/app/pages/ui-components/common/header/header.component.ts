@@ -46,6 +46,10 @@ export class HeaderComponent {
 	}
 
 	ngOnInit() {
+		this.loadNotification()
+	}
+
+	loadNotification() {
 		this.apiService.getBarangayById(this.barangay).subscribe(res => {
 			if(res) {
 				this.barangayName = res?.name;

@@ -160,6 +160,18 @@ class ViolenceAgainstWomenController extends Controller
         return new ViolenceAgainstWomenResource($vaws);
     }
 
+    public function admin_update(Request $request)
+    {
+        $vaws = ViolenceAgainstWomen::findOrFail($request->id);
+
+        $vaws->update([
+            'remarks' => $request->remarks ?? 'RECORD ONLY',
+            'status' => $request->status
+        ]);
+
+        return new ViolenceAgainstWomenResource($vaws);
+    }
+
     public function destroy(Request $request)
     {
         $user = ViolenceAgainstWomen::findOrFail($request->id);
@@ -175,63 +187,69 @@ class ViolenceAgainstWomenController extends Controller
             'status' => $request->status
         ];
         
-        // Handling abuseRows
-        foreach ($request->abuseRows as $row) {
-            switch ($row['abuseType']) {
-                case 'Physical Abuse':
-                    $data['physical_abuse'] = $row['abuseValue'];
-                    break;
-                case 'Sexual Abuse':
-                    $data['sexual_abuse'] = $row['abuseValue'];
-                    break;
-                case 'Psychological Abuse':
-                    $data['psychological_abuse'] = $row['abuseValue'];
-                    break;
-                case 'Economic Abuse':
-                    $data['economic_abuse'] = $row['abuseValue'];
-                    break;
+        if(isset($request->abuseRows)) {
+            // Handling abuseRows
+            foreach ($request->abuseRows as $row) {
+                switch ($row['abuseType']) {
+                    case 'Physical Abuse':
+                        $data['physical_abuse'] = $row['abuseValue'];
+                        break;
+                    case 'Sexual Abuse':
+                        $data['sexual_abuse'] = $row['abuseValue'];
+                        break;
+                    case 'Psychological Abuse':
+                        $data['psychological_abuse'] = $row['abuseValue'];
+                        break;
+                    case 'Economic Abuse':
+                        $data['economic_abuse'] = $row['abuseValue'];
+                        break;
+                }
             }
         }
         
+        if(isset($request->actionRows)) {
         // Handling actionRows
-        foreach ($request->actionRows as $row) {
-            switch ($row['action']) {
-                case 'Issued BPO':
-                    $data['issued_bpo'] = $row['actionValue'];
-                    break;
-                case 'Referred to LoWDO':
-                    $data['referred_lowdo'] = $row['actionValue'];
-                    break;
-                case 'Referred to PNP':
-                    $data['referred_pnp'] = $row['actionValue'];
-                    break;
-                case 'Referred to NBI':
-                    $data['referred_nbi'] = $row['actionValue'];
-                    break;
-                case 'Referred to Court':
-                    $data['referred_court'] = $row['actionValue'];
-                    break;
-                case 'Referred for Medical':
-                    $data['referred_medical'] = $row['actionValue'];
-                    break;
+            foreach ($request->actionRows as $row) {
+                switch ($row['action']) {
+                    case 'Issued BPO':
+                        $data['issued_bpo'] = $row['actionValue'];
+                        break;
+                    case 'Referred to LoWDO':
+                        $data['referred_lowdo'] = $row['actionValue'];
+                        break;
+                    case 'Referred to PNP':
+                        $data['referred_pnp'] = $row['actionValue'];
+                        break;
+                    case 'Referred to NBI':
+                        $data['referred_nbi'] = $row['actionValue'];
+                        break;
+                    case 'Referred to Court':
+                        $data['referred_court'] = $row['actionValue'];
+                        break;
+                    case 'Referred for Medical':
+                        $data['referred_medical'] = $row['actionValue'];
+                        break;
+                }
             }
         }
         
+        if(isset($request->programsRows)) {
         // Handling programsRows
-        foreach ($request->programsRows as $row) {
-            switch ($row['program']) {
-                case 'Trainings/Seminars':
-                    $data['trainings'] = $row['programValue'];
-                    break;
-                case 'Counseling':
-                    $data['counseling'] = $row['programValue'];
-                    break;
-                case 'IEC':
-                    $data['iec'] = $row['programValue'];
-                    break;
-                case 'Fund Allocation':
-                    $data['fund_allocation'] = $row['programValue'];
-                    break;
+            foreach ($request->programsRows as $row) {
+                switch ($row['program']) {
+                    case 'Trainings/Seminars':
+                        $data['trainings'] = $row['programValue'];
+                        break;
+                    case 'Counseling':
+                        $data['counseling'] = $row['programValue'];
+                        break;
+                    case 'IEC':
+                        $data['iec'] = $row['programValue'];
+                        break;
+                    case 'Fund Allocation':
+                        $data['fund_allocation'] = $row['programValue'];
+                        break;
+                }
             }
         }
         return $data;

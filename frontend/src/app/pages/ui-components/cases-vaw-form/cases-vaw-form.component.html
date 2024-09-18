@@ -28,12 +28,12 @@
                     <h6>Type of Violence</h6>
                     <div class="row" *ngFor="let row of abuseRows; let i = index">
                         <div class="col-4">
-                            <select class="form-select" [(ngModel)]="row.abuseType" [disabled]="isSuperAdmin">
+                            <select class="form-select" [(ngModel)]="row.abuseType" [disabled]="isSuperAdmin || vawStatus === 'Received'">
                                 <option *ngFor="let abuse of availableAbuses(i)" [value]="abuse">{{ abuse }}</option>
                             </select>
                         </div>
                         <div class="col-4">
-                            <input type="number" class="form-control" [(ngModel)]="row.abuseValue" min="0" (ngModelChange)="updateTotalProgramValue()" [disabled]="isSuperAdmin">
+                            <input type="number" class="form-control" [(ngModel)]="row.abuseValue" min="0" (ngModelChange)="updateTotalProgramValue()" [disabled]="isSuperAdmin || vawStatus === 'Received'">
                         </div>
                         <div class="col-4" *ngIf="!isSuperAdmin">
                             <button class="btn btn-primary" (click)="addAbuseRow(i)" [disabled]="!row.abuseType && i != 0"> + </button> &nbsp;
@@ -44,12 +44,12 @@
                     <h6>Actions Taken</h6>
                     <div class="row" *ngFor="let row of actionRows; let i = index">
                         <div class="col-4">
-                            <select class="form-select" [(ngModel)]="row.action" [disabled]="isSuperAdmin">
+                            <select class="form-select" [(ngModel)]="row.action" [disabled]="isSuperAdmin || vawStatus === 'Received'">
                                 <option *ngFor="let perp of availableActions(i)" [value]="perp">{{ perp }}</option>
                             </select>
                         </div>
                         <div class="col-4">
-                            <input type="number" class="form-control" [(ngModel)]="row.actionValue" min="0" (ngModelChange)="updateTotalProgramValue()" [disabled]="isSuperAdmin">
+                            <input type="number" class="form-control" [(ngModel)]="row.actionValue" min="0" (ngModelChange)="updateTotalProgramValue()" [disabled]="isSuperAdmin || vawStatus === 'Received'">
                         </div>
                         <div class="col-4" *ngIf="!isSuperAdmin">
                             <button class="btn btn-primary" (click)="addActionRow(i)" [disabled]="!row.action && i != 0"> + </button> &nbsp;
@@ -60,12 +60,12 @@
                     <h6>Restorative Programs</h6>
                     <div class="row" *ngFor="let row of programsRows; let i = index">
                         <div class="col-4">
-                            <select class="form-select" [(ngModel)]="row.program" [disabled]="isSuperAdmin">
+                            <select class="form-select" [(ngModel)]="row.program" [disabled]="isSuperAdmin || vawStatus === 'Received'">
                                 <option *ngFor="let perp of availablePrograms(i)" [value]="perp">{{ perp }}</option>
                             </select>
                         </div>
                         <div class="col-4">
-                            <input type="number" class="form-control" [(ngModel)]="row.programValue" min="0" (ngModelChange)="updateTotalProgramValue()" [disabled]="isSuperAdmin">
+                            <input type="number" class="form-control" [(ngModel)]="row.programValue" min="0" (ngModelChange)="updateTotalProgramValue()" [disabled]="isSuperAdmin || vawStatus === 'Received'">
                         </div>
                         <div class="col-4" *ngIf="!isSuperAdmin">
                             <button class="btn btn-primary" (click)="addProgramRow(i)" [disabled]="!row.program && i != 0"> + </button> &nbsp;
@@ -77,7 +77,7 @@
                         <div class="col">
                             <div class="mb-3">
                                 <h6>Remarks</h6>
-                                <textarea type="text" class="form-control" [(ngModel)]="remarks"></textarea>
+                                <textarea type="text" class="form-control" [(ngModel)]="remarks" [disabled]="vawStatus === 'Received'"></textarea>
                             </div>
                         </div>
                     </div>
@@ -87,9 +87,11 @@
     </div>
 </div>
 <div class="modal-footer">
-    <div *ngIf="vawStatus !== 'Received'">
+    <div *ngIf="vawStatus === 'Draft' || vawStatus === ''">
         <button type="submit" class="btn btn-primary m-1" (click)="submitReport()" *ngIf="vawStatus === 'Draft'">Submit</button>
         <button type="submit" class="btn btn-primary m-1" (click)="saveAsDraft()" *ngIf="!isSuperAdmin">Save as Draft</button>
+    </div>
+    <div *ngIf="vawStatus === 'Submitted'">
         <button type="submit" class="btn btn-primary m-1" (click)="receivedVaw()" *ngIf="isSuperAdmin">Received</button>
     </div>
     <button type="button" class="btn btn-outline-dark" (click)="activeModal.dismiss('Close click')">Close</button>

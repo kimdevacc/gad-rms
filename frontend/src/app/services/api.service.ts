@@ -251,6 +251,19 @@ export class ApiService {
         );
     }
 
+    updateAdminVaws(vaws: any): Observable<ViolenceAgainstWomen> {
+        const headers = new HttpHeaders().set('Authorization', 'Bearer ' + this.authToken);
+        return this.http.patch<any>(`${this.apiUrl}/vaw/admin_update`, vaws, { headers }).pipe(
+            tap((response: any) => {
+                // console.log(response);
+            }),
+            catchError((error: any) => {
+                console.error('Error saving vaws:', error);
+                throw error; // Rethrow the error after logging
+            })
+        );
+    }
+
     deleteVaws(id: number): Observable<ViolenceAgainstWomen> {
         const headers = new HttpHeaders().set('Authorization', 'Bearer ' + this.authToken);
 
@@ -331,6 +344,19 @@ export class ApiService {
             }),
             catchError((error: any) => {
                 console.error('Error saving vacs:', error);
+                throw error; // Rethrow the error after logging
+            })
+        );
+    }
+
+    updateAdminVacs(vaws: any): Observable<ViolenceAgainstChildren> {
+        const headers = new HttpHeaders().set('Authorization', 'Bearer ' + this.authToken);
+        return this.http.patch<any>(`${this.apiUrl}/vac/admin_update`, vaws, { headers }).pipe(
+            tap((response: any) => {
+                // console.log(response);
+            }),
+            catchError((error: any) => {
+                console.error('Error saving vaws:', error);
                 throw error; // Rethrow the error after logging
             })
         );

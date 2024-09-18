@@ -49,14 +49,16 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/vaws/all/{year}/{month}', [ViolenceAgainstWomenController::class, 'get_all_vaws']);
     Route::post('/vaws', [ViolenceAgainstWomenController::class, 'store']);
     Route::patch('/vaws', [ViolenceAgainstWomenController::class, 'update']);
+    Route::patch('/vaw/admin_update', [ViolenceAgainstWomenController::class, 'admin_update']);
     Route::delete('/vaws/{id}', [ViolenceAgainstWomenController::class, 'destroy']);
     Route::get('/vaws/all/by-param', [ViolenceAgainstWomenController::class, 'get_all_vaws_by_param']);
 
     Route::get('/vacs', [ViolenceAgainstChildrenController::class, 'vacs']);
-    Route::get('/vac/{id}', [ViolenceAgainstWomenController::class, 'vac']);
+    Route::get('/vac/{id}', [ViolenceAgainstChildrenController::class, 'vac']);
     Route::get('/vacs/all/{year}/{month}', [ViolenceAgainstChildrenController::class, 'get_all_vacs']);
     Route::post('/vacs', [ViolenceAgainstChildrenController::class, 'store']);
     Route::patch('/vacs', [ViolenceAgainstChildrenController::class, 'update']);
+    Route::patch('/vac/admin_update', [ViolenceAgainstChildrenController::class, 'admin_update']);
     Route::delete('/vacs/{id}', [ViolenceAgainstChildrenController::class, 'destroy']);
 
     Route::get('/settings', [SettingsController::class, 'settings']);

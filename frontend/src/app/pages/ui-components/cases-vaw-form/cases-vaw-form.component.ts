@@ -252,16 +252,10 @@ export class CasesVawFormComponent implements OnInit {
         const values = {
             id: this.vawData?.id ?? 0,
             remarks: this.remarks,
-            month: this.month,
-            barangay: this.barangay,
-            number_vaw: this.totalProgramValue,
-            abuseRows: this.abuseRows,
-            actionRows: this.actionRows,
-            programsRows: this.programsRows,
             status: 'Received'
         }
 		if(this.vawData) {
-            this.apiService.updateVaws(values).subscribe((res) => {
+            this.apiService.updateAdminVaws(values).subscribe((res) => {
 				this.activeModal.close();
                 this.openSnackBar('VAWs Record updated successfully', 'Close');
                 this.recordCreatedVaw.emit(res);
@@ -273,16 +267,10 @@ export class CasesVawFormComponent implements OnInit {
         const values = {
             id: this.vawData?.id ?? 0,
             remarks: this.remarks,
-            month: this.month,
-            barangay: this.barangay,
-            number_vaw: this.totalProgramValue,
-            abuseRows: this.abuseRows,
-            actionRows: this.actionRows,
-            programsRows: this.programsRows,
             status: 'Submitted'
         }
 		if(this.vawData) {
-            this.apiService.updateVaws(values).subscribe((res) => {
+            this.apiService.updateAdminVaws(values).subscribe((res) => {
 				this.activeModal.close();
                 this.openSnackBar('VAWs Record updated successfully', 'Close');
                 this.recordCreatedVaw.emit(res);

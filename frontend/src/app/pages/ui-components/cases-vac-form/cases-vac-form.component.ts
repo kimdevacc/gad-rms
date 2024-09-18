@@ -407,19 +407,10 @@ export class CasesVacFormComponent implements OnInit {
         const values = {
             id: this.vacData?.id ?? 0,
             remarks: this.remarks,
-            month: this.month,
-            barangay: this.barangay,
-            number_vac: this.totalProgramValue,
-            genderRows: this.genderRows,
-            ageRows: this.ageRows,
-            abuseRows: this.abuseRows,
-            perpetratorsRows: this.perpetratorsRows,
-            actionRows: this.actionRows,
-            programsRows: this.programsRows,
             status: 'Received'
         }
         if (this.vacData) {
-            this.apiService.updateVacs(values).subscribe((res: ViolenceAgainstChildren | undefined) => {
+            this.apiService.updateAdminVacs(values).subscribe((res: ViolenceAgainstChildren | undefined) => {
                 this.activeModal.close();
                 this.openSnackBar('VACs Record updated successfully', 'Close');
                 this.recordCreatedVac.emit(res);
@@ -431,19 +422,10 @@ export class CasesVacFormComponent implements OnInit {
         const values = {
             id: this.vacData?.id ?? 0,
             remarks: this.remarks,
-            month: this.month,
-            barangay: this.barangay,
-            number_vac: this.totalProgramValue,
-            genderRows: this.genderRows,
-            ageRows: this.ageRows,
-            abuseRows: this.abuseRows,
-            perpetratorsRows: this.perpetratorsRows,
-            actionRows: this.actionRows,
-            programsRows: this.programsRows,
             status: 'Submitted'
         }
         if (this.vacData) {
-            this.apiService.updateVacs(values).subscribe((res: ViolenceAgainstChildren | undefined) => {
+            this.apiService.updateAdminVacs(values).subscribe((res: ViolenceAgainstChildren | undefined) => {
                 this.activeModal.close();
                 this.openSnackBar('VACs Record updated successfully', 'Close');
                 this.recordCreatedVac.emit(res);
