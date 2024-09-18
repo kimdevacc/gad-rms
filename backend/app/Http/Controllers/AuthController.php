@@ -32,7 +32,8 @@ class AuthController extends Controller
                 'token' => $token,
                 'role' => $user->role,
                 'currentUser' => $user->id,
-                'barangay' => $user->barangay
+                'barangay' => $user->barangay,
+                'twoFactorAuth' => $user->two_factor
             ], 200);
         } else {
             return response()->json(['error' => 'Unauthorized'], 401);
@@ -52,6 +53,11 @@ class AuthController extends Controller
                 'transaction' => 'Logged Out'
             ],
             'old_values' => []
+        ]);
+
+        $user->update([
+            'two_factor' => null,
+            'two_factor_expires_at' => null,
         ]);
 
         $request->user()->tokens()->delete();

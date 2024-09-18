@@ -28,6 +28,8 @@ class CreateUsersTable extends Migration
             $table->string('barangay')->nullable();
             $table->string('contact_number')->nullable();
             $table->string("image")->nullable();
+            $table->string('otp')->nullable();
+            $table->dateTime('otp_expires_at')->nullable();
             $table->string('two_factor')->nullable();
             $table->dateTime('two_factor_expires_at')->nullable();
             $table->rememberToken();

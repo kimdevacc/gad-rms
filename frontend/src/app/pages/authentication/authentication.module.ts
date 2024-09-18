@@ -11,6 +11,8 @@ import { LoginComponent } from './login/login.component';
 import { AuthenticationRoutes } from './authentication.routing';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { TwoFactorComponent } from './two-factor/two-factor.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
 	imports: [
@@ -23,11 +25,13 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
 		MatButtonModule,
 		FormsModule,
 		ReactiveFormsModule,
+		MatProgressSpinnerModule
 	],
 	declarations: [
 		LoginComponent,
 		ForgotPasswordComponent,
-		ResetPasswordComponent
+		ResetPasswordComponent,
+		TwoFactorComponent
 	]
 })
 export class AuthenticationModule { }

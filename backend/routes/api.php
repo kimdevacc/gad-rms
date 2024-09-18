@@ -12,6 +12,7 @@ use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\AuditsController;
 use App\Http\Controllers\ArchiveController;
 use App\Http\Controllers\ForgotPasswordController;
+use App\Http\Controllers\TwoFactorAuthenticationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +30,11 @@ Route::post('forgot-password', [ForgotPasswordController::class, 'forgot_passwor
 Route::post('reset-password', [ForgotPasswordController::class, 'reset']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
+    Route::post('/2fa/verify', [TwoFactorAuthenticationController::class, 'verify']);
+    Route::get('/2fa/generate', [UserController::class, 'email_generated_session_otp']);
+});
+
+Route::middleware(['auth:sanctum', '2fa'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     
     Route::get('/cities', [CityController::class, 'cities']);

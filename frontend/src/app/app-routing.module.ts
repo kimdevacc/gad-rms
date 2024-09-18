@@ -4,6 +4,7 @@ import { AuthGuard } from './guards/auth.guard';
 import { CommonComponent } from './pages/ui-components/common/common.component';
 import { ForgotPasswordComponent } from './pages/authentication/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './pages/authentication/reset-password/reset-password.component';
+import { TwoFactorComponent } from './pages/authentication/two-factor/two-factor.component';
 
 const routes: Routes = [
 	{
@@ -49,6 +50,10 @@ const routes: Routes = [
         path: "reset-password",
         component: ResetPasswordComponent,
     },
+	{
+        path: "two-factor-authorization",
+        component: TwoFactorComponent,
+    }
 ];
 
 @NgModule({

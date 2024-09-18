@@ -4,6 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Auth;
+
+use App\Mail\OTP;
+
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Models\Barangay;
@@ -161,5 +166,29 @@ class UserController extends Controller
         }
 
         return response()->json($notificationData);
+    }
+
+    public function email_generated_session_otp()
+    {
+        $user = Auth::user();
+        $otp = rand(100000, 999999);
+        $otp_expires_at = \Carbon\Carbon::now()->addMinutes(1);
+        
+        $user->update([
+            'otp' => $otp,
+            'otp_expires_at' => $otp_expires_at,
+        ]);
+
+        return $user;
+
+        Mail::to($user->email)->send(new OTP($otp));
+
+        return response()->json([
+            'data' => true,
+            'email' => $user->email,
+            'message' => 'OTP sent',
+            'message_sent_to' => $user->email,
+            'otp_expires_at' => $otp_expires_at->toDateTimeString(),
+        ]);
     }
 }

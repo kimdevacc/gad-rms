@@ -21,6 +21,36 @@ export class ApiService {
         this.authToken = localStorage.getItem('authToken');
     }
 
+    generateOtp(): Observable<any> {
+        if (this.authToken) {
+            const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authToken}`);
+            return this.http.get<any>(`${this.apiUrl}/2fa/generate`, { headers }).pipe(
+                tap((response) => {
+                    console.log(response)
+                    
+                })
+            );
+        } else {
+            console.error('Authentication token is missing');
+            return of([]);
+        }
+    }
+
+    verifyOtp(otp: string): Observable<any> {
+        if (this.authToken) {
+            const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authToken}`);
+            return this.http.post<any>(`${this.apiUrl}/2fa/verify`, { otp: otp }, { headers }).pipe(
+                tap((response) => {
+                    console.log(response)
+                    
+                })
+            );
+        } else {
+            console.error('Authentication token is missing');
+            return of([]);
+        }
+    }
+
     getCities(): Observable<any[]> {
         if (this.authToken) {
             const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authToken}`);

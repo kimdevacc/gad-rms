@@ -20,7 +20,6 @@ export class AuthService {
     login(credentials: FormGroup): Observable<any> {
         return this.http.post<any>(`${this.apiUrl}/login`, credentials.value).pipe(
             tap((response) => {
-                console.log(response)
                 if (response.token) {
                     localStorage.setItem(this.authTokenKey, response.token);
                     localStorage.setItem(this.userRoleKey, response.role);

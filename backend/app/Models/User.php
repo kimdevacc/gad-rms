@@ -36,7 +36,11 @@ class User extends Authenticatable implements Auditable
         'barangay',
         'address_line_1',
         'password',
-        'role'
+        'role',
+        'otp',
+        'otp_expires_at',
+        'two_factor',
+        'two_factor_expires_at'
     ];
 
     /**
@@ -44,10 +48,7 @@ class User extends Authenticatable implements Auditable
      *
      * @var array<int, string>
      */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+    protected $hidden = ['password', 'remember_token', 'two_factor', 'two_factor_expires_at'];
 
     /**
      * The attributes that should be cast.
@@ -56,6 +57,7 @@ class User extends Authenticatable implements Auditable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'two_factor_expires_at' => 'datetime',
     ];
 
     protected $auditExclude = ['password'];

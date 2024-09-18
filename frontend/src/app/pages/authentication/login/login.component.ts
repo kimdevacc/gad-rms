@@ -27,10 +27,13 @@ export class LoginComponent {
     login() {
         this.authService.login(this.credentialsForm).subscribe(response => {
             if(response) {
-                // this.router.navigate(['app/dashboard']);
-                this.router.navigate(['app/dashboard']).then(() => {
-                    window.location.reload();
-                });
+                if(response.twoFactorAuth) {
+                    this.router.navigate(['app/dashboard']).then(() => {
+                        window.location.reload();
+                    });
+                } else {
+                    this.router.navigate(['two-factor-authorization']);
+                }
             }
         });
     }

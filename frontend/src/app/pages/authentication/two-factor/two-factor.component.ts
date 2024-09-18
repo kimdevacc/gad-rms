@@ -1,44 +1,28 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../../../services/auth.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { PasswordMatchValidator } from '../../ui-components/common/validator/password-match.validator';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ApiService } from '../../../services/api.service';
+import { Router } from '@angular/router';
 
 @Component({
-    selector: 'app-reset-password',
-    templateUrl: './reset-password.component.html',
-    styleUrls: ['./reset-password.component.scss']
+    selector: 'app-two-factor',
+    templateUrl: './two-factor.component.html',
+    styleUrls: ['./two-factor.component.scss']
 })
-export class ResetPasswordComponent {
+export class TwoFactorComponent {
 
-    credentialsForm: FormGroup;
-    loginError: boolean = false;
-    token: string | null = null;
-    email: string | null = null;
+    otpCode: string = "";
+
+    isLoading = false;
+    otpErroMsg: string = "";
 
     constructor(
-        private authService: AuthService,
-        private router: Router,
-        private route: ActivatedRoute,
-        private formBuilder: FormBuilder,
-        private _snackBar: MatSnackBar
+        private apiService: ApiService,
+        private _snackBar: MatSnackBar,
+        private router: Router
     ) {
-        this.credentialsForm = this.formBuilder.group({
-            password: ['', [Validators.required]],
-            confirm_password: ['', [Validators.required]]
-        }, { validator: PasswordMatchValidator() });
     }
 
     ngOnInit(): void {
-        this.route.queryParams.subscribe(params => {
-            this.token = params['token'];
-            this.email = params['email'];
-
-            // Now you can use token and email as needed
-            console.log('Token:', this.token);
-            console.log('Email:', this.email);
-        });
     }
 
     openSnackBar(message: string, action: string) {
@@ -47,26 +31,29 @@ export class ResetPasswordComponent {
         });
     }
 
-    resetPassword() {
-        if (this.credentialsForm.valid) {
-            let value = {
-                token: this.token,
-                email: this.email,
-                password: this.credentialsForm.value.password,
-                password_confirmation: this.credentialsForm.value.confirm_password
+    generateOtp() {
+        this.isLoading = true;
+        this.apiService.generateOtp().subscribe(response => {
+            if(response) {
+                this.isLoading = false;
             }
+        });
+    }
 
-            this.authService.resetPassword(value).subscribe({
-                next: response => {
-                    // Handle successful response
-                    if (response) {
-                        this.router.navigate(['login']);
+    verifyOtp() {
+        this.apiService.verifyOtp(this.otpCode).subscribe({
+            next: response => {
+                if (response) {
+                    if(response.message === "OTP verified successfully") {
+                        this.router.navigate(['app/dashboard']).then(() => {
+                            window.location.reload();
+                        });
                     }
-                },
-                error: (error: any) => {
-                    this.openSnackBar(error?.error?.errors?.password[0], 'Close');
                 }
-            });
-        }
+            },
+            error: (error: any) => {
+                this.otpErroMsg = error?.error?.message;
+            }
+        });
     }
 }
