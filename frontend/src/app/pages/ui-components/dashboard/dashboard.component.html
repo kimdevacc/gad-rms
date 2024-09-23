@@ -80,7 +80,7 @@
 			</div> -->
 		</div>
 	</div>
-	<div class="col-lg-12">
+	<div class="col-lg-6">
 		<mat-card class="cardWithShadow">
 			<mat-card-content class="p-24">
 				<div class="d-flex w-100 mb-3">
@@ -96,6 +96,15 @@
 					</div>
 				</div>
 				<div class="row">
+					<apx-chart 
+						*ngIf="vawOverviewChart"
+						[series]="vawOverviewChart.series" 
+						[dataLabels]="vawOverviewChart.dataLabels"
+						[chart]="vawOverviewChart.chart" 
+						[labels]="vawOverviewChart.labels"
+					></apx-chart>
+				</div>
+				<!-- <div class="row">
 					<div class="col-lg-3 col-sm-3" *ngIf="percentageVaws?.sexual?.barangay !== ''">
 						<div class="card bg-pink mb-3">
 							<div class="card-header">
@@ -192,11 +201,11 @@
 							</div>
 						</div>
 					</div>
-				</div>
+				</div> -->
 			</mat-card-content>
 		</mat-card>
 	</div>
-	<div class="col-lg-12">
+	<div class="col-lg-6">
 		<mat-card class="cardWithShadow">
 			<mat-card-content class="p-24">
 				<div class="d-flex w-100 mb-3">
@@ -212,6 +221,15 @@
 					</div>
 				</div>
 				<div class="row">
+					<apx-chart 
+						*ngIf="vacOverviewChart"
+						[series]="vacOverviewChart.series" 
+						[dataLabels]="vacOverviewChart.dataLabels"
+						[chart]="vacOverviewChart.chart" 
+						[labels]="vacOverviewChart.labels"
+					></apx-chart>
+				</div>
+				<!-- <div class="row">
 					<div class="col-lg-3 col-sm-3" *ngIf="percentageVacs?.male?.barangay !== ''">
 						<div class="card bg-pink mb-3">
 							<div class="card-header">
@@ -504,7 +522,7 @@
 							</div>
 						</div>
 					</div>
-				</div>
+				</div> -->
 			</mat-card-content>
 		</mat-card>
 	</div>

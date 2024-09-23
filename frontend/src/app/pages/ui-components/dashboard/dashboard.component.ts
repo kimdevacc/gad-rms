@@ -76,6 +76,8 @@ export class DashboardComponent {
 	public salesOverviewChartMonthly!: Partial<SalesOverviewChart> | any;
 	public salesOverviewChartQuarterly!: Partial<SalesOverviewChart> | any;
 	public chartOptions: Partial<ChartOptions> | any;
+	public vawOverviewChart!: Partial<SalesOverviewChart> | any;
+	public vacOverviewChart!: Partial<SalesOverviewChart> | any;
 
 	displayedColumns: string[] = ['assigned', 'name', 'priority', 'budget'];
 	vac: ViolenceAgainstChildren[] = [];
@@ -450,16 +452,105 @@ export class DashboardComponent {
 
 	initializeVawCasePercentage(value: string) {
 		this.apiService.getAllVawsPercentage(value).subscribe(res => {
-			if(res) {
+			if(res.sexual.barangay && res.physical.barangay && res.psychological.barangay && res.economic.barangay) {
 				this.percentageVaws = res;
+				const vawBrackets = [
+					`Sexual Abuse - ${res.sexual.barangay}`,
+					`Physical Abuse - ${res.physical.barangay}`,
+					`Psychological Abuse - ${res.psychological.barangay}`,
+					`Economic Abuse - ${res.economic.barangay}`
+				];
+				this.vawOverviewChart = {
+					series: [
+						res.sexual.percentage,
+						res.physical.percentage,
+						res.psychological.percentage,
+						res.economic.percentage
+					],
+					chart: {
+						width: 600,
+						type: 'pie',
+					},
+					labels: vawBrackets,
+					responsive: [{
+						breakpoint: 480,
+						options: {
+							chart: {
+								width: 600
+							},
+							legend: {
+								position: 'bottom'
+							}
+						}
+					}]
+				};
 			}
 		})
 	}
 
 	initializeVacCasePercentage(value: string) {
 		this.apiService.getAllVacsPercentage(value).subscribe(res => {
-			if(res) {
+			if(
+				res.male.barangay && 
+				res.female.barangay && 
+				res.range_one.barangay && 
+				res.range_two.barangay && 
+				res.range_three.barangay && 
+				res.range_four.barangay && 
+				res.range_five.barangay && 
+				res.sexual_abuse.barangay && 
+				res.physical_abuse.barangay && 
+				res.psychological_abuse.barangay && 
+				res.neglect.barangay && 
+				res.others.barangay
+			) {
 				this.percentageVacs = res;
+				const vacBrackets = [
+					`Male Abuse - ${res.male.barangay}`,
+					`Female Abuse - ${res.female.barangay}`,
+					`0-4y - ${res.range_one.barangay}`,
+					`6-9y - ${res.range_two.barangay}`,
+					`10-14y - ${res.range_three.barangay}`,
+					`15-17y - ${res.range_four.barangay}`,
+					`18 up PW - ${res.range_five.barangay}`,
+					`Sexual Abuse - ${res.sexual_abuse.barangay}`,
+					`Physical Abuse - ${res.physical_abuse.barangay}`,
+					`Psychological Abus - ${res.psychological_abuse.barangay}`,
+					`Neglect - ${res.neglect.barangay}`,
+					`Others - ${res.others.barangay}`,
+				];
+				this.vacOverviewChart = {
+					series: [
+						res.male.percentage,
+						res.female.percentage,
+						res.range_one.percentage,
+						res.range_two.percentage,
+						res.range_three.percentage,
+						res.range_four.percentage,
+						res.range_five.percentage,
+						res.sexual_abuse.percentage,
+						res.physical_abuse.percentage,
+						res.psychological_abuse.percentage,
+						res.neglect.percentage,
+						res.others.percentage,
+					],
+					chart: {
+						width: 600,
+						type: 'pie',
+					},
+					labels: vacBrackets,
+					responsive: [{
+						breakpoint: 480,
+						options: {
+							chart: {
+								width: 600
+							},
+							legend: {
+								position: 'bottom'
+							}
+						}
+					}]
+				};
 			}
 		})
 	}

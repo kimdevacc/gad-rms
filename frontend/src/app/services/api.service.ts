@@ -211,10 +211,10 @@ export class ApiService {
             return of([]);
         }
     }
-    getAllVawsPercentage(month: any): Observable<any[]> {
+    getAllVawsPercentage(month: any): Observable<any> {
         if (this.authToken) {
             const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authToken}`);
-            return this.http.post<any[]>(`${this.apiUrl}/vaws/all/by-percentage`, { month: month }, { headers }).pipe(
+            return this.http.post<any>(`${this.apiUrl}/vaws/all/by-percentage`, { month: month }, { headers }).pipe(
                 catchError((error: any) => {
                     console.error('Error fetching vaws:', error);
                     return of([]);
@@ -324,10 +324,10 @@ export class ApiService {
     /* END VAWS */
 
     /* START VACS */
-    getAllVacsPercentage(month: any): Observable<any[]> {
+    getAllVacsPercentage(month: any): Observable<any> {
         if (this.authToken) {
             const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authToken}`);
-            return this.http.post<any[]>(`${this.apiUrl}/vacs/all/by-percentage`, { month: month }, { headers }).pipe(
+            return this.http.post<any>(`${this.apiUrl}/vacs/all/by-percentage`, { month: month }, { headers }).pipe(
                 catchError((error: any) => {
                     console.error('Error fetching vaws:', error);
                     return of([]);
