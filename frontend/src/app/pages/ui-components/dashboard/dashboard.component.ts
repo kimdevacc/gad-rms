@@ -72,9 +72,14 @@ export class DashboardComponent {
 	users: User[] = [];
 	barangays: any[] = [];
 
-	public salesOverviewChart!: Partial<SalesOverviewChart> | any;
-	public salesOverviewChartMonthly!: Partial<SalesOverviewChart> | any;
-	public salesOverviewChartQuarterly!: Partial<SalesOverviewChart> | any;
+	public vawOverviewBarChart!: Partial<SalesOverviewChart> | any;
+	public vawOverviewBarChartMonthly!: Partial<SalesOverviewChart> | any;
+	public vawOverviewBarChartQuarterly!: Partial<SalesOverviewChart> | any;
+
+	public vacOverviewBarChart!: Partial<SalesOverviewChart> | any;
+	public vacOverviewBarChartMonthly!: Partial<SalesOverviewChart> | any;
+	public vacOverviewBarChartQuarterly!: Partial<SalesOverviewChart> | any;
+
 	public chartOptions: Partial<ChartOptions> | any;
 	public vawOverviewChart!: Partial<SalesOverviewChart> | any;
 	public vacOverviewChart!: Partial<SalesOverviewChart> | any;
@@ -94,7 +99,8 @@ export class DashboardComponent {
 	monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 	quarterNames = ['Q1', 'Q2', 'Q3', 'Q4'];
 	reportType: string[] = ['Year', 'Monthly', 'Quarterly'];
-	selectedReportType: string = 'Year';
+	selectedVawReportType: string = 'Year';
+	selectedVacReportType: string = 'Year';
 
 	totalVawCaseSubmitted = 0;
 	totalVacCaseSubmitted = 0;
@@ -104,7 +110,8 @@ export class DashboardComponent {
 
 	isLoading = true;
 
-	allYearData: any[] = [];
+	allYearVawData: any[] = [];
+	allYearVacData: any[] = [];
 
 	percentageVaws: any;
 	percentageVacs: any;
@@ -125,8 +132,9 @@ export class DashboardComponent {
 			this.apiService.getBarangays(),
 			this.apiService.getAllVacs(this.currentYear, this.currentMonth),
 			this.apiService.getAllVaws(this.currentYear, this.currentMonth),
-			this.apiService.getAllVawsByParameter()
-		]).subscribe(([res1, res2, res3, res4, res5, res6, res7]) => {
+			this.apiService.getAllVawsByParameter(),
+			this.apiService.getAllVacsByParameter()
+		]).subscribe(([res1, res2, res3, res4, res5, res6, res7, res8]) => {
 			if (res1 && res2) {
 				this.vaw = res1;
 				this.vac = res2;
@@ -143,39 +151,51 @@ export class DashboardComponent {
 				this.allVacs = res5;
 				this.allVaws = res6;
 				this.isLoading = false;
-				this.allYearData = res7;
-				this.updateCharts()
+				this.allYearVawData = res7;
+				this.allYearVacData = res8;
+				this.updateVawCharts();
+				this.updateVacCharts();
 				this.initializeVawCasePercentage(this.currentMonth);
 				this.initializeVacCasePercentage(this.currentMonth);
 			}
 		});
 	}
 
-	updateCharts() {
-		if (this.selectedReportType === 'Year') {
-			this.initializeChart();
-		} else if (this.selectedReportType === 'Monthly') {
-			this.initializeMonthlyChart(this.currentMonth);
-		} else if (this.selectedReportType === 'Quarterly') {
-			this.initializeQuarterlyChart('Q1');
+	updateVawCharts() {
+		if (this.selectedVawReportType === 'Year') {
+			this.initializeVawChart();
+		} else if (this.selectedVawReportType === 'Monthly') {
+			this.initializeMonthlyVawChart(this.currentMonth);
+		} else if (this.selectedVawReportType === 'Quarterly') {
+			this.initializeQuarterlyVawChart('Q1');
 		}
 	}
 
-	initializeChart() {
+	updateVacCharts() {
+		if (this.selectedVacReportType === 'Year') {
+			this.initializeVacChart();
+		} else if (this.selectedVacReportType === 'Monthly') {
+			this.initializeMonthlyVacChart(this.currentMonth);
+		} else if (this.selectedVacReportType === 'Quarterly') {
+			this.initializeQuarterlyVacChart('Q1');
+		}
+	}
+
+	initializeVawChart() {
 		let seriesList: any[] = [];
-		for (let i = 0; i < this.allYearData.length; i++) {
+		for (let i = 0; i < this.allYearVawData.length; i++) {
 			let tempData = [];
-			for (let j = 0; j < this.allYearData[i].data.length; j++) {
-				tempData.push(this.allYearData[i].data[j].total);
+			for (let j = 0; j < this.allYearVawData[i].data.length; j++) {
+				tempData.push(this.allYearVawData[i].data[j].total);
 			}
-			seriesList.push({ name: this.allYearData[i].name, data: tempData });
+			seriesList.push({ name: this.allYearVawData[i].name, data: tempData });
 		}
 		seriesList = this.currentBarangay === 'All' ? seriesList : seriesList.filter(r => r.name === this.currentBarangay);
-		this.salesOverviewChart = {
+		this.vawOverviewBarChart = {
 			series: seriesList,
 			chart: {
 				height: 350,
-				type: 'line',
+				type: 'bar',
 				zoom: {
 					enabled: false
 				}
@@ -202,17 +222,58 @@ export class DashboardComponent {
 		};
 	}
 
-	initializeMonthlyChart(month: string) {
+	initializeVacChart() {
+		let seriesList: any[] = [];
+		for (let i = 0; i < this.allYearVacData.length; i++) {
+			let tempData = [];
+			for (let j = 0; j < this.allYearVacData[i].data.length; j++) {
+				tempData.push(this.allYearVacData[i].data[j].total);
+			}
+			seriesList.push({ name: this.allYearVacData[i].name, data: tempData });
+		}
+		seriesList = this.currentBarangay === 'All' ? seriesList : seriesList.filter(r => r.name === this.currentBarangay);
+		this.vacOverviewBarChart = {
+			series: seriesList,
+			chart: {
+				height: 350,
+				type: 'bar',
+				zoom: {
+					enabled: false
+				}
+			},
+			dataLabels: {
+				enabled: false
+			},
+			stroke: {
+				curve: 'straight'
+			},
+			title: {
+				text: 'Product Trends by Month',
+				align: 'left'
+			},
+			grid: {
+				row: {
+					colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+					opacity: 0.5
+				},
+			},
+			xaxis: {
+				categories: this.monthNames,
+			}
+		};
+	}
+
+	initializeMonthlyVawChart(month: string) {
 		let seriesList: any[] = [];
 
-		for (let i = 0; i < this.allYearData.length; i++) {
+		for (let i = 0; i < this.allYearVawData.length; i++) {
 			let filteredData = [];
 			let filteredCategories = [];
 
-			for (let j = 0; j < this.allYearData[i].data.length; j++) {
-				const dataItem = this.allYearData[i].data[j];
+			for (let j = 0; j < this.allYearVawData[i].data.length; j++) {
+				const dataItem = this.allYearVawData[i].data[j];
 
-				if (dataItem.month === month && (this.currentBarangay === 'All' || this.allYearData[i].name === this.currentBarangay)) {
+				if (dataItem.month === month && (this.currentBarangay === 'All' || this.allYearVawData[i].name === this.currentBarangay)) {
 					filteredData.push(dataItem.total);
 					filteredCategories.push(dataItem.month);
 				}
@@ -220,17 +281,17 @@ export class DashboardComponent {
 
 			if (filteredData.length > 0) {
 				seriesList.push({
-					name: this.allYearData[i].name,
+					name: this.allYearVawData[i].name,
 					data: filteredData
 				});
 			}
 		}
 
-		this.salesOverviewChartMonthly = {
+		this.vawOverviewBarChartMonthly = {
 			series: seriesList,
 			chart: {
 				height: 350,
-				type: 'line',
+				type: 'bar',
 				zoom: {
 					enabled: false
 				}
@@ -257,42 +318,62 @@ export class DashboardComponent {
 		};
 	}
 
+	initializeMonthlyVacChart(month: string) {
+		let seriesList: any[] = [];
 
-	_initializeMonthlyChart(month: string) {
-		const filteredVac = this.currentBarangay === 'All' ? this.vac : this.vac.filter(v => v.barangay === this.currentBarangay.toString());
-		const filteredVaw = this.currentBarangay === 'All' ? this.vaw : this.vaw.filter(v => v.barangay === this.currentBarangay.toString());
+		for (let i = 0; i < this.allYearVacData.length; i++) {
+			let filteredData = [];
+			let filteredCategories = [];
 
-		const currentMonthVac = filteredVac.filter(f => f.month === month).map(item => item.number_vac);
-		const currentMonthVaw = filteredVaw.filter(f => f.month === month).map(item => item.number_vaw);
+			for (let j = 0; j < this.allYearVacData[i].data.length; j++) {
+				const dataItem = this.allYearVacData[i].data[j];
 
-		this.salesOverviewChartMonthly = {
-			series: [
-				{
-					name: 'Violence Against Children',
-					data: currentMonthVac,
-					color: '#5D87FF',
+				if (dataItem.month === month && (this.currentBarangay === 'All' || this.allYearVacData[i].name === this.currentBarangay)) {
+					filteredData.push(dataItem.total);
+					filteredCategories.push(dataItem.month);
+				}
+			}
+
+			if (filteredData.length > 0) {
+				seriesList.push({
+					name: this.allYearVacData[i].name,
+					data: filteredData
+				});
+			}
+		}
+
+		this.vacOverviewBarChartMonthly = {
+			series: seriesList,
+			chart: {
+				height: 350,
+				type: 'bar',
+				zoom: {
+					enabled: false
+				}
+			},
+			dataLabels: {
+				enabled: false
+			},
+			stroke: {
+				curve: 'smooth'
+			},
+			title: {
+				text: 'Product Trends by Month',
+				align: 'left'
+			},
+			grid: {
+				row: {
+					colors: ['#f3f3f3', 'transparent'],
+					opacity: 0.5
 				},
-				{
-					name: 'Violence Against Women',
-					data: currentMonthVaw,
-					color: '#49BEFF',
-				},
-			],
-			grid: { borderColor: 'rgba(0,0,0,0.1)', strokeDashArray: 3, xaxis: { lines: { show: false } } },
-			plotOptions: { bar: { horizontal: false, columnWidth: '35%', borderRadius: [4] } },
-			chart: { type: 'bar', height: 390, offsetX: -15, toolbar: { show: false }, foreColor: '#adb0bb', fontFamily: 'inherit', sparkline: { enabled: false } },
-			dataLabels: { enabled: false },
-			markers: { size: 0 },
-			legend: { show: false },
-			xaxis: { type: 'category', categories: [month], labels: { style: { cssClass: 'grey--text lighten-2--text fill-color' } } },
-			yaxis: { show: true, min: 0, max: 500, tickAmount: 4, labels: { style: { cssClass: 'grey--text lighten-2--text fill-color' } } },
-			stroke: { show: true, width: 3, lineCap: 'butt', colors: ['transparent'] },
-			tooltip: { theme: 'light' },
-			responsive: [{ breakpoint: 600, options: { plotOptions: { bar: { borderRadius: 3 } } } }],
+			},
+			xaxis: {
+				categories: [month] // Updated to show all relevant months
+			}
 		};
 	}
 
-	initializeQuarterlyChart(q: string) {
+	initializeQuarterlyVawChart(q: string) {
 		let currentQMonths: string[] = [];
 		let seriesList: any[] = [];
 
@@ -307,16 +388,16 @@ export class DashboardComponent {
 			currentQMonths = ['October', 'November', 'December'];
 		}
 
-		for (let i = 0; i < this.allYearData.length; i++) {
+		for (let i = 0; i < this.allYearVawData.length; i++) {
 			let filteredData: number[] = [];
 			let filteredCategories: string[] = [];
 
-			for (let j = 0; j < this.allYearData[i].data.length; j++) {
-				const dataItem = this.allYearData[i].data[j];
+			for (let j = 0; j < this.allYearVawData[i].data.length; j++) {
+				const dataItem = this.allYearVawData[i].data[j];
 
 				// Check if the month is in the current quarter and barangay filter
 				if (currentQMonths.includes(dataItem.month) &&
-					(this.currentBarangay === 'All' || this.allYearData[i].name === this.currentBarangay)) {
+					(this.currentBarangay === 'All' || this.allYearVawData[i].name === this.currentBarangay)) {
 					filteredData.push(dataItem.total);
 					filteredCategories.push(dataItem.month);
 				}
@@ -325,17 +406,17 @@ export class DashboardComponent {
 			// Only add to seriesList if there is data to display
 			if (filteredData.length > 0) {
 				seriesList.push({
-					name: this.allYearData[i].name,
+					name: this.allYearVawData[i].name,
 					data: filteredData
 				});
 			}
 		}
 
-		this.salesOverviewChartQuarterly = {
+		this.vawOverviewBarChartQuarterly = {
 			series: seriesList,
 			chart: {
 				height: 350,
-				type: 'line',
+				type: 'bar',
 				zoom: {
 					enabled: false
 				}
@@ -362,15 +443,11 @@ export class DashboardComponent {
 		};
 	}
 
-
-	_initializeQuarterlyChart(q: string) {
-		const filteredVac = this.currentBarangay === 'All' ? this.vac : this.vac.filter(v => v.barangay === this.currentBarangay.toString());
-		const filteredVaw = this.currentBarangay === 'All' ? this.vaw : this.vaw.filter(v => v.barangay === this.currentBarangay.toString());
-
-		let VacPerQuarterData: number[] = [];
-		let VawPerQuarterData: number[] = [];
+	initializeQuarterlyVacChart(q: string) {
 		let currentQMonths: string[] = [];
+		let seriesList: any[] = [];
 
+		// Define months for each quarter
 		if (q === 'Q1') {
 			currentQMonths = ['January', 'February', 'March'];
 		} else if (q === 'Q2') {
@@ -381,33 +458,58 @@ export class DashboardComponent {
 			currentQMonths = ['October', 'November', 'December'];
 		}
 
-		VacPerQuarterData = filteredVac.filter(f => currentQMonths.includes(f.month)).map(item => item.number_vac);
-		VawPerQuarterData = filteredVaw.filter(f => currentQMonths.includes(f.month)).map(item => item.number_vaw);
+		for (let i = 0; i < this.allYearVacData.length; i++) {
+			let filteredData: number[] = [];
+			let filteredCategories: string[] = [];
 
-		this.salesOverviewChartQuarterly = {
-			series: [
-				{
-					name: 'Violence Against Children',
-					data: VacPerQuarterData,
-					color: '#5D87FF',
+			for (let j = 0; j < this.allYearVacData[i].data.length; j++) {
+				const dataItem = this.allYearVacData[i].data[j];
+
+				// Check if the month is in the current quarter and barangay filter
+				if (currentQMonths.includes(dataItem.month) &&
+					(this.currentBarangay === 'All' || this.allYearVacData[i].name === this.currentBarangay)) {
+					filteredData.push(dataItem.total);
+					filteredCategories.push(dataItem.month);
+				}
+			}
+
+			// Only add to seriesList if there is data to display
+			if (filteredData.length > 0) {
+				seriesList.push({
+					name: this.allYearVacData[i].name,
+					data: filteredData
+				});
+			}
+		}
+
+		this.vacOverviewBarChartQuarterly = {
+			series: seriesList,
+			chart: {
+				height: 350,
+				type: 'bar',
+				zoom: {
+					enabled: false
+				}
+			},
+			dataLabels: {
+				enabled: false
+			},
+			stroke: {
+				curve: 'smooth'
+			},
+			title: {
+				text: 'Product Trends by Month',
+				align: 'left'
+			},
+			grid: {
+				row: {
+					colors: ['#f3f3f3', 'transparent'],
+					opacity: 0.5
 				},
-				{
-					name: 'Violence Against Women',
-					data: VawPerQuarterData,
-					color: '#49BEFF',
-				},
-			],
-			grid: { borderColor: 'rgba(0,0,0,0.1)', strokeDashArray: 3, xaxis: { lines: { show: false } } },
-			plotOptions: { bar: { horizontal: false, columnWidth: '35%', borderRadius: [4] } },
-			chart: { type: 'bar', height: 390, offsetX: -15, toolbar: { show: false }, foreColor: '#adb0bb', fontFamily: 'inherit', sparkline: { enabled: false } },
-			dataLabels: { enabled: false },
-			markers: { size: 0 },
-			legend: { show: false },
-			xaxis: { type: 'category', categories: currentQMonths, labels: { style: { cssClass: 'grey--text lighten-2--text fill-color' } } },
-			yaxis: { show: true, min: 0, max: 500, tickAmount: 4, labels: { style: { cssClass: 'grey--text lighten-2--text fill-color' } } },
-			stroke: { show: true, width: 3, lineCap: 'butt', colors: ['transparent'] },
-			tooltip: { theme: 'light' },
-			responsive: [{ breakpoint: 600, options: { plotOptions: { bar: { borderRadius: 3 } } } }],
+			},
+			xaxis: {
+				categories: currentQMonths
+			}
 		};
 	}
 
@@ -419,14 +521,24 @@ export class DashboardComponent {
 		}));
 	}
 
-	onReportTypeChange(event: any) {
-		this.selectedReportType = event?.value;
-		this.updateCharts();
+	onReportTypeVawChange(event: any) {
+		this.selectedVawReportType = event?.value;
+		this.updateVawCharts();
 	}
 
-	onBarangayChange(event: any) {
+	onReportTypeVacChange(event: any) {
+		this.selectedVacReportType = event?.value;
+		this.updateVacCharts();
+	}
+
+	onBarangayVawChange(event: any) {
 		this.currentBarangay = event?.value;
-		this.updateCharts();
+		this.updateVawCharts();
+	}
+
+	onBarangayVacChange(event: any) {
+		this.currentBarangay = event?.value;
+		this.updateVacCharts();
 	}
 
 	getCurrentMonth() {
@@ -455,10 +567,10 @@ export class DashboardComponent {
 			if(res.sexual.barangay && res.physical.barangay && res.psychological.barangay && res.economic.barangay) {
 				this.percentageVaws = res;
 				const vawBrackets = [
-					`Sexual Abuse - ${res.sexual.barangay}`,
-					`Physical Abuse - ${res.physical.barangay}`,
-					`Psychological Abuse - ${res.psychological.barangay}`,
-					`Economic Abuse - ${res.economic.barangay}`
+					`Sexual Abuse <br/> &nbsp;&nbsp;&nbsp;&nbsp; • ${res.sexual.barangay}`,
+					`Physical Abuse <br/> &nbsp;&nbsp;&nbsp;&nbsp; • ${res.physical.barangay}`,
+					`Psychological Abuse <br/> &nbsp;&nbsp;&nbsp;&nbsp; • ${res.psychological.barangay}`,
+					`Economic Abuse <br/> &nbsp;&nbsp;&nbsp;&nbsp; • ${res.economic.barangay}`
 				];
 				this.vawOverviewChart = {
 					series: [
@@ -506,18 +618,18 @@ export class DashboardComponent {
 			) {
 				this.percentageVacs = res;
 				const vacBrackets = [
-					`Male Abuse - ${res.male.barangay}`,
-					`Female Abuse - ${res.female.barangay}`,
-					`0-4y - ${res.range_one.barangay}`,
-					`6-9y - ${res.range_two.barangay}`,
-					`10-14y - ${res.range_three.barangay}`,
-					`15-17y - ${res.range_four.barangay}`,
-					`18 up PW - ${res.range_five.barangay}`,
-					`Sexual Abuse - ${res.sexual_abuse.barangay}`,
-					`Physical Abuse - ${res.physical_abuse.barangay}`,
-					`Psychological Abus - ${res.psychological_abuse.barangay}`,
-					`Neglect - ${res.neglect.barangay}`,
-					`Others - ${res.others.barangay}`,
+					`Male Abuse <br/> &nbsp;&nbsp;&nbsp;&nbsp; • ${res.male.barangay}`,
+					`Female Abuse <br/> &nbsp;&nbsp;&nbsp;&nbsp; • ${res.female.barangay}`,
+					`0-4y <br/> &nbsp;&nbsp;&nbsp;&nbsp; • ${res.range_one.barangay}`,
+					`6-9y <br/> &nbsp;&nbsp;&nbsp;&nbsp; • ${res.range_two.barangay}`,
+					`10-14y <br/> &nbsp;&nbsp;&nbsp;&nbsp; • ${res.range_three.barangay}`,
+					`15-17y <br/> &nbsp;&nbsp;&nbsp;&nbsp; • ${res.range_four.barangay}`,
+					`18 up PWD <br/> &nbsp;&nbsp;&nbsp;&nbsp; • ${res.range_five.barangay}`,
+					`Sexual Abuse <br/> &nbsp;&nbsp;&nbsp;&nbsp; • ${res.sexual_abuse.barangay}`,
+					`Physical Abuse <br/> &nbsp;&nbsp;&nbsp;&nbsp; • ${res.physical_abuse.barangay}`,
+					`Psychological Abus <br/> &nbsp;&nbsp;&nbsp;&nbsp; • ${res.psychological_abuse.barangay}`,
+					`Neglect <br/> &nbsp;&nbsp;&nbsp;&nbsp; • ${res.neglect.barangay}`,
+					`Others <br/> &nbsp;&nbsp;&nbsp;&nbsp; • ${res.others.barangay}`,
 				];
 				this.vacOverviewChart = {
 					series: [

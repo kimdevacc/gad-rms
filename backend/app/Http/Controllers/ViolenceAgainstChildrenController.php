@@ -344,7 +344,7 @@ class ViolenceAgainstChildrenController extends Controller
         
         // Get all barangays
         $barangays = Barangay::all()->pluck('name');
-        $vawsData = [];
+        $vacsData = [];
         
         foreach ($barangays as $barangay) {
             $barangayData = [
@@ -360,9 +360,9 @@ class ViolenceAgainstChildrenController extends Controller
             }
             
             foreach ($monthNames as $index => $month) {
-                $vaw = ViolenceAgainstWomen::where('barangay', $brgy['id'])
+                $vaw = ViolenceAgainstChildren::where('barangay', $brgy['id'])
                 ->where('month', $month)
-                ->whereBetween('violence_against_women.created_at', [
+                ->whereBetween('violence_against_children.created_at', [
                     Carbon::create(date('Y'), 1, 1)->startOfYear(),
                     Carbon::create(date('Y'), 12, 31)->endOfYear()
                 ])
@@ -371,14 +371,14 @@ class ViolenceAgainstChildrenController extends Controller
                 // Append the data for the month
                 $barangayData['data'][] = [
                     'month' => $month,
-                    'total' => $vaw->number_vaw ?? 0
+                    'total' => $vaw->number_vac ?? 0
                 ];
             }
             
-            $vawsData[] = $barangayData;
+            $vacsData[] = $barangayData;
         }
 
-        return response()->json($vawsData);
+        return response()->json($vacsData);
     }
 
     public function get_vacs_percentage(Request $request) {

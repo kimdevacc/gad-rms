@@ -28,6 +28,7 @@ export class FormComponent implements OnInit {
             first_name: '',
             middle_name: '',
             last_name: '',
+            contact_number: '',
             position: '',
             email: ['', [Validators.required, Validators.email]],
             city: null,
