@@ -572,4 +572,63 @@ class ViolenceAgainstChildrenController extends Controller
             'others' => $highestOthers
         ]);
     }
+
+    public function forecast() {
+        $casesData = ViolenceAgainstChildren::all();
+    
+        $groupedData = [];
+        foreach ($casesData as $row) {
+            $barangayId = $row->barangay;
+            $month = $row->month;
+            $cases = (int) $row->number_vac;
+    
+            $barangay = Barangay::find($barangayId);
+            if ($barangay) {
+                $barangayName = $barangay->name;
+                $groupedData[$barangayName][] = [
+                    'month' => $month,
+                    'total' => $cases,
+                ];
+            }
+        }
+    
+        $forecasts = [];
+    
+        foreach ($groupedData as $barangay => $data) {
+            $monthlyTotals = array_fill(0, 12, ['month' => '', 'total' => 0]);
+    
+            foreach ($data as $monthData) {
+                $monthIndex = date('n', strtotime($monthData['month'])) - 1;
+                $monthlyTotals[$monthIndex]['month'] = date('F', mktime(0, 0, 0, $monthIndex + 1, 1));
+                $monthlyTotals[$monthIndex]['total'] += $monthData['total'];
+            }
+    
+            $finalData = array_filter($monthlyTotals, function($monthData) {
+                return $monthData['month'] !== '';
+            });
+    
+            $lastIndex = count($finalData) - 1;
+            for ($i = count($finalData) - 1; $i >= 0; $i--) {
+                if ($finalData[$i]['total'] > 0) {
+                    $lastIndex = $i;
+                    break;
+                }
+            }
+            
+            $nextMonthIndex = ($lastIndex + 2) % 12;
+            $forecastValue = $finalData[$lastIndex]['total'];
+    
+            $finalData[] = [
+                'month' => date('F', mktime(0, 0, 0, $nextMonthIndex + 1, 1)),
+                'total' => max(0, $forecastValue) 
+            ];
+    
+            $forecasts[] = [
+                'name' => $barangay,
+                'data' => array_values($finalData),
+            ];
+        }
+    
+        return response()->json($forecasts);
+    }
 }

@@ -35,12 +35,12 @@ export class HeaderComponent {
 	notificationList: any[] = [];
 
 	constructor(
-		public dialog: MatDialog, 
+		public dialog: MatDialog,
 		private authService: AuthService,
 		private router: Router,
 		private apiService: ApiService,
 		private modalService: NgbModal
-	) { 
+	) {
 		const userRole = localStorage.getItem('userRole');
 		this.superAdmin = userRole && userRole === 'super admin' ? true : false;
 	}
@@ -51,41 +51,67 @@ export class HeaderComponent {
 
 	loadNotification() {
 		this.apiService.getBarangayById(this.barangay).subscribe(res => {
-			if(res) {
+			if (res) {
 				this.barangayName = res?.name;
 			}
 		})
 		this.apiService.getUserNotification().subscribe(res => {
-			if(res) {
+			if (res) {
 				this.notificationList = res;
 			}
 		})
 	}
 
 	logout() {
-        this.authService.logout().subscribe(
-            () => {
+		this.authService.logout().subscribe(
+			() => {
 				this.router.navigate(['login']);
-            }
-        );
-    }
+			}
+		);
+	}
 
 	openNotification(data: any) {
-		if(data.type === 'VAW') {
+		if (data.type === 'VAW') {
 			this.apiService.getVaw(data.id).subscribe(res => {
-				if(res) {
+				if (res) {
 					const modalRef = this.modalService.open(CasesVawFormComponent, { size: 'lg', backdrop: 'static', centered: true });
 					modalRef.componentInstance.vawData = res;
 				}
 			})
 		}
-		if(data.type === 'VAC') {
+		if (data.type === 'VAC') {
 			this.apiService.getVac(data.id).subscribe(res => {
-				if(res) {
+				if (res) {
 					const modalRef = this.modalService.open(CasesVacFormComponent, { size: 'lg', backdrop: 'static', centered: true });
 					modalRef.componentInstance.vacData = res;
 				}
 			})
 		}
+	}
+
+	isToday(deadline: string): boolean {
+		const today = new Date();
+		const deadlineDate = new Date(deadline);
+		return today.getFullYear() === deadlineDate.getFullYear() &&
+			today.getMonth() === deadlineDate.getMonth() &&
+			today.getDate() === deadlineDate.getDate();
+	}
+
+	isInTwoDays(deadline: string): boolean {
+		const inTwoDays = new Date();
+		inTwoDays.setDate(inTwoDays.getDate() + 1);
+		const deadlineDate = new Date(deadline);
+		return inTwoDays.getFullYear() === deadlineDate.getFullYear() &&
+			inTwoDays.getMonth() === deadlineDate.getMonth() &&
+			inTwoDays.getDate() === deadlineDate.getDate();
+	}
+
+	isInThreeDays(deadline: string): boolean {
+		const inThreeDays = new Date();
+		inThreeDays.setDate(inThreeDays.getDate() + 2);
+		const deadlineDate = new Date(deadline);
+		return inThreeDays.getFullYear() === deadlineDate.getFullYear() &&
+			inThreeDays.getMonth() === deadlineDate.getMonth() &&
+			inThreeDays.getDate() === deadlineDate.getDate();
 	}
 }

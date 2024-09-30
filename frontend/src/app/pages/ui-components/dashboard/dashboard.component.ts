@@ -75,10 +75,12 @@ export class DashboardComponent {
 	public vawOverviewBarChart!: Partial<SalesOverviewChart> | any;
 	public vawOverviewBarChartMonthly!: Partial<SalesOverviewChart> | any;
 	public vawOverviewBarChartQuarterly!: Partial<SalesOverviewChart> | any;
+	public vawOverviewLineChart!: Partial<SalesOverviewChart> | any;
 
 	public vacOverviewBarChart!: Partial<SalesOverviewChart> | any;
 	public vacOverviewBarChartMonthly!: Partial<SalesOverviewChart> | any;
 	public vacOverviewBarChartQuarterly!: Partial<SalesOverviewChart> | any;
+	public vacOverviewLineChart!: Partial<SalesOverviewChart> | any;
 
 	public chartOptions: Partial<ChartOptions> | any;
 	public vawOverviewChart!: Partial<SalesOverviewChart> | any;
@@ -116,6 +118,9 @@ export class DashboardComponent {
 	percentageVaws: any;
 	percentageVacs: any;
 
+	allYearPredictiveVawData: any[] = [];
+	allYearPredictiveVacData: any[] = [];
+
 	constructor(
 		private apiService: ApiService,
 		private modalService: NgbModal
@@ -133,8 +138,10 @@ export class DashboardComponent {
 			this.apiService.getAllVacs(this.currentYear, this.currentMonth),
 			this.apiService.getAllVaws(this.currentYear, this.currentMonth),
 			this.apiService.getAllVawsByParameter(),
-			this.apiService.getAllVacsByParameter()
-		]).subscribe(([res1, res2, res3, res4, res5, res6, res7, res8]) => {
+			this.apiService.getAllVacsByParameter(),
+			this.apiService.getVawsForecast(),
+			this.apiService.getVacsForecast()
+		]).subscribe(([res1, res2, res3, res4, res5, res6, res7, res8, res9, res10]) => {
 			if (res1 && res2) {
 				this.vaw = res1;
 				this.vac = res2;
@@ -153,6 +160,8 @@ export class DashboardComponent {
 				this.isLoading = false;
 				this.allYearVawData = res7;
 				this.allYearVacData = res8;
+				this.allYearPredictiveVawData = res9;
+				this.allYearPredictiveVacData = res10;
 				this.updateVawCharts();
 				this.updateVacCharts();
 				this.initializeVawCasePercentage(this.currentMonth);
@@ -164,6 +173,7 @@ export class DashboardComponent {
 	updateVawCharts() {
 		if (this.selectedVawReportType === 'Year') {
 			this.initializeVawChart();
+			this.initializeVawPredictveChart();
 		} else if (this.selectedVawReportType === 'Monthly') {
 			this.initializeMonthlyVawChart(this.currentMonth);
 		} else if (this.selectedVawReportType === 'Quarterly') {
@@ -174,6 +184,7 @@ export class DashboardComponent {
 	updateVacCharts() {
 		if (this.selectedVacReportType === 'Year') {
 			this.initializeVacChart();
+			this.initializeVacPredictveChart();
 		} else if (this.selectedVacReportType === 'Monthly') {
 			this.initializeMonthlyVacChart(this.currentMonth);
 		} else if (this.selectedVacReportType === 'Quarterly') {
@@ -665,5 +676,91 @@ export class DashboardComponent {
 				};
 			}
 		})
+	}
+
+	initializeVawPredictveChart() {
+		let seriesList: any[] = [];
+		let monthNames: string[] = [];
+		for (let i = 0; i < this.allYearPredictiveVawData.length; i++) {
+			let tempData = [];
+			for (let j = 0; j < this.allYearPredictiveVawData[i].data.length; j++) {
+				tempData.push(this.allYearPredictiveVawData[i].data[j].total);
+				monthNames.push(this.allYearPredictiveVawData[i].data[j].month);
+			}
+			seriesList.push({ name: this.allYearPredictiveVawData[i].name, data: tempData });
+		}
+		seriesList = this.currentBarangay === 'All' ? seriesList : seriesList.filter(r => r.name === this.currentBarangay);
+		this.vawOverviewLineChart = {
+			series: seriesList,
+			chart: {
+				height: 350,
+				type: 'line',
+				zoom: {
+					enabled: false
+				}
+			},
+			dataLabels: {
+				enabled: false
+			},
+			stroke: {
+				curve: 'straight'
+			},
+			title: {
+				text: 'Product Trends by Month',
+				align: 'left'
+			},
+			grid: {
+				row: {
+					colors: ['#f3f3f3', 'transparent'],
+					opacity: 0.5
+				},
+			},
+			xaxis: {
+				categories: monthNames,
+			}
+		};
+	}
+
+	initializeVacPredictveChart() {
+		let seriesList: any[] = [];
+		let monthNames: string[] = [];
+		for (let i = 0; i < this.allYearPredictiveVacData.length; i++) {
+			let tempData = [];
+			for (let j = 0; j < this.allYearPredictiveVacData[i].data.length; j++) {
+				tempData.push(this.allYearPredictiveVacData[i].data[j].total);
+				monthNames.push(this.allYearPredictiveVacData[i].data[j].month);
+			}
+			seriesList.push({ name: this.allYearPredictiveVacData[i].name, data: tempData });
+		}
+		seriesList = this.currentBarangay === 'All' ? seriesList : seriesList.filter(r => r.name === this.currentBarangay);
+		this.vacOverviewLineChart = {
+			series: seriesList,
+			chart: {
+				height: 350,
+				type: 'line',
+				zoom: {
+					enabled: false
+				}
+			},
+			dataLabels: {
+				enabled: false
+			},
+			stroke: {
+				curve: 'straight'
+			},
+			title: {
+				text: 'Product Trends by Month',
+				align: 'left'
+			},
+			grid: {
+				row: {
+					colors: ['#f3f3f3', 'transparent'],
+					opacity: 0.5
+				},
+			},
+			xaxis: {
+				categories: monthNames,
+			}
+		};
 	}
 }

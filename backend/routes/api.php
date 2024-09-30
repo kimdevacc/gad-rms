@@ -59,6 +59,7 @@ Route::middleware(['auth:sanctum', '2fa'])->group(function () {
     Route::delete('/vaws/{id}', [ViolenceAgainstWomenController::class, 'destroy']);
     Route::get('/vaws/all/by-param', [ViolenceAgainstWomenController::class, 'get_all_vaws_by_param']);
     Route::post('/vaws/all/by-percentage', [ViolenceAgainstWomenController::class, 'get_vaws_percentage']);
+    Route::get('/vaws/forecast', [ViolenceAgainstWomenController::class, 'forecast']);
 
     Route::get('/vacs', [ViolenceAgainstChildrenController::class, 'vacs']);
     Route::get('/vac/{id}', [ViolenceAgainstChildrenController::class, 'vac']);
@@ -69,6 +70,7 @@ Route::middleware(['auth:sanctum', '2fa'])->group(function () {
     Route::delete('/vacs/{id}', [ViolenceAgainstChildrenController::class, 'destroy']);
     Route::get('/vacs/all/by-param', [ViolenceAgainstChildrenController::class, 'get_all_vacs_by_param']);
     Route::post('/vacs/all/by-percentage', [ViolenceAgainstChildrenController::class, 'get_vacs_percentage']);
+    Route::get('/vacs/forecast', [ViolenceAgainstChildrenController::class, 'forecast']);
 
     Route::get('/settings', [SettingsController::class, 'settings']);
     Route::post('/settings', [SettingsController::class, 'store']);

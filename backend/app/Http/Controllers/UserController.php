@@ -163,6 +163,15 @@ class UserController extends Controller
 
             // Combine the results
             $notificationData = $vaw->union($vac)->get();
+
+            $deadline = now()->addDays(3);
+            $additionalNotifications = \DB::table('settings')
+                ->where('deadline', '<=', $deadline)
+                ->where('email', $currentUser->email)
+                ->whereNull('deleted_at')
+                ->get(['id', 'email', 'barangay', 'deadline', 'created_at', 'updated_at']);
+    
+            $notificationData = $notificationData->merge($additionalNotifications);
         }
 
         return response()->json($notificationData);
